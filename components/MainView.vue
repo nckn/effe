@@ -55,7 +55,8 @@ export default {
       },
       // PlayerNodes
       startTime: [0, 0],
-      startOffset: [0, 0]
+      startOffset: [0, 0],
+      curBuffer: [null, null]
     }
   },
   mounted () {
@@ -70,8 +71,8 @@ export default {
   methods: {
     initAudio (data, num) {
       var self = this
-      console.log(this)
       if (self.aC.decodeAudioData) {
+        console.log('a')
         self.aC.decodeAudioData(data, function (buffer) {
           self.sources[num] = self.aC.createBufferSource()
           self.sources[num].connect(self.sourceGain[num])
@@ -81,7 +82,8 @@ export default {
           // console.log(e);
         })
       } else {
-        self.sources[num].buffer = self.aC.createBuffer(data, false /* mixToMono */)
+        console.log('b')
+        self.sources[num].buffer = self.aC.createBuffer(data, false)
         self.startAudio()
       }
     },
@@ -94,9 +96,20 @@ export default {
       self.sources[num].start(0)
     },
     pauseTrack (num) {
-      var self = this
-      self.startOffset[num] += self.aC.currentTime - self.startTime[num];
-      self.sources[num].stop(0);
+      var s = this
+      // self.startOffset[num] += self.aC.currentTime - self.startTime[num];
+      // self.sources[num].stop(0);
+      if(s.aC.state === 'running') {
+        s.aC.suspend().then(function() {
+          // susresBtn.textContent = 'Resume context';
+        });
+        console.log('suspending we are')
+      } else if(s.aC.state === 'suspended') {
+        console.log('unsuspending.......')
+        s.aC.resume().then(function() {
+          // susresBtn.textContent = 'Suspend context';
+        });  
+      }
     },
     setupAudioNodes () {
       var s = this
