@@ -1,0 +1,493 @@
+
+/*
+  Dark Blue: #69ACBE; light blue: #69ACBE; orange: #FF623F; dark green: #3D8087;
+  Light blue: #A6CFDB;
+*/
+
+html, body {
+  width: 100vw; height: 100vh; 
+  margin: 0px; padding: 0px; 
+  position: fixed;
+}
+
+body {
+	font-family: 'Source Sans Pro', sans-serif; 
+  overflow: hidden;
+  color: #000;
+}
+
+a, a:visited, a:hover, a:focus, a:hover, a:active { text-decoration: none; }
+
+header { 
+  text-align: center; 
+  background: #75C2BF; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(-90deg, #75C2BF, #6BD6B8); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(-90deg, #75C2BF, #6BD6B8); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(-90deg, #75C2BF, #6BD6B8); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(-90deg, #75C2BF, #6BD6B8); /* Standard syntax */
+  /*position: fixed;*/
+}
+
+header, .lower-bar {
+  width: 100vw; height: 8vh;
+}
+
+.lower-bar {
+  background: #424242;
+}
+
+/* analyser */
+canvas { 
+  width: 16vw;
+  bottom: 5%;
+  position: absolute;
+}
+
+canvas#analyser {
+  left: 5%;
+}
+
+.logo { 
+  width: 100px; height: 100%;
+  background-image: url("/img/efe-w.png"); 
+  background-size: 40px 40px; 
+  background-repeat: no-repeat;
+  background-position: 20px; 
+}
+
+.logo h4 { color: #FFF; padding: 14px; margin-left: 40px; }
+
+.panel { 
+  width: 80%; height: 78vh; 
+  margin: 6vh auto 100px auto;
+  padding: 10px;
+  /*background: #69ACBE;*/ 
+}
+
+.alter-filter, #filter-title, .toggle-effect, .button-reg.tremolo { 
+  cursor: pointer;
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+}
+
+/* border radius */
+.node, #start-one, #start-two, .effects, input[type="submit"], input[type="text"] {
+  -webkit-border-radius: 4px; 
+  -moz-border-radius: 4px; 
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.node { 
+  width: 18vw; height: 30vh; 
+  /*padding: 1vw;*/
+  text-align: center; margin: 1%; float: left; 
+  -webkit-transition: opacity 0.5s ease-out;
+  -moz-transition: opacity 0.5s ease-out;
+  -o-transition: opacity 0.5s ease-out;
+  transition: opacity 0.5s ease-out;
+  /*border: 2px solid #A6CFDB;*/
+  background: #ececec; /* Other good colors: #A0D2DF, #A0DFCF*/
+  position: relative;
+}
+
+.player { display: block; }
+
+.node h2 { margin: .5vw; width: 32%; height: 20%; float: left; }
+.node h3 { margin: 8px 0 0 8%; float: left; }
+
+.artistinfo { 
+  width: 9vw; height: 6vw;
+  margin: 1vw 1vw 0 0;
+  float: right; 
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+}
+
+.thumb {
+  height: 75px;
+  border: 1px solid #000;
+  margin: 10px 5px 0 0;
+}
+
+.songsearch {
+  background: none;
+  clear: left;
+  text-align: left;
+  padding: 0 1vw;
+  bottom: 1vw;
+  position: absolute;
+  width: calc(100% - 2vw);
+}
+
+input[type="text"] {
+  font-family: 'Source Sans Pro', sans-serif;
+  background: none; 
+  width: 60%; height: 4vh;
+  background: #f7f7f7;
+  border-style: none;
+  margin-right: .1%; padding-left: 6px; 
+  font-size: 13px;
+}
+
+input[type="submit"] {
+  font-family: 'Source Sans Pro', sans-serif;
+  background: #69ACBE; color: #FFF; 
+  width: 30%; height: 4.2vh;
+  border-style: none;
+  float: right;
+}
+
+.invisible { 
+  opacity: 0.1;
+  /* border: 1px dashed #E0E0E0; */
+  -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing:         border-box;
+}
+
+.visible { opacity: 1; border: none; }
+
+.button-reg-one, .button-reg-two {
+  width: 6vw; height: 6vw; 
+  margin: 1vw;
+  color: #FFF; 
+}
+
+.button-reg-one {
+  background: #69BBE7; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(-90deg, #69BBE7, #70CDDF); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(-90deg, #69BBE7, #70CDDF); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(-90deg, #69BBE7, #70CDDF); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(-90deg, #69BBE7, #70CDDF); /* Standard syntax */
+}
+
+/* 2nd play button */
+.button-reg-two {
+  background: #61B8FB;
+}
+
+#start-one, #start-two { 
+  float: left;
+  z-index: 100;
+}
+
+.on  { 
+  /*background: #69BBE7;
+  background: -webkit-linear-gradient(-90deg, #69ACBE, #6BBAA9);
+  background: -o-linear-gradient(-90deg, #69ACBE, #6BBAA9);
+  background: -moz-linear-gradient(-90deg, #69ACBE, #6BBAA9);
+  background: linear-gradient(-90deg, #69ACBE, #6BBAA9);*/
+  background: #9bcfea;
+} 
+
+.on-two { background: #03623F; }
+
+.button-reg-one, .button-reg-two, .totwogle-effect, .effects { 
+  -webkit-transition: background-color 0.2s ease-out;
+  -moz-transition: background-color 0.2s ease-out;
+  -o-transition: background-color 0.2s ease-out;
+  transition: background-color 0.2s ease-out;
+}
+
+.buttonicon { 
+  width: 100%; height: 100%;
+  background-size: 36%; background-repeat: no-repeat; background-position: center;
+  background-image: url("/img/play.png"); 
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  pointer-events: none;
+}
+
+.pause { background-image: url("/img/pause.png"); }
+
+.info { 
+  float: right;
+  margin: 1vw;
+}
+
+#play-arrow, #play-arrow-two { opacity: 1; }
+#stop-box, #stop-box-two { opacity: 0; }
+
+.tremolo { 
+  width: 4vh; height: 4vh;
+  position: absolute;
+  left: 1vw; 
+  bottom: 1vw;
+  background: #69acbe;
+  -webkit-border-radius: 50%; 
+  -moz-border-radius: 50%; 
+  border-radius: 50%;
+  -webkit-flex-flow: column wrap;
+  -ms-flex-flow: column wrap;
+  flex-flow: column wrap;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack:center;
+  -webkit-justify-content:center;
+  -ms-flex-pack:center;
+  justify-content:center; 
+}
+
+.toggle-effect { 
+  width: 20px; height: 20px;  
+  float: left; border-radius: 30px;
+  margin: 1vw 0 0 0; 
+}
+
+.toggle-effect, .tremolo {
+  background: #ff7474;
+}
+
+.active { background: #70cbbc; }
+.slur { margin-left: -10px; }
+.two { opacity: 0.6; }
+
+input[type="name"] { 
+  width: 40%; height: 20%; float: left; 
+  font: 20px 'Source Sans Pro', sans-serif; font-weight: thin;
+}
+
+input[type="file"] {
+    display: none; 
+}
+.file-upload, .file-upload-two { 
+  position: absolute;
+  width: 6vw;
+  height: 6vw;
+  opacity: 0;
+  margin: 0;
+  z-index: 10;
+  cursor: pointer;
+  line-height: 14px;
+  display: block;
+} 
+
+.svg-triangle {
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;    
+}   
+
+.svg-triangle polygon {
+  fill: #FFF;
+}
+
+#drag-instr, #drag-instr-two { 
+  color: #000;
+  position: absolute; width: 100px; height: 80px; 
+  margin: -96px 0 0 0; opacity: 1;
+}
+#drag-instr p, #drag-instr-two p { font-size: 14px; line-height: 11px; }
+
+.gui-group { margin: 26px 0 0 0; }
+
+input {
+  outline: none;
+}
+
+input[type=range] {
+  width: 16vw; height: 4px;
+  -webkit-appearance: none;
+  background-color: #3D8087;
+  margin: 2vh 0 3vh 0;
+}
+
+div.node.player > input[type=range] {
+  margin: 4vh 0 2vh 0;
+}
+
+input[type=range]::-moz-range-track {
+  -webkit-appearance: none;
+  background: #3D8087;
+  height: 4px;
+  margin: 4vh 0 2vh 0;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background-color: #3D8087;
+  opacity: 1;
+  width: 40px; height: 40px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+input[type=range]::-moz-range-thumb {
+  border: none;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: #3D8087;
+  cursor: pointer;
+}
+
+input[type=range]::-moz-focus-outer {
+  border: none;
+  background: none;
+}
+
+/*hide the outline behind the border*/
+input[type=range]:-moz-focusring{
+    outline: none;
+    outline-offset: -1px;
+}
+
+input[type=range]:focus::-moz-range-track {
+    background: #ccc;
+}
+
+#impulse {
+    visibility: hidden;
+}
+
+#delaysliders { position: relative; }
+
+output { 
+  text-align: left; 
+  margin: 0 7vh;
+}
+
+#delay-output { position: relative; clear: both; width: 100%; opacity: 0; } 
+#feedback-output { position: relative; clear: both; width: 100%; opacity: 0; } 
+ 
+/*  */
+#impulse { visibility: hidden; }
+
+#analyser_render { width: 100%; height: 70%; }
+
+#wavetable { 
+  width: 8vw; height: 4vh;
+  z-index: 20;
+  position: absolute;
+  bottom: 1vw; right: 1vw;
+  opacity: 0.3;
+}
+
+/* Lower bar */
+.lower-bar { 
+  position: absolute; bottom: 0; left: 0;
+}
+
+.effects { 
+  width: 8vw; height: 6vh; 
+  margin: 1vh 0 1vh 1vh; 
+  float: left; line-height: 54px; 
+  background: #FFF; opacity: 0.7;
+}
+
+.effects h4 { 
+  width: 8vw;
+  display: table-cell;
+  text-align: center;
+  color: #424242;
+  /* color: #75C2BF; */
+  font-weight: 400; letter-spacing: .1vw;
+  pointer-events: none;
+  /*user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;*/
+}
+
+.effects:hover { cursor: pointer; }
+
+.crossfader-box { 
+  width: 40vw; height: 4vh; 
+  margin: 2vh 0 2vh 4vw; float: left;
+  
+}
+
+.crossfader-box h4 {
+  color: #FFF; float: left; margin: 1% 4%;
+  font-weight: 500;
+}
+
+input[class="crossfader"] { 
+  width: 50%; height: 4px; 
+  margin: 2.4% 0 0 0%;
+  float: left; 
+  background: #F6F6F6;
+  border: 0;
+}
+
+input[class="crossfader"]::-webkit-slider-thumb {
+  width: 40px; height: 40px; 
+  background: #F6F6F6; cursor: pointer;
+}
+
+
+
+
+
+
+/* ===============  Layout debug  ==================================== */
+
+/*.crossfader-box { background: red; }*/
+/*.toggle { background: green; }*/
+/*.artistinfo { background: green; }*/
+
+
+
+
+
+/* ===============  Mobile First Method  ============================= */
+
+/*
+
+  iPhone 6 portrait   375 x 667
+  iPad 2          768 x 1024
+
+*/  
+
+/* Custom, iPhone Retina */ 
+@media only screen and (min-width : 320px) {
+
+}
+
+@media only screen and (min-width : 320px) and (orientation : portrait) {
+  /*#orientation { display: block; }*/
+}
+
+@media only screen and (min-width : 320px) and (orientation : landscape) {
+  /*#orientation { display: none; }*/
+}
+
+@media only screen and (min-device-width : 768px) and (orientation : portrait) { 
+    /*.node { width: 30vw; height: 20vh; }*/
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+
+}
+
+/* iPad */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px)
+and (-webkit-min-device-pixel-ratio: 2) {
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+  
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+
+}
+
+/* Largest Devices, Widest Screens */
+@media only screen and (min-width : 1680px) {
+
+}

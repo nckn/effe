@@ -27,13 +27,16 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    // SCSS file in the project
+    '@/assets/scss/main.scss'
   ],
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    {src: '@/plugins/main', ssr: false},
-    {src: '@/plugins/fetchsong', ssr: false}
+    // {src: '@/plugins/main', ssr: false},
+    {src: '@/plugins/window-fix', ssr: false}
+    // {src: '@/plugins/fetchsong', ssr: false}
   ],
   /*
   ** Nuxt.js dev-modules
