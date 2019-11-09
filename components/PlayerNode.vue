@@ -1,6 +1,6 @@
 <template lang="pug">
-  .node.player
-    #start-one.button-reg-one.invisible.drop(for='file-upload' @click="playSong" @drop="dropEvent" @dragover="dragOver" ref="start_box" name="player-one")
+  .node.player(@drop="dropEvent" @dragover="dragOver")
+    #start-one.button-reg-one.invisible.drop(for='file-upload' @click="playSong" ref="start_box" name="player-one")
       div#upload-button-one(for='file-upload' ref="upload_btn")
       #buttonicon.buttonicon(ref="buttonicon")
       // <h4 id="drag-instr"><p>drag song here</p></h4>
@@ -12,7 +12,7 @@
       form
         input#query(type='text' placeholder='Type the name of a song')
         input(type='submit' value='Find')
-      #result
+      #result(style="display:none;")
         #text
         div
           svg#svg(width='100%' height='40')
