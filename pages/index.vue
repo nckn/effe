@@ -1,31 +1,46 @@
-<template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        effe
-      </h1>
-      <h2 class="subtitle">
-        Node based audio FX machine
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
-  </div>
+<template lang="pug">
+  div
+    .overlay
+    header
+      a(href='index.html')
+        .logo
+    .panel
+      .node.player
+        #start-one.button-reg-one.invisible.drop(for='file-upload')
+          label#upload-button-one(for='file-upload')
+          #buttonicon.buttonicon
+          // <h4 id="drag-instr"><p>drag song here</p></h4>
+        output#infolist.artistinfo.one
+          | Song:
+          br
+        input.volume-slider-one(type='range' name='color' min='0' max='5' step='0.1')
+        .songsearch
+          form
+            input#query(type='text' placeholder='Type the name of a song')
+            input(type='submit' value='Find')
+          #result
+            #text
+            div
+              svg#svg(width='100%' height='40')
+              button#play Play track
+            audio#audio
+      .lower-bar
+        .effects
+          h4 graph
+        .effects
+          h4 speed
+        .effects
+          h4 reverb
+        .effects
+          h4 filter
+        .effects
+          h4 delay
+        .effects.player-two
+          h4 player
+        .crossfader-box
+          h4 track 1
+          input.crossfader(type='range' min='0.1' max='1.9' step='0.01' value='1')
+          h4 track 2
 </template>
 
 <script>
