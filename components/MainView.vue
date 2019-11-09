@@ -1,22 +1,27 @@
 <template lang="pug">
   .panel
-    Node(v-for="(node, index) in nodes" :node="node" :key="index")
+    PlayerNode(v-for="(node, index) in nodes" :node="node" :key="index")
 </template>
 
 <script>
 
+import PlayerNode from '~/components/PlayerNode.vue'
 import Node from '~/components/Node.vue'
+
+import globalFunctions from '~/mixins/globalFunctions'
 
 export default {
   name: 'MainView',
+  mixins: [globalFunctions],
   components: {
+    PlayerNode,
     Node
   },
   data () {
     return {
       nodes: [
-        {name: 'Player 2', type: 'player'},
-        {name: 'Player 2', type: 'player'}
+        {name: 'Player 1', type: 'player'},
+        // {name: 'Player 2', type: 'player'}
       ],
       aC: null,
       sources: new Array(2),
@@ -32,23 +37,61 @@ export default {
       convoler: null,
       dry: null,
       wet: null,
+      duration: 0.01,
       filterOn: false,
       effect_is_on: [false, false, false, false, false, false],
       newPlayer: false,
       tremoloIsAllowed: false,
       browser: 0,
       filterType: ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'],
-      filterValue: 0
+      filterValue: 0,
+      // Tremolo
+      tremolo: {
+        isOn: false,
+        ms: 0,
+        round: 14,
+        step: 0,
+        period: 0
+      },
+      // PlayerNodes
+      startTime: [0, 0],
+      startOffset: [0, 0]
     }
   },
   mounted () {
     var self = this
     window.AudioContext = window.AudioContext || window.webkitAudioContext
     self.$nextTick(
-      self.setupAudioNodes()
+      self.setupAudioNodes(),
+      self.assignRightSize('node'),
+      self.trackWindowResize()
     )
   },
   methods: {
+    initAudio (data, num) {
+      var self = this
+      console.log(this)
+      if (context.decodeAudioData) {
+        context.decodeAudioData(data, function (buffer) {
+          self.sources[num] = context.createBufferSource()
+          self.sources[num].connect(self.sourceGain[num])
+          self.sources[num].buffer = buffer
+          self.startAudio(buffer, num)
+        }, function (e) {
+          // console.log(e);
+        })
+      } else {
+        self.sources[num].buffer = context.createBuffer(data, false /* mixToMono */)
+        self.startAudio()
+      }
+    },
+    startAudio (buffer, num) {
+      var self = this
+      self.startTime[num] = self.aC.currentTime;
+      self.sources[num].loop = true;
+      // Start playback, but make sure we stay in bound of the buffer.
+      self.sources[num].start(0, self.startOffset[num] % self.buffer.duration)
+    },
     setupAudioNodes () {
       var s = this
       s.aC = new AudioContext()
@@ -104,7 +147,38 @@ export default {
       this.masterGain.gain.value = 1
       this.filter.type = this.filterType[this.browser]
       this.filter.frequency.value = 4000
-    }
+    },
+    frameLooper () {
+      var self = this
+      var fbc_array, bar_x, bar_width, bar_height, graphFill = '#ececec'
+      var canvasWidth = document.getElementById('analyser').width
+      var canvasHeight = document.getElementById('analyser').height
+      this.analyser.fftSize = 64
+      var bufferLength = this.analyser.frequencyBinCount
+      var dataArray = new Uint8Array(bufferLength)
+      this.analyser.minDecibels = -90
+      this.analyser.maxDecibels = -10
+      this.analyser.smoothingTimeConstant = 0.90
+      this.analyser.getByteFrequencyData(dataArray)
+      this.ctx.fillStyle = 'hsla(0, 0%, 100%, .10)'
+      this.ctx.fillStyle = graphFill;
+      this.ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+      var barWidth = (canvasWidth / bufferLength)
+      var barHeight
+      var x = 0
+      for (var i = 0; i < bufferLength; i++) { // used to be bufferLength
+        barHeight = dataArray[i]
+        this.ctx.fillStyle = '#000' // 'rgb(' + (barHeight+100) + ',50,50)'
+        this.ctx.fillRect(x, canvasHeight - barHeight / 2, barWidth, barHeight / 2)
+        x += barWidth + 2
+      }
+      window.requestAnimationFrame(this.frameLooper.bind(this))
+    },
+    trackWindowResize () {
+      if (typeof this.window !== undefined) {
+        this.window.addEventListener('resize', this.assignRightSize('node'))
+      }
+    },
   }
 }
 </script>

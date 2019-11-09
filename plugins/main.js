@@ -3,23 +3,23 @@
 export default ({ app }) => {
   var d = document;
 
-  var source = new Array(2), convolver, dry, wet = 0,
-    duration = 0.01;
+  // var source = new Array(2), convolver, dry, wet = 0,
+  //   duration = 0.01;
 
-  var fetchGain;
+  // var fetchGain;
 
-  // Booleans
-  filterOn = false,
-    effect_is_on = [false, false, false, false, false, false],
-    newPlayer = false,
-    tremoloIsAllowed = false;
+  // // Booleans
+  // filterOn = false,
+  //   effect_is_on = [false, false, false, false, false, false],
+  //   newPlayer = false,
+  //   tremoloIsAllowed = false;
 
-  var browser = 0, filterType = ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'],
-    filterValue = 0;
+  // var browser = 0, filterType = ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'],
+  //   filterValue = 0;
 
-  // assign effect buttons
-  var effectButton = document.querySelectorAll('.effects'),
-    graphicButton;
+  // // assign effect buttons
+  // var effectButton = document.querySelectorAll('.effects'),
+  //   graphicButton;
 
   var xhr;
 
@@ -67,68 +67,68 @@ export default ({ app }) => {
     }
   }
 
-  Setup.prototype.setupAudioNodes = function () {
+  // Setup.prototype.setupAudioNodes = function () {
 
-    var self = this;
+  //   var self = this;
 
-    // Fix up prefixing
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    context = new AudioContext();
-    this.feedbackGain = context.createGain ? context.createGain() : context.createmasterGain();
-    fetchGain = context.createGain ? context.createGain() : context.createmasterGain();
-    this.delay = context.createDelay ? context.createDelay() : context.createDelayNode();
-    this.compressor = context.createDynamicsCompressor();
-    this.analyser = context.createAnalyser();
-    this.filter = context.createBiquadFilter();
-    this.masterGain = context.createGain();
-    this.preGain = context.createGain();
-    this.sourceGain[0] = context.createGain();
-    this.sourceGain[1] = context.createGain();
-    convolver = context.createConvolver();
-    dry = context.createGain();
-    wet = context.createGain();
+  //   // Fix up prefixing
+  //   window.AudioContext = window.AudioContext || window.webkitAudioContext;
+  //   context = new AudioContext();
+  //   this.feedbackGain = context.createGain ? context.createGain() : context.createmasterGain();
+  //   fetchGain = context.createGain ? context.createGain() : context.createmasterGain();
+  //   this.delay = context.createDelay ? context.createDelay() : context.createDelayNode();
+  //   this.compressor = context.createDynamicsCompressor();
+  //   this.analyser = context.createAnalyser();
+  //   this.filter = context.createBiquadFilter();
+  //   this.masterGain = context.createGain();
+  //   this.preGain = context.createGain();
+  //   this.sourceGain[0] = context.createGain();
+  //   this.sourceGain[1] = context.createGain();
+  //   convolver = context.createConvolver();
+  //   dry = context.createGain();
+  //   wet = context.createGain();
 
-    this.routeAudioNodes();
-  }
+  //   this.routeAudioNodes();
+  // }
 
-  Setup.prototype.routeAudioNodes = function () {
+  // Setup.prototype.routeAudioNodes = function () {
 
-    for (var i = 0; i < source.length; i++) {
-      source[i] = context.createBufferSource();
-      source[i].connect(this.sourceGain[i]);
-      this.sourceGain[i].connect(convolver);
-      this.sourceGain[i].connect(dry);
-    }
+  //   for (var i = 0; i < source.length; i++) {
+  //     source[i] = context.createBufferSource();
+  //     source[i].connect(this.sourceGain[i]);
+  //     this.sourceGain[i].connect(convolver);
+  //     this.sourceGain[i].connect(dry);
+  //   }
 
-    convolver.connect(wet);
+  //   convolver.connect(wet);
 
-    dry.connect(this.preGain);
-    wet.connect(this.preGain);
+  //   dry.connect(this.preGain);
+  //   wet.connect(this.preGain);
 
-    dry.gain.value = 1.0;
-    wet.gain.value = 0.0;
+  //   dry.gain.value = 1.0;
+  //   wet.gain.value = 0.0;
 
-    this.preGain.connect(this.delay);
-    this.delay.connect(this.feedbackGain);
-    this.feedbackGain.connect(this.delay);
+  //   this.preGain.connect(this.delay);
+  //   this.delay.connect(this.feedbackGain);
+  //   this.feedbackGain.connect(this.delay);
 
-    fetchGain.connect(this.masterGain);
+  //   fetchGain.connect(this.masterGain);
 
-    this.delay.connect(this.compressor);
-    this.filter.connect(this.compressor);
+  //   this.delay.connect(this.compressor);
+  //   this.filter.connect(this.compressor);
 
-    this.compressor.connect(this.masterGain);
-    this.masterGain.connect(this.analyser);
-    this.analyser.connect(context.destination);
+  //   this.compressor.connect(this.masterGain);
+  //   this.masterGain.connect(this.analyser);
+  //   this.analyser.connect(context.destination);
 
-    for (var i = 0; i < this.sourceGain.length; i++) { this.sourceGain[i].gain.value = 6; }
+  //   for (var i = 0; i < this.sourceGain.length; i++) { this.sourceGain[i].gain.value = 6; }
 
-    this.feedbackGain.gain.value = 0;
-    this.masterGain.gain.value = 1;
-    this.filter.type = filterType[browser];
-    this.filter.frequency.value = 4000;
+  //   this.feedbackGain.gain.value = 0;
+  //   this.masterGain.gain.value = 1;
+  //   this.filter.type = filterType[browser];
+  //   this.filter.frequency.value = 4000;
 
-  }
+  // }
 
 
 
@@ -147,7 +147,7 @@ export default ({ app }) => {
 
   }
 
-  var isTremoloOn = false, ms = 0, round = 14, step = 0, period = 0;
+  // var isTremoloOn = false, ms = 0, round = 14, step = 0, period = 0;
 
   Setup.prototype.toggleTremolo = function () {
     if (isTremoloOn) {
@@ -164,42 +164,42 @@ export default ({ app }) => {
     return d.getTime();
   }
 
-  Setup.prototype.frameLooper = function () {
+  // Setup.prototype.frameLooper = function () {
 
-    var fbc_array, bar_x, bar_width, bar_height, graphFill = '#ececec';
+  //   var fbc_array, bar_x, bar_width, bar_height, graphFill = '#ececec';
 
-    var canvasWidth = document.getElementById('analyser').width;
-    var canvasHeight = document.getElementById('analyser').height;
-    this.analyser.fftSize = 64;
+  //   var canvasWidth = document.getElementById('analyser').width;
+  //   var canvasHeight = document.getElementById('analyser').height;
+  //   this.analyser.fftSize = 64;
 
-    var bufferLength = this.analyser.frequencyBinCount,
-      dataArray = new Uint8Array(bufferLength);
+  //   var bufferLength = this.analyser.frequencyBinCount,
+  //     dataArray = new Uint8Array(bufferLength);
 
-    this.analyser.minDecibels = -90;
-    this.analyser.maxDecibels = -10;
-    this.analyser.smoothingTimeConstant = 0.90;
+  //   this.analyser.minDecibels = -90;
+  //   this.analyser.maxDecibels = -10;
+  //   this.analyser.smoothingTimeConstant = 0.90;
 
-    window.requestAnimationFrame(this.frameLooper.bind(this));
+  //   window.requestAnimationFrame(this.frameLooper.bind(this));
 
-    this.analyser.getByteFrequencyData(dataArray);
+  //   this.analyser.getByteFrequencyData(dataArray);
 
-    this.ctx.fillStyle = 'hsla(0, 0%, 100%, .10)';
-    this.ctx.fillStyle = graphFill;
-    this.ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+  //   this.ctx.fillStyle = 'hsla(0, 0%, 100%, .10)';
+  //   this.ctx.fillStyle = graphFill;
+  //   this.ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-    var barWidth = (canvasWidth / bufferLength);
-    var barHeight;
-    var x = 0;
+  //   var barWidth = (canvasWidth / bufferLength);
+  //   var barHeight;
+  //   var x = 0;
 
-    for (var i = 0; i < bufferLength; i++) { // used to be bufferLength
-      barHeight = dataArray[i];
+  //   for (var i = 0; i < bufferLength; i++) { // used to be bufferLength
+  //     barHeight = dataArray[i];
 
-      this.ctx.fillStyle = '#000'; // 'rgb(' + (barHeight+100) + ',50,50)'
-      this.ctx.fillRect(x, canvasHeight - barHeight / 2, barWidth, barHeight / 2);
+  //     this.ctx.fillStyle = '#000'; // 'rgb(' + (barHeight+100) + ',50,50)'
+  //     this.ctx.fillRect(x, canvasHeight - barHeight / 2, barWidth, barHeight / 2);
 
-      x += barWidth + 2;
-    }
-  }
+  //     x += barWidth + 2;
+  //   }
+  // }
 
   function changeGraphics() {
     if (graphFill == '#FFF')
@@ -208,9 +208,9 @@ export default ({ app }) => {
       graphFill = '#FFF';
   }
 
-  function convertRange(value, r1, r2) {
-    return (value - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0];
-  }
+  // function convertRange(value, r1, r2) {
+  //   return (value - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0];
+  // }
 
   Setup.prototype.drawSineWave = function (val) {
 
@@ -531,38 +531,38 @@ export default ({ app }) => {
 
   }
 
-  Setup.prototype.dragOver = function (evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-    return false;
-  }
+  // Setup.prototype.dragOver = function (evt) {
+  //   evt.stopPropagation();
+  //   evt.preventDefault();
+  //   return false;
+  // }
 
-  Setup.prototype.playSong = function (click) {
+  // Setup.prototype.playSong = function (click) {
 
-    var self = this,
-      d = document,
-      playToggle = click.target.id,
-      theSpecElem = d.getElementsByClassName('buttonicon');
+  //   var self = this,
+  //     d = document,
+  //     playToggle = click.target.id,
+  //     theSpecElem = d.getElementsByClassName('buttonicon');
 
-    // Get drop event target number
-    var num = playToggle.substring(6, 9);
-    var cur = num == 'one' ? 0 : 1;
+  //   // Get drop event target number
+  //   var num = playToggle.substring(6, 9);
+  //   var cur = num == 'one' ? 0 : 1;
 
-    console.log(num);
+  //   console.log(num);
 
-    if (isSoundPlaying[cur]) {
-      isSoundPlaying[cur] = false;
-      self.pauseTrack(cur);
-      d.getElementById('start-' + num).classList.remove('on');
-      theSpecElem[cur].classList.remove('pause');
-    } else {
-      isSoundPlaying[cur] = true;
-      self.initAudio(songData[cur], cur);
-      d.getElementById('start-' + num).classList.add('on');
-      theSpecElem[cur].classList.add('pause');
-    }
+  //   if (isSoundPlaying[cur]) {
+  //     isSoundPlaying[cur] = false;
+  //     self.pauseTrack(cur);
+  //     d.getElementById('start-' + num).classList.remove('on');
+  //     theSpecElem[cur].classList.remove('pause');
+  //   } else {
+  //     isSoundPlaying[cur] = true;
+  //     self.initAudio(songData[cur], cur);
+  //     d.getElementById('start-' + num).classList.add('on');
+  //     theSpecElem[cur].classList.add('pause');
+  //   }
 
-  }
+  // }
 
   Setup.prototype.initAudio = function (data, num) {
 
@@ -599,39 +599,39 @@ export default ({ app }) => {
     source[song].stop(0);
   }
 
-  Setup.prototype.dropEvent = function (evt) {
+  // Setup.prototype.dropEvent = function (evt) {
 
-    // Get drop event target number
-    var num = this.className.substring(11, 14);
-    var cur = num == 'one' ? 0 : 1;
+  //   // Get drop event target number
+  //   var num = this.className.substring(11, 14);
+  //   var cur = num == 'one' ? 0 : 1;
 
-    var droppedFiles = evt.dataTransfer.files;
+  //   var droppedFiles = evt.dataTransfer.files;
 
-    console.log(evt.dataTransfer.files);
+  //   console.log(evt.dataTransfer.files);
 
-    var reader = new FileReader();
+  //   var reader = new FileReader();
 
-    evt.stopPropagation();
-    evt.preventDefault();
+  //   evt.stopPropagation();
+  //   evt.preventDefault();
 
-    reader.onload = function (fileEvent) {
-      songData[cur] = fileEvent.target.result;
-      var str = droppedFiles[0].name;
-      document.querySelector('.artistinfo.' + num).innerHTML = "Song:<br />" + str;
-      // document.querySelector('.button-reg.invisible.drop').style.border = 'none';
-    }
+  //   reader.onload = function (fileEvent) {
+  //     songData[cur] = fileEvent.target.result;
+  //     var str = droppedFiles[0].name;
+  //     document.querySelector('.artistinfo.' + num).innerHTML = "Song:<br />" + str;
+  //     // document.querySelector('.button-reg.invisible.drop').style.border = 'none';
+  //   }
 
-    reader.readAsArrayBuffer(droppedFiles[0]);
+  //   reader.readAsArrayBuffer(droppedFiles[0]);
 
-    playBox[cur].classList.remove('invisible');
-    playBox[cur].classList.add('visible');
+  //   playBox[cur].classList.remove('invisible');
+  //   playBox[cur].classList.add('visible');
 
-    var playButton = 'start-' + num;
+  //   var playButton = 'start-' + num;
 
-    // document.getElementById(playButton).removeChild(document.getElementById('drag-instr'));
-    document.getElementById('upload-button-' + num).style.zIndex = -10;
+  //   // document.getElementById(playButton).removeChild(document.getElementById('drag-instr'));
+  //   document.getElementById('upload-button-' + num).style.zIndex = -10;
 
-  }
+  // }
 
   setTimeout(function () {
 

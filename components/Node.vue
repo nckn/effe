@@ -1,7 +1,7 @@
 <template lang="pug">
   .node.player
     #start-one.button-reg-one.invisible.drop(for='file-upload')
-      label#upload-button-one(for='file-upload')
+      div#upload-button-one(for='file-upload' @change="dropEvent")
       #buttonicon.buttonicon
       // <h4 id="drag-instr"><p>drag song here</p></h4>
     output#infolist.artistinfo.one
@@ -25,7 +25,7 @@
 // import Logo from '~/components/Logo.vue'
 
 export default {
-  name: 'Node',
+  name: 'PlayerNode',
   components: {
     //
   },
