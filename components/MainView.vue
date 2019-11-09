@@ -71,9 +71,9 @@ export default {
     initAudio (data, num) {
       var self = this
       console.log(this)
-      if (context.decodeAudioData) {
-        context.decodeAudioData(data, function (buffer) {
-          self.sources[num] = context.createBufferSource()
+      if (self.aC.decodeAudioData) {
+        self.aC.decodeAudioData(data, function (buffer) {
+          self.sources[num] = self.aC.createBufferSource()
           self.sources[num].connect(self.sourceGain[num])
           self.sources[num].buffer = buffer
           self.startAudio(buffer, num)
@@ -81,7 +81,7 @@ export default {
           // console.log(e);
         })
       } else {
-        self.sources[num].buffer = context.createBuffer(data, false /* mixToMono */)
+        self.sources[num].buffer = self.aC.createBuffer(data, false /* mixToMono */)
         self.startAudio()
       }
     },
@@ -90,7 +90,13 @@ export default {
       self.startTime[num] = self.aC.currentTime;
       self.sources[num].loop = true;
       // Start playback, but make sure we stay in bound of the buffer.
-      self.sources[num].start(0, self.startOffset[num] % self.buffer.duration)
+      // self.sources[num].start(0, self.startOffset[num] % self.buffer.duration)
+      self.sources[num].start(0)
+    },
+    pauseTrack (num) {
+      var self = this
+      self.startOffset[num] += self.aC.currentTime - self.startTime[num];
+      self.sources[num].stop(0);
     },
     setupAudioNodes () {
       var s = this

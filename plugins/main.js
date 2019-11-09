@@ -564,34 +564,34 @@ export default ({ app }) => {
 
   // }
 
-  Setup.prototype.initAudio = function (data, num) {
+  // Setup.prototype.initAudio = function (data, num) {
 
-    var self = this;
+  //   var self = this;
 
-    console.log(this);
+  //   console.log(this);
 
-    if (context.decodeAudioData) {
-      context.decodeAudioData(data, function (buffer) {
-        source[num] = context.createBufferSource();
-        source[num].connect(self.sourceGain[num]);
-        source[num].buffer = buffer;
-        self.startAudio(buffer, num);
-      }, function (e) {
-        // console.log(e);
-      });
-    } else {
-      source[num].buffer = context.createBuffer(data, false /* mixToMono */);
-      self.startAudio();
-    }
+  //   if (context.decodeAudioData) {
+  //     context.decodeAudioData(data, function (buffer) {
+  //       source[num] = context.createBufferSource();
+  //       source[num].connect(self.sourceGain[num]);
+  //       source[num].buffer = buffer;
+  //       self.startAudio(buffer, num);
+  //     }, function (e) {
+  //       // console.log(e);
+  //     });
+  //   } else {
+  //     source[num].buffer = context.createBuffer(data, false /* mixToMono */);
+  //     self.startAudio();
+  //   }
 
-  }
+  // }
 
-  Setup.prototype.startAudio = function (buffer, num) {
-    startTime[num] = context.currentTime;
-    source[num].loop = true;
-    // Start playback, but make sure we stay in bound of the buffer.
-    source[num].start(0, startOffset[num] % buffer.duration);
-  }
+  // Setup.prototype.startAudio = function (buffer, num) {
+  //   startTime[num] = context.currentTime;
+  //   source[num].loop = true;
+  //   // Start playback, but make sure we stay in bound of the buffer.
+  //   source[num].start(0, startOffset[num] % buffer.duration);
+  // }
 
   Setup.prototype.pauseTrack = function (song) {
     // Measure how much time passed since the last pause.
