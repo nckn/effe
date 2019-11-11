@@ -2,7 +2,7 @@
   .node(v-bind:id="node.class_name" v-if="node.isOn")
     h2 {{ node.name }}
     div(v-for="(s, index) in node.sliders")
-      input(v-bind:class="`${node.class_name}-${index}`" type="range" min="s.min" max="s.max" step="s.step" value="s.value" v-model="sliderVal")
+      input(v-bind:class="`${node.class_name}-${index}`" type="range" :min="s.min" :max="s.max" :step="s.step" v-model="sliderVal")
       output(id="speed-output" for="filter") {{ sliderVal }}
 </template>
 
