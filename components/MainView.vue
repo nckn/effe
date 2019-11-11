@@ -1,12 +1,15 @@
 <template lang="pug">
-  .panel
-    PlayerNode(v-for="(node, index) in nodes" :node="node" :key="index")
+  div
+    .panel
+      PlayerNode(v-for="(node, index) in nodes" :node="node" :key="index")
+    Footer
 </template>
 
 <script>
 
 import PlayerNode from '~/components/PlayerNode.vue'
 import Node from '~/components/Node.vue'
+import Footer from '~/components/Footer.vue'
 
 import globalFunctions from '~/mixins/globalFunctions'
 
@@ -15,7 +18,8 @@ export default {
   mixins: [globalFunctions],
   components: {
     PlayerNode,
-    Node
+    Node,
+    Footer
   },
   data () {
     return {
