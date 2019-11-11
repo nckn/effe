@@ -1,6 +1,6 @@
 <template lang="pug">
   .node.player(@drop="dropEvent" @dragover="dragOver")
-    #start-one.button-reg-one.invisible.drop(for='file-upload' @click="playSong" ref="start_box" name="player-one")
+    #start-one.button-reg-one.invisible.drop(for='file-upload' @click="togglePlay" ref="start_box" name="player-one" v-bind:class="{ on: node.isPlaying}")
       div#upload-button-one(for='file-upload' ref="upload_btn")
       #buttonicon.buttonicon(ref="buttonicon")
       // <h4 id="drag-instr"><p>drag song here</p></h4>
@@ -26,6 +26,7 @@
 
 export default {
   name: 'Node',
+  props: ['node'],
   components: {
     //
   },
@@ -33,7 +34,8 @@ export default {
     return {
       playToggle: null,
       isSoundPlaying: false,
-      songData: null
+      songData: null,
+      windowIsOpen: false
     }
   },
   mounted () {
@@ -44,23 +46,34 @@ export default {
     self.uploadBtn = self.$refs.upload_btn
   },
   methods: {
-    playSong () {
+    togglePlay () {
       var self = this
       // self.playToggle = click.target.id
       // Get drop event target number
-      // console.log(num)
+      if (self.songData === null) {
+        return
+      }
       if (self.isSoundPlaying) {
         self.isSoundPlaying = false
-        self.$parent.pauseTrack(0)
+        // console.log('will pause')
+        self.$parent.toggleTrack(0, false)
         self.startBox.classList.remove('on')
-        // d.getElementById('start-' + num).classList.remove('on')
         self.buttonIcon.classList.remove('pause')
       } else {
-        self.isSoundPlaying = true;
-        self.$parent.initAudio(self.songData, 0);
-        // d.getElementById('start-' + num).classList.add('on');
-        self.startBox.classList.add('on')
-        self.buttonIcon.classList.add('pause');
+        if (self.windowIsOpen) {
+          self.windowIsOpen = false
+          self.isSoundPlaying = true;
+          self.$parent.initAudio(self.songData, 0);
+          self.startBox.classList.add('on')
+          self.buttonIcon.classList.add('pause');
+
+        } else {
+          // console.log('will play')
+          self.isSoundPlaying = true;
+          self.$parent.toggleTrack(0, true)
+          self.startBox.classList.add('on')
+          self.buttonIcon.classList.add('pause');
+        }
       }
     },
     dragOver (e) {
@@ -86,6 +99,8 @@ export default {
         self.songData = fileEvent.target.result
         var str = droppedFiles[0].name
         self.artistInfo.innerHTML = 'Song:<br />' + str
+        // Succesful load, allow window for playing
+        self.windowIsOpen = true
         // document.querySelector('.button-reg.invisible.drop').style.border = 'none'
       }
       reader.readAsArrayBuffer(droppedFiles[0])

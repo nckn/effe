@@ -25,7 +25,7 @@ export default {
   data () {
     return {
       players: [
-        {name: 'Player 1', type: 'player'},
+        {name: 'Player 1', type: 'player', isPlaying: false},
         // {name: 'Player 2', type: 'player'}
       ],
       nodes: [
@@ -97,6 +97,7 @@ export default {
     },
     initAudio (data, num) {
       var self = this
+      console.log('initAudio')
       if (self.aC.decodeAudioData) {
         console.log('a')
         self.aC.decodeAudioData(data, function (buffer) {
@@ -115,27 +116,35 @@ export default {
     },
     startAudio (buffer, num) {
       var self = this
+      console.log('startAudio')
       self.startTime[num] = self.aC.currentTime;
       self.sources[num].loop = true;
       // Start playback, but make sure we stay in bound of the buffer.
       // self.sources[num].start(0, self.startOffset[num] % self.buffer.duration)
       self.sources[num].start(0)
     },
-    pauseTrack (num) {
+    toggleTrack (num, playing) {
       var s = this
-      // self.startOffset[num] += self.aC.currentTime - self.startTime[num];
-      // self.sources[num].stop(0);
-      if(s.aC.state === 'running') {
-        s.aC.suspend().then(function() {
-          // susresBtn.textContent = 'Resume context';
-        });
-        console.log('suspending we are')
-      } else if(s.aC.state === 'suspended') {
-        console.log('unsuspending.......')
-        s.aC.resume().then(function() {
-          // susresBtn.textContent = 'Suspend context';
-        });  
+      if (playing) {
+        console.log('stop. playing is: ' + playing)
+        // s.startOffset[num] += s.aC.currentTime - s.startTime[num];
+        // s.sources[num].stop(0);
+      } else {
+        console.log('play. playing is: ' + playing)
+        // s.startTime[num] = s.aC.currentTime;
+        // s.sources[num].start(0, s.startOffset[num] % s.sources[num].buffer.duration)
       }
+      // if(s.aC.state === 'running') {
+      //   s.aC.suspend().then(function() {
+      //     // susresBtn.textContent = 'Resume context';
+      //   });
+      //   console.log('suspending we are')
+      // } else if(s.aC.state === 'suspended') {
+      //   console.log('unsuspending.......')
+      //   s.aC.resume().then(function() {
+      //     // susresBtn.textContent = 'Suspend context';
+      //   });  
+      // }
     },
     setupAudioNodes () {
       var s = this

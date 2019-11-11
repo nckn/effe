@@ -293,6 +293,9 @@ input {
   outline: none;
 }
 
+// Input range
+$thumb-size: 20px;
+
 input[type=range] {
   width: 16vw; height: 4px;
   -webkit-appearance: none;
@@ -315,7 +318,8 @@ input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   background-color: #3D8087;
   opacity: 1;
-  width: 40px; height: 40px;
+  width: $thumb-size;
+  height: $thumb-size;
   border-radius: 20px;
   border: none;
   cursor: pointer;
@@ -323,7 +327,8 @@ input[type="range"]::-webkit-slider-thumb {
 
 input[type=range]::-moz-range-thumb {
   border: none;
-  width: 40px; height: 40px;
+  width: $thumb-size;
+  height: $thumb-size;
   border-radius: 50%;
   background: #3D8087;
   cursor: pointer;
