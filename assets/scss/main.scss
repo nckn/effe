@@ -376,28 +376,37 @@ output {
   position: absolute; bottom: 0; left: 0;
 }
 
+$fx-bg: #BBB;
+
 .effects { 
-  width: 8vw; height: 6vh; 
-  margin: 1vh 0 1vh 1vh; 
-  float: left; line-height: 54px; 
-  background: #FFF; opacity: 0.7;
-}
-
-.effects h4 { 
   width: 8vw;
-  display: table-cell;
-  text-align: center;
-  color: #424242;
-  /* color: #75C2BF; */
-  font-weight: 400; letter-spacing: .1vw;
-  pointer-events: none;
-  /*user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;*/
+  height: 6vh; 
+  margin: 1vh 0 1vh 1vh; 
+  float: left;
+  line-height: 54px; 
+  // opacity: 0.7;
+  cursor: pointer;
+  background: $fx-bg; 
+  &:hover {
+    background: darken($color: $fx-bg, $amount: 10);
+  }
+  &.ison {
+    background: lighten($color: $fx-bg, $amount: 30);
+  }
+  h4 { 
+    width: 8vw;
+    display: table-cell;
+    text-align: center;
+    color: #424242;
+    /* color: #75C2BF; */
+    font-weight: 400; letter-spacing: .1vw;
+    pointer-events: none;
+    /*user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;*/
+  }
 }
-
-.effects:hover { cursor: pointer; }
 
 .crossfader-box { 
   width: 40vw; height: 4vh; 

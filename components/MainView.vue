@@ -90,6 +90,11 @@ export default {
     )
   },
   methods: {
+    toggleNode (id) {
+      var self = this
+      self.nodes[id].isOn = self.nodes[id].isOn ? false : true
+      // console.log('id is: ' + id)
+    },
     initAudio (data, num) {
       var self = this
       if (self.aC.decodeAudioData) {

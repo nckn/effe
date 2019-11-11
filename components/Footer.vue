@@ -1,15 +1,7 @@
 <template lang="pug">
   .lower-bar
-    .effects
-      h4 graph
-    .effects
-      h4 speed
-    .effects
-      h4 reverb
-    .effects
-      h4 filter
-    .effects
-      h4 delay
+    .effects(v-for="(node, index) in nodes" @click="toggleNodeParent(index)" v-bind:id="index" v-bind:class="{ ison: node.isOn }")
+      h4 {{ node.name }}
     .effects.player-two
       h4 player
     .crossfader-box
@@ -24,9 +16,17 @@
 
 export default {
   name: 'Footer',
+  props: ['nodes'],
   components: {
     //
   },
+  methods: {
+    toggleNodeParent (id) {
+      // var target = elem.target || elem.srcElement
+      this.$parent.toggleNode(id)
+      // console.log('id is: ' + typeof id)
+    }
+  }
 }
 </script>
 
