@@ -1,23 +1,9 @@
 <template lang="pug">
-  .node.player
-    #start-one.button-reg-one.invisible.drop(for='file-upload')
-      div#upload-button-one(for='file-upload' @change="dropEvent")
-      #buttonicon.buttonicon
-      // <h4 id="drag-instr"><p>drag song here</p></h4>
-    output#infolist.artistinfo.one
-      | Song:
-      br
-    input.volume-slider-one(type='range' name='color' min='0' max='5' step='0.1')
-    .songsearch
-      form
-        input#query(type='text' placeholder='Type the name of a song')
-        input(type='submit' value='Find')
-      #result
-        #text
-        div
-          svg#svg(width='100%' height='40')
-          button#play Play track
-        audio#audio
+  .node(v-bind:id="node.class_name" v-if="node.isOn")
+    h2 {{ node.name }}
+    div(v-for="(s, index) in node.sliders")
+      input(v-bind:class="`${node.class_name}-${index}`" type="range" min="s.min" max="s.max" step="s.step" value="s.value" v-model="sliderVal")
+      output(id="speed-output" for="filter") {{ sliderVal }}
 </template>
 
 <script>
@@ -26,9 +12,15 @@
 
 export default {
   name: 'PlayerNode',
+  props: ['node'],
   components: {
     //
   },
+  data () {
+    return {
+      sliderVal: ''
+    }
+  }
 }
 </script>
 

@@ -1,7 +1,8 @@
 <template lang="pug">
   div
     .panel
-      PlayerNode(v-for="(node, index) in nodes" :node="node" :key="index")
+      PlayerNode(v-for="(node, index) in players" :node="node" :key="index")
+      Node(v-for="(node, index) in nodes" :node="node" :key="`node-${index}`")
     Footer
 </template>
 
@@ -23,8 +24,13 @@ export default {
   },
   data () {
     return {
-      nodes: [
+      players: [
         {name: 'Player 1', type: 'player'},
+        // {name: 'Player 2', type: 'player'}
+      ],
+      nodes: [
+        {name: 'Graph', class_name: 'graph', isOn: true},
+        {name: 'Speed', class_name: 'speed', isOn: true, sliders: [{min: 0.1, max: 1.9, step: 0.02, value: 1}]},
         // {name: 'Player 2', type: 'player'}
       ],
       aC: null,
