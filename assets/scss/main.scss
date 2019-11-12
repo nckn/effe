@@ -92,20 +92,27 @@ canvas#analyser {
   position: relative;
 }
 
-.player { display: block; }
+.player { 
+  display: block;
+  &.ishovering {
+    outline: 1px dashed #000;
+  }
+  .artistinfo {
+    width: 9vw;
+    height: 6vw;
+    margin: 1vw 1vw 0 0;
+    float: right; 
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
+    font-size: 12px;
+    white-space: normal;
+  }
+}
 
 .node h2 { margin: .5vw; width: 32%; height: 20%; float: left; }
 .node h3 { margin: 8px 0 0 8%; float: left; }
-
-.artistinfo { 
-  width: 9vw; height: 6vw;
-  margin: 1vw 1vw 0 0;
-  float: right; 
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  display: block;
-  overflow: hidden;
-}
 
 .thumb {
   height: 75px;

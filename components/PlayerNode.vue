@@ -1,12 +1,10 @@
 <template lang="pug">
-  .node.player(@drop="dropEvent" @dragover="dragOver" v-show="node.isOn" v-bind:id="player_id")
+  .node.player(@drop="dropEvent" @dragover="dragOver" v-show="node.isOn" v-bind:id="player_id" v-bind:class="{ ishovering: isHovering }" @dragleave="turnOffHoverState")
     #start-one.button-reg-one.invisible.drop(for='file-upload' @click="togglePlay" ref="start_box" name="player-one" v-bind:class="{ on: node.isPlaying}")
       div#upload-button-one(for='file-upload' ref="upload_btn")
       #buttonicon.buttonicon(ref="buttonicon")
       // <h4 id="drag-instr"><p>drag song here</p></h4>
     output#infolist.artistinfo.one(ref="artist_info")
-      | Song:
-      br
     input.volume-slider-one(type='range' name='color' min='0' max='1' step='0.01' @input="ctlVol")
     //- .songsearch
     //-   form
@@ -36,7 +34,8 @@ export default {
       isSoundPlaying: false,
       songData: null,
       windowIsOpen: false,
-      zero: this.player_id
+      zero: this.player_id,
+      isHovering: false
     }
   },
   mounted () {
@@ -73,7 +72,18 @@ export default {
     dragOver (e) {
       e.stopPropagation()
       e.preventDefault()
+      if (this.isHovering) {
+        return
+      }
+      this.toggleHoverState()
       return false
+    },
+    toggleHoverState () {
+      this.isHovering = !this.isHovering
+    },
+    turnOffHoverState () {
+      console.log('leaving')
+      this.isHovering = false
     },
     dropEvent (e) {
       var self = this
@@ -92,9 +102,11 @@ export default {
       reader.onload = function (fileEvent) {
         self.songData = fileEvent.target.result
         var str = droppedFiles[0].name
-        self.artistInfo.innerHTML = 'Song:<br />' + str
+        // self.artistInfo.innerHTML = 'Song:<br />' + str
+        self.artistInfo.innerHTML = str
         // Succesful load, allow window for playing
         self.windowIsOpen = true
+        self.toggleHoverState()
         // document.querySelector('.button-reg.invisible.drop').style.border = 'none'
       }
       reader.readAsArrayBuffer(droppedFiles[0])
