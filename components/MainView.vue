@@ -34,7 +34,7 @@ export default {
           {name: 'Speed', min: 0.1, max: 1.9, step: 0.02, value: 1}
         ]},
         {name: 'Reverb', class_name: 'reverb', isOn: true, sliders: [
-          {name: 'Amount', min: 0, max: 200, step: 1, value: 0}
+          {name: 'Wet', min: 0, max: 200, step: 1, value: 0}
         ]},
         {name: 'Filter', class_name: 'filter', isOn: true, sliders: [
           {name: '-', min: 0, max: 200, step: 1, value: 0},
@@ -89,10 +89,50 @@ export default {
       self.setupAudioNodes(),
       self.assignRightSize('node'),
       self.trackWindowResize(),
-      self.prepareAnalyser()
+      self.prepareAnalyser(),
+      self.setReverb()
     )
   },
   methods: {
+    setReverb () {
+      var self = this
+      var loadImpulse = function (fileName) {
+        console.log('load Impulse')
+        var url = '/snd/GraffitiHallway.wav'
+        var request = new XMLHttpRequest()
+        request.open('GET', url, true)
+        request.responseType = 'arraybuffer'
+        request.onload = function () {
+          self.aC.decodeAudioData(request.response, function (buffer) {
+            self.convolver.buffer = buffer;
+          }, function (e) { 
+            console.log(e)
+            console.log('it worked')
+          })
+        }
+        request.onerror = function (e) {
+          console.log(e)
+          console.log('didnt work')
+        }
+        request.send()
+      }
+      loadImpulse(0)
+      self.mix(0)
+    },
+    mix (value) {
+      var reverb = value / 80.0;
+      this.dry.gain.value = (1.0 - reverb);
+      this.wet.gain.value = reverb;
+    },
+    changeReverb (value, type) {
+      var self = this
+      var value = parseFloat(value)
+      switch (type) {
+        case 'mix':
+          self.mix(value)
+          break
+      }
+    },
     prepareAnalyser () {
       if (document.getElementById('analyser')) {
         this.canvas = document.getElementById('analyser')
@@ -167,6 +207,9 @@ export default {
           } else if (target.id === 'sli-1') {
             s.feedbackGain.gain.value = val
           }
+          break
+        case 'reverb':
+          s.changeReverb(val, 'mix')
           break
         default:
           console.log('Nothing happens...')
