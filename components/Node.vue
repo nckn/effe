@@ -22,8 +22,7 @@ export default {
   data () {
     return {
       sliderVal: [],
-      index: this.node_id,
-      // orgValue: this.node.sliders ? this.node.sliders[this.node_id].value : null
+      index: this.node_id
     }
   },
   watch: {
@@ -56,7 +55,8 @@ export default {
       console.log('node: ' + this.node.sliders[0].name)
       var subStr = parseInt(target.id.split('-')[1])
       console.log('target: ' + typeof subStr)
-      this.node.sliders[subStr].value = 0.5
+      var node = this.node.sliders[subStr]
+      node.value = node.default
       // this.node.sliders[this.index].value = 0.5
     }
   }
