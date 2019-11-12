@@ -31,18 +31,18 @@ export default {
       nodes: [
         {name: 'Graph', class_name: 'graph', isOn: true},
         {name: 'Speed', class_name: 'speed', isOn: true, sliders: [
-          {name: 'Speed', min: 0.1, max: 1.9, step: 0.02, value: 1}
+          {name: 'Speed', min: 0.1, max: 1.9, step: 0.02, value: 1, default: 1}
         ]},
         {name: 'Reverb', class_name: 'reverb', isOn: true, sliders: [
-          {name: 'Wet', min: 0, max: 200, step: 1, value: 0}
+          {name: 'Wet', min: 0, max: 200, step: 1, value: 0, default: 0}
         ]},
         {name: 'Filter', class_name: 'filter', isOn: true, sliders: [
-          {name: '-', min: 0, max: 200, step: 1, value: 0},
-          {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0}
+          {name: '-', min: 0, max: 200, step: 1, value: 0, default: 0},
+          {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0, default: 10}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
-          {name: 'Delay time', min: 0, max: 4.9, step: 0.001, value: 0},
-          {name: 'Feedback', min: 0, max: 0.9, step: 0.01, value: 0}
+          {name: 'Delay time', min: 0, max: 4.9, step: 0.001, value: 0, default: 10},
+          {name: 'Feedback', min: 0, max: 0.9, step: 0.01, value: 0, default: 0.45}
         ]}
       ],
       aC: null,
@@ -220,12 +220,17 @@ export default {
       this.sourceGain[num].gain.value = val
     },
     crossFadeVolume (val) {
-      var gainOne = 1.9 - val
-      var gainTwo = val
-      this.sourceGain[0].gain.value = (gainOne > 0.2) ? gainOne : 0
-      this.sourceGain[1].gain.value = (gainTwo > 0.2) ? gainTwo : 0
-      this.players[0].vol = (gainOne > 0.1) ? gainOne : 0
-      this.players[1].vol = (gainTwo > 0.1) ? gainTwo : 0
+      var gainOne = 1.1 - val
+      var gainTwo = val - 0.1
+      // Snapping effect. Snaps to zero
+      // this.sourceGain[0].gain.value = (gainOne > 0.2) ? gainOne : 0
+      // this.sourceGain[1].gain.value = (gainTwo > 0.2) ? gainTwo : 0
+      // this.players[0].vol = (gainOne > 0.1) ? gainOne : 0
+      // this.players[1].vol = (gainTwo > 0.1) ? gainTwo : 0
+      this.sourceGain[0].gain.value = gainOne
+      this.sourceGain[1].gain.value = gainTwo
+      this.players[0].vol = gainOne
+      this.players[1].vol = gainTwo
     },
     setupAudioNodes () {
       var s = this

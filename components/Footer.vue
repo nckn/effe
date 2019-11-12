@@ -5,9 +5,9 @@
     .effects.player-two(@click="togglePlayerTwoParent")
       h4 Player 2
     .crossfader-box
-      h4 track 1
+      h4 Player 1
       input.crossfader(type='range' min='0.1' max='1.9' step='0.01' value='1' @input="crossFadeVolumeParent")
-      h4 track 2
+      h4 Player 2
 </template>
 
 <script>

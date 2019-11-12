@@ -206,6 +206,7 @@ canvas#analyser {
     background: #424242;
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 10px;
     .effects {
       width: 8vw;
@@ -218,6 +219,9 @@ canvas#analyser {
       cursor: pointer;
       background: $fx-bg;
       @include borderRadius(2px);
+      &:not(:first-child) {
+        margin-left: 10px;
+      }
       &:hover {
         background: darken($color: $fx-bg, $amount: 10);
       }
@@ -429,6 +433,7 @@ input[type=range] {
   height: 4px;
   -webkit-appearance: none;
   background-color: #3D8087;
+  @include borderRadius(2px);
 }
 
 input[type=range]::-moz-range-track {
@@ -495,20 +500,25 @@ input[type=range]:focus::-moz-range-track {
 }
 
 .crossfader-box { 
-  width: 40vw; height: 4vh; 
-  margin: 2vh 0 2vh 4vw; float: left;
-  
-}
-
-.crossfader-box h4 {
-  color: #FFF; float: left; margin: 1% 4%;
-  font-weight: 500;
+  width: auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  h4 {
+    width: auto;
+    color: #FFF;
+    &:first-child {
+      margin-right: 10px;
+    }
+    &:last-child {
+      margin-left: 10px;
+    }
+  }
 }
 
 input[class="crossfader"] { 
-  width: 50%; height: 4px; 
-  margin: 2.4% 0 0 0%;
-  float: left; 
+  width: 150px;
   background: #F6F6F6;
   border: 0;
 }
