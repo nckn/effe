@@ -162,7 +162,11 @@ export default {
           s.sources[1].playbackRate.value = val
           break
         case 'delay':
-          s.delay.delayTime.value = val
+          if (target.id === 'sli-0') {
+            s.delay.delayTime.value = val
+          } else if (target.id === 'sli-1') {
+            s.feedbackGain.gain.value = val
+          }
           break
         default:
           console.log('Nothing happens...')

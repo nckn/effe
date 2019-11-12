@@ -5,8 +5,8 @@
     .gui-wrapper.sliders(v-for="(s, index) in node.sliders" v-if="node.sliders")
       .slider-text
         label val
-        output(id="speed-output" for="filter") {{ sliderVal }}
-      input(v-bind:class="`${node.class_name}-${index}`" type="range" :min="s.min" :max="s.max" :step="s.step" v-model="sliderVal" @input="changeValParent" v-bind:name="node.class_name")
+        output(id="speed-output" for="filter") {{ sliderVal[index] }}
+      input(v-bind:class="`${node.class_name}-${index}`" type="range" :min="s.min" :max="s.max" :step="s.step" v-model="sliderVal[index]" @input="changeValParent" v-bind:name="node.class_name" :id="`sli-${index}`")
 </template>
 
 <script>
@@ -21,7 +21,7 @@ export default {
   },
   data () {
     return {
-      sliderVal: ''
+      sliderVal: []
     }
   },
   watch: {
