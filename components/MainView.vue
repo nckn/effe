@@ -41,7 +41,8 @@ export default {
           {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
-          {min: 0, max: 200, step: 1, value: 0}
+          {min: 0, max: 4.9, step: 0.001, value: 0},
+          {min: 0, max: 0.9, step: 0.01, value: 0}
         ]}
       ],
       aC: null,
@@ -150,6 +151,21 @@ export default {
         s.sources[num].disconnect()
         s.sources[num].stop(0)
         s.sources[num] = null
+      }
+    },
+    changeVal (target) {
+      var s = this
+      var val = target.value
+      switch (target.name) {
+        case 'speed':
+          s.sources[0].playbackRate.value = val
+          s.sources[1].playbackRate.value = val
+          break
+        case 'delay':
+          s.delay.delayTime.value = val
+          break
+        default:
+          console.log('Nothing happens...')
       }
     },
     controlVolume (val, num) {

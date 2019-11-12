@@ -6,7 +6,7 @@
       .slider-text
         label val
         output(id="speed-output" for="filter") {{ sliderVal }}
-      input(v-bind:class="`${node.class_name}-${index}`" type="range" :min="s.min" :max="s.max" :step="s.step" v-model="sliderVal")
+      input(v-bind:class="`${node.class_name}-${index}`" type="range" :min="s.min" :max="s.max" :step="s.step" v-model="sliderVal" @input="changeValParent" v-bind:name="node.class_name")
 </template>
 
 <script>
@@ -24,6 +24,11 @@ export default {
       sliderVal: ''
     }
   },
+  watch: {
+    sliderVal () {
+      // console.log('its changing ' + this.sliderVal)
+    }
+  },
   mounted () {
     var self = this
     // if (self.node.class_name === 'graph') {
@@ -32,6 +37,13 @@ export default {
     //   console.log('it totally is')
     //   self.$parent.frameLooper(ctx)
     // }
+  },
+  methods: {
+    changeValParent (e) {
+      var target = e.target || e.srcElement
+      // console.log(target.name)
+      this.$parent.changeVal(target)
+    }
   }
 }
 </script>
