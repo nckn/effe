@@ -1,5 +1,5 @@
 <template lang="pug">
-  .node.player(@drop="dropEvent" @dragover="dragOver")
+  .node.player(@drop="dropEvent" @dragover="dragOver" v-show="node.isOn" v-bind:id="player_id")
     #start-one.button-reg-one.invisible.drop(for='file-upload' @click="togglePlay" ref="start_box" name="player-one" v-bind:class="{ on: node.isPlaying}")
       div#upload-button-one(for='file-upload' ref="upload_btn")
       #buttonicon.buttonicon(ref="buttonicon")
@@ -26,7 +26,7 @@
 
 export default {
   name: 'Node',
-  props: ['node'],
+  props: ['node', 'player_id'],
   components: {
     //
   },
@@ -36,7 +36,7 @@ export default {
       isSoundPlaying: false,
       songData: null,
       windowIsOpen: false,
-      zero: 0
+      zero: this.player_id
     }
   },
   mounted () {

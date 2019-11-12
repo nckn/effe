@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     .panel
-      PlayerNode(v-for="(node, index) in players" :node="node" :key="index")
+      PlayerNode(v-for="(node, index) in players" :node="node" :key="index" :player_id="index")
       Node(v-for="(node, index) in nodes" :node="node" :key="`node-${index}`")
     Footer(:nodes="nodes")
 </template>
@@ -25,8 +25,8 @@ export default {
   data () {
     return {
       players: [
-        {name: 'Player 1', type: 'player', isPlaying: false},
-        // {name: 'Player 2', type: 'player'}
+        {name: 'Player 1', type: 'player', isPlaying: false, isOn: true},
+        {name: 'Player 2', type: 'player', isPlaying: false, isOn: false}
       ],
       nodes: [
         {name: 'Graph', class_name: 'graph', isOn: true},
@@ -94,6 +94,11 @@ export default {
     toggleNode (id) {
       var self = this
       self.nodes[id].isOn = self.nodes[id].isOn ? false : true
+      // console.log('id is: ' + id)
+    },
+    togglePlayerTwo () {
+      var self = this
+      self.players[1].isOn = self.players[1].isOn ? false : true
       // console.log('id is: ' + id)
     },
     playAudio (data, num) {
