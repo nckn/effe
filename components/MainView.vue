@@ -25,8 +25,8 @@ export default {
   data () {
     return {
       players: [
-        {name: 'Player 1', type: 'player', isPlaying: false, isOn: true},
-        {name: 'Player 2', type: 'player', isPlaying: false, isOn: false}
+        {name: 'Player 1', type: 'player', isPlaying: false, isOn: true, vol: 0.8},
+        {name: 'Player 2', type: 'player', isPlaying: false, isOn: false, vol: 0.8}
       ],
       nodes: [
         {name: 'Graph', class_name: 'graph', isOn: true},
@@ -181,6 +181,8 @@ export default {
       var gainTwo = val
       this.sourceGain[0].gain.value = (gainOne > 0.2) ? gainOne : 0
       this.sourceGain[1].gain.value = (gainTwo > 0.2) ? gainTwo : 0
+      this.players[0].vol = (gainOne > 0.1) ? gainOne : 0
+      this.players[1].vol = (gainTwo > 0.1) ? gainTwo : 0
     },
     setupAudioNodes () {
       var s = this

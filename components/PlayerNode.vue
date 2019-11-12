@@ -7,7 +7,7 @@
         // <h4 id="drag-instr"><p>drag song here</p></h4>
       output#infolist.artistinfo.one(ref="artist_info")
     .gui-wrapper
-      input.volume-slider-one(type='range' name='color' min='0' max='1' step='0.01' @input="ctlVol")
+      input.volume-slider-one(type='range' name='color' min='0' max='1' step='0.01' @input="ctlVol" v-model="node.vol")
     //- .songsearch
     //-   form
     //-     input#query(type='text' placeholder='Type the name of a song')
