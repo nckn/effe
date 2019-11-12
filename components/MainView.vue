@@ -31,18 +31,18 @@ export default {
       nodes: [
         {name: 'Graph', class_name: 'graph', isOn: true},
         {name: 'Speed', class_name: 'speed', isOn: true, sliders: [
-          {min: 0.1, max: 1.9, step: 0.02, value: 1}
+          {name: 'Speed', min: 0.1, max: 1.9, step: 0.02, value: 1}
         ]},
         {name: 'Reverb', class_name: 'reverb', isOn: true, sliders: [
-          {min: 0, max: 200, step: 1, value: 0}
+          {name: 'Amount', min: 0, max: 200, step: 1, value: 0}
         ]},
         {name: 'Filter', class_name: 'filter', isOn: true, sliders: [
-          {name: '', min: 0, max: 200, step: 1, value: 0},
+          {name: '-', min: 0, max: 200, step: 1, value: 0},
           {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
-          {min: 0, max: 4.9, step: 0.001, value: 0},
-          {min: 0, max: 0.9, step: 0.01, value: 0}
+          {name: 'Delay time', min: 0, max: 4.9, step: 0.001, value: 0},
+          {name: 'Feedback', min: 0, max: 0.9, step: 0.01, value: 0}
         ]}
       ],
       aC: null,
