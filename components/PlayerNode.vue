@@ -55,25 +55,14 @@ export default {
       }
       if (self.isSoundPlaying) {
         self.isSoundPlaying = false
-        // console.log('will pause')
-        self.$parent.toggleTrack(0, false)
+        self.$parent.pauseTrack(0)
         self.startBox.classList.remove('on')
         self.buttonIcon.classList.remove('pause')
       } else {
-        if (self.windowIsOpen) {
-          self.windowIsOpen = false
-          self.isSoundPlaying = true;
-          self.$parent.initAudio(self.songData, 0);
-          self.startBox.classList.add('on')
-          self.buttonIcon.classList.add('pause');
-
-        } else {
-          // console.log('will play')
-          self.isSoundPlaying = true;
-          self.$parent.toggleTrack(0, true)
-          self.startBox.classList.add('on')
-          self.buttonIcon.classList.add('pause');
-        }
+        self.isSoundPlaying = true
+        self.$parent.initAudio(self.songData, 0);
+        self.startBox.classList.add('on')
+        self.buttonIcon.classList.add('pause');
       }
     },
     dragOver (e) {

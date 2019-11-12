@@ -77,7 +77,8 @@ export default {
       // PlayerNodes
       startTime: [0, 0],
       startOffset: [0, 0],
-      curBuffer: [null, null]
+      curBuffer: [null, null],
+      sD: []
     }
   },
   mounted () {
@@ -98,21 +99,17 @@ export default {
     initAudio (data, num) {
       var self = this
       console.log('initAudio')
-      if (self.aC.decodeAudioData) {
-        console.log('a')
-        self.aC.decodeAudioData(data, function (buffer) {
-          self.sources[num] = self.aC.createBufferSource()
-          self.sources[num].connect(self.sourceGain[num])
-          self.sources[num].buffer = buffer
-          self.startAudio(buffer, num)
-        }, function (e) {
-          // console.log(e);
-        })
-      } else {
-        console.log('b')
-        self.sources[num].buffer = self.aC.createBuffer(data, false)
-        self.startAudio()
-      }
+      self.sD[num] = data
+      var dataNew = self.sD[num] === null ? data : self.sD[num]
+      // var songData = self.sD === null ? data : self.sD
+      self.aC.decodeAudioData(dataNew, function (buffer) {
+        self.sources[num] = self.aC.createBufferSource()
+        self.sources[num].connect(self.sourceGain[num])
+        self.sources[num].buffer = buffer
+        self.startAudio(buffer, num)
+      }, function (e) {
+        // console.log(e);
+      })
     },
     startAudio (buffer, num) {
       var self = this
@@ -123,17 +120,24 @@ export default {
       // self.sources[num].start(0, self.startOffset[num] % self.buffer.duration)
       self.sources[num].start(0)
     },
-    toggleTrack (num, playing) {
+    pauseTrack (num, playing) {
       var s = this
-      if (playing) {
-        console.log('stop. playing is: ' + playing)
-        // s.startOffset[num] += s.aC.currentTime - s.startTime[num];
-        // s.sources[num].stop(0);
-      } else {
-        console.log('play. playing is: ' + playing)
+      s.startOffset[num] += s.aC.currentTime - s.startTime[num];
+      if (s.sources[num]) {
+        s.sources[num].disconnect()
+        s.sources[num].stop(0)
+        s.sources[num] = null
+      }
+      // if (playing) {
+        // console.log('stop. playing is: ' + playing)
         // s.startTime[num] = s.aC.currentTime;
         // s.sources[num].start(0, s.startOffset[num] % s.sources[num].buffer.duration)
-      }
+      // } else {
+      //   console.log('play. playing is: ' + playing)
+      // s.startOffset[num] += s.aC.currentTime - s.startTime[num];
+      // s.sources[num].stop(0);
+      // s.sources[num] = null
+      // }
       // if(s.aC.state === 'running') {
       //   s.aC.suspend().then(function() {
       //     // susresBtn.textContent = 'Resume context';
