@@ -137,6 +137,10 @@ export default {
         s.sources[num] = null
       }
     },
+    controlVolume (val, num) {
+      console.log('logging value: ' + val + ', and is of type: ' + typeof val)
+      this.sourceGain[num].gain.value = val
+    },
     setupAudioNodes () {
       var s = this
       s.aC = new AudioContext()

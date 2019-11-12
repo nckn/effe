@@ -7,7 +7,7 @@
     output#infolist.artistinfo.one(ref="artist_info")
       | Song:
       br
-    input.volume-slider-one(type='range' name='color' min='0' max='5' step='0.1')
+    input.volume-slider-one(type='range' name='color' min='0' max='1' step='0.01' @input="ctlVol")
     //- .songsearch
     //-   form
     //-     input#query(type='text' placeholder='Type the name of a song')
@@ -35,7 +35,8 @@ export default {
       playToggle: null,
       isSoundPlaying: false,
       songData: null,
-      windowIsOpen: false
+      windowIsOpen: false,
+      zero: 0
     }
   },
   mounted () {
@@ -46,6 +47,10 @@ export default {
     self.uploadBtn = self.$refs.upload_btn
   },
   methods: {
+    ctlVol (e) {
+      var target = e.target || e.srcElement
+      this.$parent.controlVolume(target.value, this.zero)
+    },
     togglePlay () {
       var self = this
       // self.playToggle = click.target.id
@@ -55,12 +60,12 @@ export default {
       }
       if (self.isSoundPlaying) {
         self.isSoundPlaying = false
-        self.$parent.pauseTrack(0)
+        self.$parent.pauseTrack(self.zero)
         self.startBox.classList.remove('on')
         self.buttonIcon.classList.remove('pause')
       } else {
         self.isSoundPlaying = true
-        self.$parent.playAudio(self.songData, 0);
+        self.$parent.playAudio(self.songData, self.zero);
         self.startBox.classList.add('on')
         self.buttonIcon.classList.add('pause');
       }
