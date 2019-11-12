@@ -1,7 +1,8 @@
 <template lang="pug">
   .node.effect(v-bind:id="node.class_name" v-show="node.isOn")
     h2 {{ node.name }}
-    .gui-wrapper.sliders(v-for="(s, index) in node.sliders")
+    canvas#analyser(v-if="node.class_name === 'graph'")
+    .gui-wrapper.sliders(v-for="(s, index) in node.sliders" v-if="node.sliders")
       .slider-text
         label val
         output(id="speed-output" for="filter") {{ sliderVal }}
