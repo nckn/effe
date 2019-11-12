@@ -6,7 +6,7 @@
       h4 Player 2
     .crossfader-box
       h4 track 1
-      input.crossfader(type='range' min='0.1' max='1.9' step='0.01' value='1')
+      input.crossfader(type='range' min='0.1' max='1.9' step='0.01' value='1' @input="crossFadeVolumeParent")
       h4 track 2
 </template>
 
@@ -30,6 +30,10 @@ export default {
       // var target = elem.target || elem.srcElement
       this.$parent.togglePlayerTwo()
       // console.log('id is: ' + typeof id)
+    },
+    crossFadeVolumeParent (e) {
+      var target = e.target || e.srcElement
+      this.$parent.crossFadeVolume(target.value)
     }
   }
 }

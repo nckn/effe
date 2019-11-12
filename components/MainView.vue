@@ -112,6 +112,7 @@ export default {
           self.sources[num].buffer = buffer
           self.sD[num] = buffer
           self.sourceGain[num].gain.value = 0.5
+          self.sources[num].loop = true
           self.sources[num].connect(self.sourceGain[num])
           self.sourceGain[num].connect(self.aC.destination)
           self.sources[num].start(self.aC.currentTime, self.startOffset[num], self.sources[num].buffer.duration)
@@ -125,6 +126,7 @@ export default {
         self.sources[num].connect(self.sourceGain[num])
         self.sources[num].buffer = self.sD[num]
         self.sourceGain[num].gain.value = 0.5
+        self.sources[num].loop = true
         self.sources[num].connect(self.sourceGain[num])
         self.sourceGain[num].connect(self.aC.destination)
         self.sources[num].start(0, self.startOffset[num] % self.sources[num].buffer.duration)
@@ -143,8 +145,14 @@ export default {
       }
     },
     controlVolume (val, num) {
-      console.log('logging value: ' + val + ', and is of type: ' + typeof val)
+      // console.log('logging value: ' + val + ', and is of type: ' + typeof val)
       this.sourceGain[num].gain.value = val
+    },
+    crossFadeVolume (val) {
+      var gainOne = 1.9 - val
+      var gainTwo = val
+      this.sourceGain[0].gain.value = (gainOne > 0.2) ? gainOne : 0
+      this.sourceGain[1].gain.value = (gainTwo > 0.2) ? gainTwo : 0
     },
     setupAudioNodes () {
       var s = this
