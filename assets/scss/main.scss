@@ -4,13 +4,16 @@
   Light blue: #A6CFDB;
 */
 
+$bar-height: 76px;
+$padding-node: 24px;
+$gap: 20px;
+$fx-bg: #BBB;
+
 * {
   margin: 0px;
   padding: 0px;
 }
 
-$bar-height: 76px;
-$fx-bg: #BBB;
 
 html, body {
   width: 100vw;
@@ -94,19 +97,26 @@ canvas#analyser {
   justify-content: center;
 }
 
+@mixin makeResponsiveStyle($attr, $val-sm, $val-lg) {
+  #{$attr}: $val-sm;
+  @media screen and (min-width: 768px) {
+    #{$attr}: $val-lg;
+  }
+}
+
 .master {
   .panel {
     position: relative;
     width: 100%;
     height: calc(100% - #{$bar-height});
-    // height: 800px;
+    // height: auto;
     // margin: 6vh auto 100px auto;
-    padding: 10px;
+    padding: $gap;
     /*background: #69ACBE;*/
     // display: flex;
     // flex-wrap: wrap;
     display: grid;
-    grid-gap: 10px;
+    grid-gap: $gap;
     grid-template-columns: repeat(2, minmax(100px, 1fr));
     // grid-template-columns: 1fr 1fr 1fr;
     @media screen and (min-width: 768px) {
@@ -129,6 +139,15 @@ canvas#analyser {
       position: relative;
       @include borderRadius(4px);
       @include transThis(opacity, 0.5s, ease-out);
+      // background: purple;
+      padding: $padding-node;
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      flex-direction: column;
+      * {
+        // background: red;
+      }
       &.player { 
         // display: block;
         @include transThis(all, 0.5s, ease-out);
@@ -149,8 +168,34 @@ canvas#analyser {
           white-space: normal;
         }
       }
-      h2 { margin: .5vw; width: 32%; height: 20%; float: left; }
-      h3 { margin: 8px 0 0 8%; float: left; }
+      h2 { 
+      
+      }
+      h3 { 
+        
+      }
+      .gui-wrapper {
+        display: flex;
+        align-items: stretch;
+        justify-content: space-between;
+        flex-direction: column;
+        &.sliders {
+          @include makeResponsiveStyle(height, 24px, 32px);
+        }
+        .slider-text {
+          display: flex;
+          justify-content: space-between;
+          label {
+            text-align: left;
+          }
+          output { 
+            text-align: right;
+          }
+        }
+        input {
+          //
+        }
+      }
     }
   }
   /* Lower bar */
@@ -235,8 +280,9 @@ input[type="submit"] {
 .visible { opacity: 1; border: none; }
 
 .button-reg-one, .button-reg-two {
-  width: 6vw; height: 6vw; 
-  margin: 1vw;
+  width: 6vw;
+  height: 6vw;
+  margin-right: 12px;
   color: #FFF; 
 }
 
@@ -380,21 +426,15 @@ input {
 $thumb-size: 20px;
 
 input[type=range] {
-  width: 16vw; height: 4px;
+  height: 4px;
   -webkit-appearance: none;
   background-color: #3D8087;
-  margin: 2vh 0 3vh 0;
-}
-
-div.node.player > input[type=range] {
-  margin: 4vh 0 2vh 0;
 }
 
 input[type=range]::-moz-range-track {
   -webkit-appearance: none;
   background: #3D8087;
   height: 4px;
-  margin: 4vh 0 2vh 0;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -424,8 +464,8 @@ input[type=range]::-moz-focus-outer {
 
 /*hide the outline behind the border*/
 input[type=range]:-moz-focusring{
-    outline: none;
-    outline-offset: -1px;
+  outline: none;
+  outline-offset: -1px;
 }
 
 input[type=range]:focus::-moz-range-track {
@@ -437,11 +477,6 @@ input[type=range]:focus::-moz-range-track {
 }
 
 #delaysliders { position: relative; }
-
-output { 
-  text-align: left; 
-  margin: 0 7vh;
-}
 
 #delay-output { position: relative; clear: both; width: 100%; opacity: 0; } 
 #feedback-output { position: relative; clear: both; width: 100%; opacity: 0; } 

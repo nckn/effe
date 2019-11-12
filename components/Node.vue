@@ -1,9 +1,11 @@
 <template lang="pug">
   .node.effect(v-bind:id="node.class_name" v-show="node.isOn")
     h2 {{ node.name }}
-    div(v-for="(s, index) in node.sliders")
+    .gui-wrapper.sliders(v-for="(s, index) in node.sliders")
+      .slider-text
+        label val
+        output(id="speed-output" for="filter") {{ sliderVal }}
       input(v-bind:class="`${node.class_name}-${index}`" type="range" :min="s.min" :max="s.max" :step="s.step" v-model="sliderVal")
-      output(id="speed-output" for="filter") {{ sliderVal }}
 </template>
 
 <script>

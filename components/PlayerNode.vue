@@ -1,11 +1,13 @@
 <template lang="pug">
   .node.player(@drop="dropEvent" @dragover="dragOver" v-show="node.isOn" v-bind:id="player_id" v-bind:class="{ ishovering: isHovering }" @dragleave="turnOffHoverState")
-    #start-one.button-reg-one.invisible.drop(for='file-upload' @click="togglePlay" ref="start_box" name="player-one" v-bind:class="{ on: node.isPlaying}")
-      div#upload-button-one(for='file-upload' ref="upload_btn")
-      #buttonicon.buttonicon(ref="buttonicon")
-      // <h4 id="drag-instr"><p>drag song here</p></h4>
-    output#infolist.artistinfo.one(ref="artist_info")
-    input.volume-slider-one(type='range' name='color' min='0' max='1' step='0.01' @input="ctlVol")
+    .gui-wrapper
+      #start-one.button-reg-one.invisible.drop(for='file-upload' @click="togglePlay" ref="start_box" name="player-one" v-bind:class="{ on: node.isPlaying}")
+        div#upload-button-one(for='file-upload' ref="upload_btn")
+        #buttonicon.buttonicon(ref="buttonicon")
+        // <h4 id="drag-instr"><p>drag song here</p></h4>
+      output#infolist.artistinfo.one(ref="artist_info")
+    .gui-wrapper
+      input.volume-slider-one(type='range' name='color' min='0' max='1' step='0.01' @input="ctlVol")
     //- .songsearch
     //-   form
     //-     input#query(type='text' placeholder='Type the name of a song')
