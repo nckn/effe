@@ -78,7 +78,7 @@ export default {
       startTime: [0, 0],
       startOffset: [0, 0],
       curBuffer: [null, null],
-      sD: []
+      sD: [null, null]
     }
   },
   mounted () {
@@ -96,29 +96,38 @@ export default {
       self.nodes[id].isOn = self.nodes[id].isOn ? false : true
       // console.log('id is: ' + id)
     },
-    initAudio (data, num) {
+    playAudio (data, num) {
       var self = this
       console.log('initAudio')
-      self.sD[num] = data
-      var dataNew = self.sD[num] === null ? data : self.sD[num]
+      var src = self.sources[num]
+      // var dataNew = self.sD[num] === null ? data : self.sD[num]
       // var songData = self.sD === null ? data : self.sD
-      self.aC.decodeAudioData(dataNew, function (buffer) {
-        self.sources[num] = self.aC.createBufferSource()
-        self.sources[num].connect(self.sourceGain[num])
-        self.sources[num].buffer = buffer
-        self.startAudio(buffer, num)
-      }, function (e) {
-        // console.log(e);
-      })
-    },
-    startAudio (buffer, num) {
-      var self = this
+      if (self.sD[num] === null) {
+        self.aC.decodeAudioData(data, function (buffer) {
+          src = self.aC.createBufferSource()
+          src.connect(self.sourceGain[num])
+          src.buffer = buffer
+          self.sD[num] = data
+          // self.startAudio(buffer, num)
+        }, function (e) {
+          // console.log(e);
+        })
+      } else {
+        src = self.audioContext.createBufferSource()
+        src.buffer = self.sD[num]
+        src.connect(self.sourceGain[num])
+        self.sourceGain.connect(self.aC.destination)
+        src.start(self.aC.currentTime, s.startOffset[num], src.buffer.duration)
+      }
       console.log('startAudio')
       self.startTime[num] = self.aC.currentTime;
       self.sources[num].loop = true;
       // Start playback, but make sure we stay in bound of the buffer.
       // self.sources[num].start(0, self.startOffset[num] % self.buffer.duration)
       self.sources[num].start(0)
+    },
+    startAudio (buffer, num) {
+      var self = this
     },
     pauseTrack (num, playing) {
       var s = this

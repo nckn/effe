@@ -60,7 +60,7 @@ export default {
         self.buttonIcon.classList.remove('pause')
       } else {
         self.isSoundPlaying = true
-        self.$parent.initAudio(self.songData, 0);
+        self.$parent.playAudio(self.songData, 0);
         self.startBox.classList.add('on')
         self.buttonIcon.classList.add('pause');
       }
