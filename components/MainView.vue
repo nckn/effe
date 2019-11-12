@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div.master
     .panel
       PlayerNode(v-for="(node, index) in players" :node="node" :key="index" :player_id="index")
       Node(v-for="(node, index) in nodes" :node="node" :key="`node-${index}`")
