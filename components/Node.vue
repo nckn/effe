@@ -23,6 +23,15 @@ export default {
     return {
       sliderVal: ''
     }
+  },
+  mounted () {
+    var self = this
+    // if (self.node.class_name === 'graph') {
+    //   var canvas = document.getElementById('analyser');
+    //   var ctx = canvas.getContext('2d')
+    //   console.log('it totally is')
+    //   self.$parent.frameLooper(ctx)
+    // }
   }
 }
 </script>

@@ -87,10 +87,18 @@ export default {
     self.$nextTick(
       self.setupAudioNodes(),
       self.assignRightSize('node'),
-      self.trackWindowResize()
+      self.trackWindowResize(),
+      self.prepareAnalyser()
     )
   },
   methods: {
+    prepareAnalyser () {
+      if (document.getElementById('analyser')) {
+        this.canvas = document.getElementById('analyser')
+        this.ctx = this.canvas.getContext('2d')
+        console.log('preparing analyzer')
+      }
+    },
     toggleNode (id) {
       var self = this
       self.nodes[id].isOn = self.nodes[id].isOn ? false : true
@@ -210,7 +218,7 @@ export default {
       this.filter.type = this.filterType[this.browser]
       this.filter.frequency.value = 4000
     },
-    frameLooper () {
+    frameLooper (ctx) {
       var self = this
       var fbc_array, bar_x, bar_width, bar_height, graphFill = '#ececec'
       var canvasWidth = document.getElementById('analyser').width

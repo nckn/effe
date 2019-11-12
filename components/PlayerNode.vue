@@ -109,6 +109,7 @@ export default {
         // Succesful load, allow window for playing
         self.windowIsOpen = true
         self.toggleHoverState()
+        self.$parent.frameLooper()
         // document.querySelector('.button-reg.invisible.drop').style.border = 'none'
       }
       reader.readAsArrayBuffer(droppedFiles[0])
