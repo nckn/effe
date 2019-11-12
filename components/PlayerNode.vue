@@ -8,16 +8,16 @@
       | Song:
       br
     input.volume-slider-one(type='range' name='color' min='0' max='5' step='0.1')
-    .songsearch
-      form
-        input#query(type='text' placeholder='Type the name of a song')
-        input(type='submit' value='Find')
-      #result(style="display:none;")
-        #text
-        div
-          svg#svg(width='100%' height='40')
-          button#play Play track
-        audio#audio
+    //- .songsearch
+    //-   form
+    //-     input#query(type='text' placeholder='Type the name of a song')
+    //-     input(type='submit' value='Find')
+    //-   #result(style="display:none;")
+    //-     #text
+    //-     div
+    //-       svg#svg(width='100%' height='40')
+    //-       button#play Play track
+    //-     audio#audio
 </template>
 
 <script>

@@ -100,6 +100,7 @@ export default {
       var self = this
       self.startTime[num] = self.aC.currentTime
       if (self.sD[num] === null) {
+        // Has not been decoded or played yet
         self.aC.decodeAudioData(data, function (buffer) {
           self.sources[num] = self.aC.createBufferSource()
           self.sources[num].connect(self.sourceGain[num])
@@ -114,9 +115,7 @@ export default {
           // console.log(e);
         })
       } else {
-        // src = self.aC.createBufferSource()
-        // src.buffer = self.sD[num]
-        console.log('going here now')
+        // Has already been decoded and played once
         self.sources[num] = self.aC.createBufferSource()
         self.sources[num].connect(self.sourceGain[num])
         self.sources[num].buffer = self.sD[num]
@@ -132,34 +131,11 @@ export default {
     pauseTrack (num) {
       var s = this
       s.startOffset[num] += s.aC.currentTime - s.startTime[num];
-      console.log('type is: ' + typeof num)
       if (s.sources[num]) {
-        console.log('length: ' + s.sources.length)
         s.sources[num].disconnect()
         s.sources[num].stop(0)
         s.sources[num] = null
       }
-      // if (playing) {
-        // console.log('stop. playing is: ' + playing)
-        // s.startTime[num] = s.aC.currentTime;
-        // s.sources[num].start(0, s.startOffset[num] % s.sources[num].buffer.duration)
-      // } else {
-      //   console.log('play. playing is: ' + playing)
-      // s.startOffset[num] += s.aC.currentTime - s.startTime[num];
-      // s.sources[num].stop(0);
-      // s.sources[num] = null
-      // }
-      // if(s.aC.state === 'running') {
-      //   s.aC.suspend().then(function() {
-      //     // susresBtn.textContent = 'Resume context';
-      //   });
-      //   console.log('suspending we are')
-      // } else if(s.aC.state === 'suspended') {
-      //   console.log('unsuspending.......')
-      //   s.aC.resume().then(function() {
-      //     // susresBtn.textContent = 'Suspend context';
-      //   });  
-      // }
     },
     setupAudioNodes () {
       var s = this
