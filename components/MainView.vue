@@ -2,7 +2,7 @@
   div.master
     .panel
       PlayerNode(v-for="(node, index) in players" :node="node" :key="index" :player_id="index")
-      Node(v-for="(node, index) in nodes" :node="node" :key="`node-${index}`")
+      Node(v-for="(node, index) in nodes" :node="node" :key="`node-${index}`" :node_id="index")
     Footer(:nodes="nodes")
 </template>
 
