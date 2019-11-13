@@ -4,80 +4,6 @@
   Light blue: #A6CFDB;
 */
 
-$bar-height: 76px;
-$padding-node: 24px;
-$gap: 20px;
-$fx-bg: #BBB;
-
-* {
-  margin: 0px;
-  padding: 0px;
-}
-
-
-html, body {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-}
-
-body {
-	font-family: 'Source Sans Pro', sans-serif; 
-  overflow: hidden;
-  color: #000;
-}
-
-a, a:visited, a:hover, a:focus, a:hover, a:active { text-decoration: none; }
-
-header { 
-  text-align: center; 
-  background: #75C2BF; /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(-90deg, #75C2BF, #6BD6B8); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(-90deg, #75C2BF, #6BD6B8); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(-90deg, #75C2BF, #6BD6B8); /* For Firefox 3.6 to 15 */
-  background: linear-gradient(-90deg, #75C2BF, #6BD6B8); /* Standard syntax */
-  /*position: fixed;*/
-}
-
-header, .footer {
-  width: 100vw;
-  height: $bar-height;
-}
-
-
-/* analyser */
-canvas { 
-  width: 16vw;
-  bottom: 5%;
-  position: absolute;
-}
-
-canvas#analyser {
-  left: 5%;
-}
-
-.logo { 
-  width: 100px; height: 100%;
-  background-image: url("/img/efe-w.png"); 
-  background-size: 40px 40px; 
-  background-repeat: no-repeat;
-  background-position: 20px; 
-}
-
-.logo h4 { color: #FFF; padding: 14px; margin-left: 40px; }
-
-.alter-filter, #filter-title, .toggle-effect, .button-reg.tremolo { 
-  cursor: pointer;
-  -webkit-user-select: none;  /* Chrome all / Safari all */
-  -moz-user-select: none;     /* Firefox all */
-  -ms-user-select: none;      /* IE 10+ */
-}
-
-/* border radius */
-.node, #start-one, #start-two, .effects, input[type="submit"], input[type="text"] {
-  cursor: pointer;
-}
-
 @mixin transThis($which, $time, $easeType) {
   -webkit-transition: $which $time $easeType;
   -moz-transition: $which $time $easeType;
@@ -110,11 +36,79 @@ canvas#analyser {
   box-shadow: $left $btm 0px 0px rgba(0,0,0,0.75);
 }
 
+$header-height: 24px;
+$footer-height: 76px;
+$padding-node: 24px;
+$gap: 20px;
+$fx-bg: #BBB;
+
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  // position: fixed;
+}
+
+body {
+	font-family: 'Source Sans Pro', sans-serif; 
+  // overflow: hidden;
+  color: #000;
+}
+
+a, a:visited, a:hover, a:focus, a:hover, a:active { text-decoration: none; }
+
+header {
+  width: 100%;
+  height: $header-height;
+  text-align: center; 
+  background: #75C2BF; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(-90deg, #75C2BF, #6BD6B8); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(-90deg, #75C2BF, #6BD6B8); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(-90deg, #75C2BF, #6BD6B8); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(-90deg, #75C2BF, #6BD6B8); /* Standard syntax */
+  /*position: fixed;*/
+  .logo { 
+    width: 100px;
+    height: 100%;
+    background-image: url("/img/efe-w.png"); 
+    background-size: 40px 40px; 
+    background-repeat: no-repeat;
+    background-position: 20px; 
+  }
+}
+
+/* analyser */
+canvas { 
+  width: 16vw;
+  bottom: 5%;
+  position: absolute;
+}
+
+canvas#analyser {
+  left: 5%;
+}
+
+.alter-filter, #filter-title, .toggle-effect, .button-reg.tremolo { 
+  cursor: pointer;
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+}
+
+/* border radius */
+.node, #start-one, #start-two, .effects, input[type="submit"], input[type="text"] {
+  cursor: pointer;
+}
+
 .master {
   .panel {
     position: relative;
     width: 100%;
-    height: calc(100% - #{$bar-height});
+    height: calc(100% - #{$footer-height});
     // height: auto;
     // margin: 6vh auto 100px auto;
     padding: $gap;
@@ -213,7 +207,9 @@ canvas#analyser {
   }
   /* Lower bar */
   .footer {
-    position: absolute;
+    width: 100%;
+    height: $footer-height;
+    position: fixed;
     bottom: 0;
     left: 0;
     background: #424242;
