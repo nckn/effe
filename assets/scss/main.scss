@@ -1,8 +1,12 @@
-
-/*
-  Dark Blue: #69ACBE; light blue: #69ACBE; orange: #FF623F; dark green: $color-slider;
-  Light blue: #A6CFDB;
-*/
+// Variables
+$breakp-md: 768px;
+// $header-height: 40px;
+$header-height: 0;
+$footer-height: 76px;
+$padding-node-sm: 12px;
+$padding-node-lg: 24px;
+$gap: 20px;
+$fx-bg: #BBB;
 
 @mixin transThis($which, $time, $easeType) {
   -webkit-transition: $which $time $easeType;
@@ -25,7 +29,7 @@
 
 @mixin makeResponsiveStyle($attr, $val-sm, $val-lg) {
   #{$attr}: $val-sm;
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: $breakp-md) {
     #{$attr}: $val-lg;
   }
 }
@@ -35,12 +39,6 @@
   -moz-box-shadow: $left $btm 0px 0px rgba(0,0,0,0.75);
   box-shadow: $left $btm 0px 0px rgba(0,0,0,0.75);
 }
-
-$header-height: 24px;
-$footer-height: 76px;
-$padding-node: 24px;
-$gap: 20px;
-$fx-bg: #BBB;
 
 * {
   margin: 0px;
@@ -54,7 +52,9 @@ html, body {
 }
 
 body {
-	font-family: 'Source Sans Pro', sans-serif; 
+	// font-family: 'Anonymous Pro', monospace;
+	// font-family: 'Source Sans Pro', sans-serif !important;
+	font-family: 'Montserrat', sans-serif;
   // overflow: hidden;
   color: #000;
 }
@@ -119,7 +119,7 @@ canvas#analyser {
     grid-gap: $gap;
     grid-template-columns: repeat(2, minmax(100px, 1fr));
     // grid-template-columns: 1fr 1fr 1fr;
-    @media screen and (min-width: 768px) {
+    @media screen and (min-width: $breakp-md) {
       grid-template-columns: repeat(4, minmax(100px, 1fr));
       // grid-template-columns: 1fr 1fr 1fr 1fr;
     }
@@ -138,13 +138,16 @@ canvas#analyser {
       background: #ececec; /* Other good colors: #A0D2DF, #A0DFCF*/
       position: relative;
       // background: purple;
-      padding: $padding-node;
+      padding: $padding-node-sm;
+      @media screen and (min-width: $breakp-md) {
+        padding: $padding-node-lg;
+      }
       display: flex;
       align-items: stretch;
       justify-content: space-between;
       flex-direction: column;
       @include borderRadius(4px);
-      @include transThis(all, 0.3s, ease-out);
+      @include transThis(all, 0.2s, ease-out);
       @include makeFatBoxShadow(0px, 4px);
       // @include makeFatBoxShadow(-4px, 4px);
       &:hover {
@@ -176,7 +179,7 @@ canvas#analyser {
         }
       }
       h2 { 
-      
+        
       }
       h3 { 
         
@@ -187,11 +190,17 @@ canvas#analyser {
         justify-content: space-between;
         flex-direction: column;
         &.sliders {
-          @include makeResponsiveStyle(height, 24px, 32px);
+          @include makeResponsiveStyle(height, 28px, 32px);
         }
         .slider-text {
           display: flex;
           justify-content: space-between;
+          label, output {
+            font-size: 12px;
+            @media screen and (min-width: $breakp-md) {
+              // font-size: 12px; 
+            }
+          }
           label {
             text-align: left;
           }

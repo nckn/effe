@@ -1,6 +1,6 @@
 <template lang="pug">
   div.master-container
-    Header
+    //- Header
     MainView
     //- Footer
 </template>

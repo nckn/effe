@@ -16,7 +16,9 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Montserrat:300i,400,500,700&display=swap' }
+      // { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Anonymous+Pro:400,400i,700,700i&display=swap' }
+      // { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap' }
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i&display=swap' }
     ]
   },
   /*
