@@ -190,11 +190,11 @@ canvas#analyser {
           white-space: normal;
         }
       }
-      &#graph { background: $c-graph; }
-      &#speed { background: $c-speed; }
-      &#reverb { background: $c-reverb; }
-      &#filter { background: $c-filter; }
-      &#delay { background: $c-delay; }
+      // &#graph { background: $c-graph; }
+      // &#speed { background: $c-speed; }
+      // &#reverb { background: $c-reverb; }
+      // &#filter { background: $c-filter; }
+      // &#delay { background: $c-delay; }
       h2 { 
         
       }
@@ -264,11 +264,12 @@ canvas#analyser {
       &.ison {
         background: lighten($color: $fx-bg, $amount: 30);
       }
-      &[name="graph"] { background: $c-graph; }
-      &[name="speed"] { background: $c-speed; }
-      &[name="reverb"] { background: $c-reverb; }
-      &[name="filter"] { background: $c-filter; }
-      &[name="delay"] { background: $c-delay; }
+      // Colors
+      // &[name="graph"] { background: $c-graph; }
+      // &[name="speed"] { background: $c-speed; }
+      // &[name="reverb"] { background: $c-reverb; }
+      // &[name="filter"] { background: $c-filter; }
+      // &[name="delay"] { background: $c-delay; }
       h4 {
         font-size: 12px;
         font-weight: 400;
