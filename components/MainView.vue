@@ -167,13 +167,14 @@ export default {
         // Has not been decoded or played yet
         self.aC.decodeAudioData(data, function (buffer) {
           self.sources[num] = self.aC.createBufferSource()
-          self.sources[num].connect(self.sourceGain[num])
+          self.sources[num].connect(self.filter)
+          self.filter.connect(self.sourceGain[num])
+          self.sourceGain[num].connect(self.aC.destination)
           self.sources[num].buffer = buffer
           self.sD[num] = buffer
           self.sourceGain[num].gain.value = 0.5
           self.sources[num].loop = true
-          self.sources[num].connect(self.sourceGain[num])
-          self.sourceGain[num].connect(self.aC.destination)
+          // self.sources[num].connect(self.sourceGain[num])
           self.sources[num].start(self.aC.currentTime, self.startOffset[num], self.sources[num].buffer.duration)
           // self.startAudio(buffer, num)
         }, function (e) {
@@ -182,11 +183,11 @@ export default {
       } else {
         // Has already been decoded and played once
         self.sources[num] = self.aC.createBufferSource()
-        self.sources[num].connect(self.sourceGain[num])
         self.sources[num].buffer = self.sD[num]
         self.sourceGain[num].gain.value = 0.5
         self.sources[num].loop = true
-        self.sources[num].connect(self.sourceGain[num])
+        self.sources[num].connect(self.filter)
+        self.filter.connect(self.sourceGain[num])
         self.sourceGain[num].connect(self.aC.destination)
         self.sources[num].start(0, self.startOffset[num] % self.sources[num].buffer.duration)
       }
@@ -271,9 +272,8 @@ export default {
     routeAudioNodes () {
       var self = this
       for (var i = 0; i < self.sources.length; i++) {
-        self.sources[i] = self.aC.createBufferSource()
-        self.sources[i].connect(self.filter)
-        self.filter.connect(self.sourceGain[i])
+        // self.sources[i] = self.aC.createBufferSource()
+        // self.sources[i].connect(self.sourceGain[i])
         self.sourceGain[i].connect(self.convolver)
         self.sourceGain[i].connect(self.dry)
       }
@@ -293,7 +293,7 @@ export default {
       self.fetchGain.connect(self.masterGain)
 
       self.delay.connect(self.compressor)
-      // self.filter.connect(self.compressor)
+      self.filter.connect(self.compressor)
 
       self.compressor.connect(self.masterGain)
       self.masterGain.connect(self.analyser)
