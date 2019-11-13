@@ -105,6 +105,7 @@ canvas#analyser {
 }
 
 .master {
+  height: auto;
   .panel {
     position: relative;
     width: 100%;
@@ -128,7 +129,10 @@ canvas#analyser {
       // grid-template-columns: 1fr 1fr 1fr 1fr;
     }
     // overflow-y: scroll;
-    overflow: scroll;
+    overflow-y: scroll;
+    &::-webkit-scrollbar { 
+      display: none; 
+    } 
     .node { 
       // width: 18vw;
       // height: 30vh;
