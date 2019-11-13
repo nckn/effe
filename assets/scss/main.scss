@@ -362,20 +362,9 @@ input[type="submit"] {
   width: 6vw;
   height: 6vw;
   margin-right: 12px;
-  color: #FFF; 
-}
-
-.button-reg-one {
-  background: #69BBE7; /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(-90deg, #69BBE7, #70CDDF); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(-90deg, #69BBE7, #70CDDF); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(-90deg, #69BBE7, #70CDDF); /* For Firefox 3.6 to 15 */
-  background: linear-gradient(-90deg, #69BBE7, #70CDDF); /* Standard syntax */
-}
-
-/* 2nd play button */
-.button-reg-two {
-  background: #61B8FB;
+  color: #FFF;
+  background: #a889e4;
+  @include borderRadius(1px);
 }
 
 #start-one, #start-two { 
