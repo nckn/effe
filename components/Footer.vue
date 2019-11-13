@@ -1,6 +1,6 @@
 <template lang="pug">
   .footer
-    .effects(v-for="(node, index) in nodes" @click="toggleNodeParent(index)" v-bind:id="index" v-bind:class="{ ison: node.isOn }")
+    .effects(v-for="(node, index) in nodes" @click="toggleNodeParent(index)" v-bind:id="index" v-bind:class="{ ison: node.isOn }" v-bind:name="node.class_name")
       h4 {{ node.name }}
     .effects.player-two(@click="togglePlayerTwoParent")
       h4 Player 2

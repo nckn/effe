@@ -8,6 +8,14 @@ $padding-node-lg: 24px;
 $gap: 20px;
 $fx-bg: #BBB;
 
+// Colors
+$c-graph: #ff7be0;
+$c-speed: #9991fc;
+$c-reverb: #7be2ff;
+$c-filter: #7bffd1;
+$c-delay: #e4fa94;
+$color-cross-fader: #444;
+
 @mixin transThis($which, $time, $easeType) {
   -webkit-transition: $which $time $easeType;
   -moz-transition: $which $time $easeType;
@@ -182,6 +190,11 @@ canvas#analyser {
           white-space: normal;
         }
       }
+      &#graph { background: $c-graph; }
+      &#speed { background: $c-speed; }
+      &#reverb { background: $c-reverb; }
+      &#filter { background: $c-filter; }
+      &#delay { background: $c-delay; }
       h2 { 
         
       }
@@ -225,13 +238,13 @@ canvas#analyser {
     position: fixed;
     bottom: 0;
     left: 0;
-    background: #424242;
+    background: #d5d5d5;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 10px;
     .effects {
-      width: 56px;
+      width: 58px;
       height: 56px;
       // height: 100%;
       @include placeContentInMiddle();
@@ -251,8 +264,14 @@ canvas#analyser {
       &.ison {
         background: lighten($color: $fx-bg, $amount: 30);
       }
+      &[name="graph"] { background: $c-graph; }
+      &[name="speed"] { background: $c-speed; }
+      &[name="reverb"] { background: $c-reverb; }
+      &[name="filter"] { background: $c-filter; }
+      &[name="delay"] { background: $c-delay; }
       h4 {
         font-size: 12px;
+        font-weight: 400;
       }
       //   width: 8vw;
       //   display: table-cell;
@@ -567,7 +586,8 @@ input[type=range]:focus::-moz-range-track {
   padding: 0 20px;
   h4 {
     width: auto;
-    color: #FFF;
+    color: $color-cross-fader;
+    font-weight: 400;
     &:first-child {
       margin-right: 10px;
     }
@@ -575,18 +595,21 @@ input[type=range]:focus::-moz-range-track {
       margin-left: 10px;
     }
   }
+  input[class="crossfader"] { 
+    width: 150px;
+    background: $color-cross-fader;
+    border: 0;
+  }
+  
+  input[class="crossfader"]::-webkit-slider-thumb {
+    width: 40px;
+    height: 40px; 
+    // background: #F6F6F6;
+    background: $color-cross-fader;
+    cursor: pointer;
+  }
 }
 
-input[class="crossfader"] { 
-  width: 150px;
-  background: #F6F6F6;
-  border: 0;
-}
-
-input[class="crossfader"]::-webkit-slider-thumb {
-  width: 40px; height: 40px; 
-  background: #F6F6F6; cursor: pointer;
-}
 
 
 
