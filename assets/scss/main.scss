@@ -9,16 +9,16 @@ $gap: 20px;
 $fx-bg: #BBB;
 
 // Colors
+
 $c-graph: #4897d8;
 $c-speed: #ffdb5c;
 $c-reverb: #fa6e59;
 $c-filter: #f8a055;
 $c-delay: #e4fa94;
-// $c-graph: #ff7be0;
-// $c-speed: #9991fc;
-// $c-reverb: #7be2ff;
-// $c-filter: #7bffd1;
-// $c-delay: #e4fa94;
+
+$node-colors: ("graph",$c-graph),("speed", $c-speed),("reverb",$c-reverb),("filter",$c-filter),("delay",$c-delay);
+
+// $c-graph: #ff7be0, $c-speed: #9991fc, $c-reverb: #7be2ff, $c-filter: #7bffd1, $c-delay: #e4fa94;
 $color-cross-fader: #444;
 
 @mixin transThis($which, $time, $easeType) {
@@ -263,18 +263,32 @@ canvas#analyser {
       &:not(:first-child) {
         margin-left: 10px;
       }
-      &:hover {
-        background: darken($color: $fx-bg, $amount: 10);
-      }
-      &.ison {
-        background: lighten($color: $fx-bg, $amount: 30);
-      }
+      // &:hover {
+      //   background: darken($color: $fx-bg, $amount: 10);
+      // }
+      // &.ison {
+      //   background: lighten($color: $fx-bg, $amount: 30);
+      // }
       // Colors
-      &[name="graph"] { background: $c-graph; }
-      &[name="speed"] { background: $c-speed; }
-      &[name="reverb"] { background: $c-reverb; }
-      &[name="filter"] { background: $c-filter; }
-      &[name="delay"] { background: $c-delay; }
+      @each $color in $node-colors {
+        &[name="#{nth($color,1)}"] {
+          // background-color: desaturate(nth($color,2), 40%);
+          background-color: rgba(nth($color,2), 0.6);
+          color: #777;
+          &:hover {
+            background-color: lighten($color: nth($color,2), $amount: 10%);
+          }
+          &.ison {
+            background-color: nth($color,2);
+            color: #151515;
+          }
+        }
+      }
+      // &[name="graph"] { background: $c-graph; }
+      // &[name="speed"] { background: $c-speed; }
+      // &[name="reverb"] { background: $c-reverb; }
+      // &[name="filter"] { background: $c-filter; }
+      // &[name="delay"] { background: $c-delay; }
       h4 {
         font-size: 12px;
         font-weight: 400;
@@ -358,28 +372,19 @@ input[type="submit"] {
 
 .visible { opacity: 1; border: none; }
 
-.button-reg-one, .button-reg-two {
+.button-reg-one {
   width: 6vw;
   height: 6vw;
   margin-right: 12px;
   color: #FFF;
   background: #a889e4;
   @include borderRadius(1px);
-}
-
-#start-one, #start-two { 
-  float: left;
   z-index: 100;
+  &.on  {
+    background: #9bcfea;
+  } 
 }
 
-.on  { 
-  /*background: #69BBE7;
-  background: -webkit-linear-gradient(-90deg, #69ACBE, #6BBAA9);
-  background: -o-linear-gradient(-90deg, #69ACBE, #6BBAA9);
-  background: -moz-linear-gradient(-90deg, #69ACBE, #6BBAA9);
-  background: linear-gradient(-90deg, #69ACBE, #6BBAA9);*/
-  background: #9bcfea;
-} 
 
 .on-two { background: #03623F; }
 
@@ -600,11 +605,6 @@ input[type=range]:focus::-moz-range-track {
     cursor: pointer;
   }
 }
-
-
-
-
-
 
 
 /* ===============  Layout debug  ==================================== */

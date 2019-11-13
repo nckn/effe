@@ -37,7 +37,7 @@ export default {
           {name: 'Wet', min: 0, max: 200, step: 1, value: 0, default: 0}
         ]},
         {name: 'Filter', class_name: 'filter', isOn: true, sliders: [
-          {name: '-', min: 0, max: 200, step: 1, value: 0, default: 0},
+          {name: '-', min: 0, max: 4000, step: 1, value: 0, default: 0},
           {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0, default: 10}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
@@ -212,6 +212,14 @@ export default {
         case 'reverb':
           s.changeReverb(val, 'mix')
           break
+        case 'filter':
+          if (target.id === 'sli-0') {
+            s.filter.frequency.value = val
+          } else if (target.id === 'sli-1') {
+            s.filter.frequency.value = val
+          }
+          console.log(s.filter.frequency.value)
+          break
         default:
           console.log('Nothing happens...')
       }
@@ -271,9 +279,10 @@ export default {
       this.delay.connect(this.feedbackGain)
       this.feedbackGain.connect(this.delay)
 
+      // Spotify source I suppose
       this.fetchGain.connect(this.masterGain)
 
-      this.delay.connect(this.compressor)
+      this.delay.connect(this.filter)
       this.filter.connect(this.compressor)
 
       this.compressor.connect(this.masterGain)
@@ -286,8 +295,9 @@ export default {
 
       this.feedbackGain.gain.value = 0
       this.masterGain.gain.value = 1
-      this.filter.type = this.filterType[this.browser]
-      this.filter.frequency.value = 4000
+      // this.filter.type = this.filterType[this.browser]
+      this.filter.type = this.filterType[2]
+      this.filter.frequency.value = 0
     },
     frameLooper (ctx) {
       var self = this
