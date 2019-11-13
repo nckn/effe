@@ -6,6 +6,13 @@
         #buttonicon.buttonicon(ref="buttonicon")
         // <h4 id="drag-instr"><p>drag song here</p></h4>
       output#infolist.artistinfo.one(ref="artist_info")
+      input(
+        style="display: none;"
+        type="file"
+        @change="dropEvent"
+        ref="fileInput"
+      )
+    button.upload-btn(@click="$refs.fileInput.click()" v-show="!fileIsLoaded") Drag a file or click to open
     .gui-wrapper
       input.volume-slider-one(type='range' name='color' min='0' max='1' step='0.01' @input="ctlVol" v-model="node.vol")
     //- .songsearch
@@ -37,7 +44,9 @@ export default {
       songData: null,
       windowIsOpen: false,
       zero: this.player_id,
-      isHovering: false
+      isHovering: false,
+      droppedFile: null,
+      fileIsLoaded: false
     }
   },
   mounted () {
@@ -48,6 +57,11 @@ export default {
     self.uploadBtn = self.$refs.upload_btn
   },
   methods: {
+    onFileSelected (e) {
+      var self = this
+      console.log(e)
+      self.droppedFile = e.target.files[0]
+    },
     ctlVol (e) {
       var target = e.target || e.srcElement
       this.$parent.controlVolume(target.value, this.zero)
@@ -91,28 +105,33 @@ export default {
       var self = this
       e.stopPropagation()
       e.preventDefault()
-      // Get drop event target number
-      console.log(e.dataTransfer.files)
+      if (e.dataTransfer) {
+        console.log(e.dataTransfer.files)
+        self.droppedFile = e.dataTransfer.files[0]
+      } else {
+        self.droppedFile = e.target.files[0]
+      }
       // var num = this.className.substring(11, 14)
       // var cur = num == 'one' ? 0 : 1
-      var droppedFiles = e.dataTransfer.files
       var reader = new FileReader()
-      console.log('this is it: ' + this);
-      console.log(typeof this);
+      // console.log('this is it: ' + this);
+      // console.log(typeof this);
       e.stopPropagation()
       e.preventDefault()
       reader.onload = function (fileEvent) {
         self.songData = fileEvent.target.result
-        var str = droppedFiles[0].name
+        var str = self.droppedFile.name
         // self.artistInfo.innerHTML = 'Song:<br />' + str
         self.artistInfo.innerHTML = str
         // Succesful load, allow window for playing
         self.windowIsOpen = true
         self.toggleHoverState()
         self.$parent.frameLooper()
+        // A file has been loaded. Hide the upload button
+        self.fileIsLoaded = true
         // document.querySelector('.button-reg.invisible.drop').style.border = 'none'
       }
-      reader.readAsArrayBuffer(droppedFiles[0])
+      reader.readAsArrayBuffer(self.droppedFile)
       self.startBox.classList.remove('invisible')
       self.startBox.classList.add('visible')
       // var playButton = 'start-' + num
