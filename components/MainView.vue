@@ -37,7 +37,7 @@ export default {
           {name: 'Wet', min: 0, max: 200, step: 1, value: 0, default: 0}
         ]},
         {name: 'Filter', class_name: 'filter', isOn: true, sliders: [
-          {name: '-', min: 0, max: 4000, step: 1, value: 0, default: 0, curFilter: 'lowpass'},
+          {name: '-', min: 0, max: 22050, step: 1, value: 0, default: 0, curFilter: 'lowpass'},
           {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0, default: 10}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
@@ -296,7 +296,6 @@ export default {
       // self.filter.connect(self.compressor)
 
       self.compressor.connect(self.masterGain)
-      // self.masterGain.connect(self.filter)
       self.masterGain.connect(self.analyser)
       self.analyser.connect(self.aC.destination)
 
