@@ -30,6 +30,10 @@ module.exports = {
     // SCSS file in the project
     '@/assets/scss/main.scss'
   ],
+  server: {
+    port: 8000, // default: 3000
+    host: '0.0.0.0', // default: localhost
+  },
   /*
   ** Plugins to load before mounting the App
   */

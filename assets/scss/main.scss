@@ -1,6 +1,6 @@
 
 /*
-  Dark Blue: #69ACBE; light blue: #69ACBE; orange: #FF623F; dark green: #3D8087;
+  Dark Blue: #69ACBE; light blue: #69ACBE; orange: #FF623F; dark green: $color-slider;
   Light blue: #A6CFDB;
 */
 
@@ -104,6 +104,12 @@ canvas#analyser {
   }
 }
 
+@mixin makeFatBoxShadow($left, $btm) {
+  -webkit-box-shadow: $left $btm 0px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: $left $btm 0px 0px rgba(0,0,0,0.75);
+  box-shadow: $left $btm 0px 0px rgba(0,0,0,0.75);
+}
+
 .master {
   .panel {
     position: relative;
@@ -137,14 +143,21 @@ canvas#analyser {
       // width: 25%;
       background: #ececec; /* Other good colors: #A0D2DF, #A0DFCF*/
       position: relative;
-      @include borderRadius(4px);
-      @include transThis(opacity, 0.5s, ease-out);
       // background: purple;
       padding: $padding-node;
       display: flex;
       align-items: stretch;
       justify-content: space-between;
       flex-direction: column;
+      @include borderRadius(4px);
+      @include transThis(all, 0.3s, ease-out);
+      @include makeFatBoxShadow(0px, 4px);
+      // @include makeFatBoxShadow(-4px, 4px);
+      &:hover {
+        @include makeFatBoxShadow(0px, 8px);
+        // @include makeFatBoxShadow(-8px, 8px);
+        transform: translateY(-4px);
+      }
       * {
         // background: red;
       }
@@ -462,23 +475,24 @@ input {
 
 // Input range
 $thumb-size: 20px;
+$color-slider: #151515; // #3D8087
 
 input[type=range] {
   height: 4px;
   -webkit-appearance: none;
-  background-color: #3D8087;
+  background-color: $color-slider;
   @include borderRadius(2px);
 }
 
 input[type=range]::-moz-range-track {
   -webkit-appearance: none;
-  background: #3D8087;
+  background: $color-slider;
   height: 4px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  background-color: #3D8087;
+  background-color: $color-slider;
   opacity: 1;
   width: $thumb-size;
   height: $thumb-size;
@@ -492,7 +506,7 @@ input[type=range]::-moz-range-thumb {
   width: $thumb-size;
   height: $thumb-size;
   border-radius: 50%;
-  background: #3D8087;
+  background: $color-slider;
   cursor: pointer;
 }
 
