@@ -273,18 +273,14 @@ canvas#analyser {
         font-size: 12px;
         font-weight: 400;
       }
-      //   width: 8vw;
-      //   display: table-cell;
-      //   text-align: center;
-      //   color: #424242;
-      //   /* color: #75C2BF; */
-      //   font-weight: 400; letter-spacing: .1vw;
-      //   pointer-events: none;
-      //   /*user-select: none;
-      //   -moz-user-select: none;
-      //   -webkit-user-select: none;
-      //   -ms-user-select: none;*/
-      // }
+      @include transThis(all, 0.2s, ease-out);
+      @include makeFatBoxShadow(0px, 4px);
+      // @include makeFatBoxShadow(-4px, 4px);
+      &:hover {
+        @include makeFatBoxShadow(0px, 8px);
+        // @include makeFatBoxShadow(-8px, 8px);
+        transform: translateY(-4px);
+      }
     }
   }
 }
