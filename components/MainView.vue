@@ -272,7 +272,8 @@ export default {
       var self = this
       for (var i = 0; i < self.sources.length; i++) {
         self.sources[i] = self.aC.createBufferSource()
-        self.sources[i].connect(self.sourceGain[i])
+        self.sources[i].connect(self.filter)
+        self.filter.connect(self.sourceGain[i])
         self.sourceGain[i].connect(self.convolver)
         self.sourceGain[i].connect(self.dry)
       }
@@ -295,8 +296,8 @@ export default {
       // self.filter.connect(self.compressor)
 
       self.compressor.connect(self.masterGain)
-      self.masterGain.connect(self.filter)
-      self.filter.connect(self.analyser)
+      // self.masterGain.connect(self.filter)
+      self.masterGain.connect(self.analyser)
       self.analyser.connect(self.aC.destination)
 
       for (var i = 0; i < self.sourceGain.length; i++) {
