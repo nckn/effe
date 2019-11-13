@@ -88,6 +88,7 @@ export default {
     self.$nextTick(
       self.setupAudioNodes(),
       self.assignRightSize('node'),
+      // self.assignRightSize('effects'),
       self.trackWindowResize(),
       self.prepareAnalyser(),
       self.setReverb()

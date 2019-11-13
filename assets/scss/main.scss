@@ -227,8 +227,9 @@ canvas#analyser {
     justify-content: center;
     padding: 10px;
     .effects {
-      width: 8vw;
-      height: 100%;
+      width: 56px;
+      height: 56px;
+      // height: 100%;
       @include placeContentInMiddle();
       // margin: 1vh 0 1vh 1vh;
       // float: left;
@@ -246,19 +247,21 @@ canvas#analyser {
       &.ison {
         background: lighten($color: $fx-bg, $amount: 30);
       }
-      h4 { 
-        width: 8vw;
-        display: table-cell;
-        text-align: center;
-        color: #424242;
-        /* color: #75C2BF; */
-        font-weight: 400; letter-spacing: .1vw;
-        pointer-events: none;
-        /*user-select: none;
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;*/
+      h4 {
+        font-size: 12px;
       }
+      //   width: 8vw;
+      //   display: table-cell;
+      //   text-align: center;
+      //   color: #424242;
+      //   /* color: #75C2BF; */
+      //   font-weight: 400; letter-spacing: .1vw;
+      //   pointer-events: none;
+      //   /*user-select: none;
+      //   -moz-user-select: none;
+      //   -webkit-user-select: none;
+      //   -ms-user-select: none;*/
+      // }
     }
   }
 }
