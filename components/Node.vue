@@ -1,6 +1,8 @@
 <template lang="pug">
   .node.effect(v-bind:id="node.class_name" v-show="node.isOn")
-    h2 {{ node.name }}
+    .gui-wrapper
+      h2 {{ node.name }}
+      .iterator(v-if="node.class_name === 'filter'" @click="iterateFilterParent") {{ node.sliders[0].curFilter }}
     canvas#analyser(v-if="node.class_name === 'graph'")
     .gui-wrapper.sliders(v-for="(s, index) in node.sliders" v-if="node.sliders")
       .slider-text
@@ -22,7 +24,8 @@ export default {
   data () {
     return {
       sliderVal: [],
-      index: this.node_id
+      index: this.node_id,
+      curFilter: null
     }
   },
   watch: {
@@ -57,7 +60,11 @@ export default {
       console.log('target: ' + typeof subStr)
       var node = this.node.sliders[subStr]
       node.value = node.default
+      // self.curFilter = this.node.sliders[subStr].curFilter
       // this.node.sliders[this.index].value = 0.5
+    },
+    iterateFilterParent () {
+      this.$parent.iterateFilter()
     }
   }
 }

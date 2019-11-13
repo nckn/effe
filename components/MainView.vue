@@ -37,7 +37,7 @@ export default {
           {name: 'Wet', min: 0, max: 200, step: 1, value: 0, default: 0}
         ]},
         {name: 'Filter', class_name: 'filter', isOn: true, sliders: [
-          {name: '-', min: 0, max: 4000, step: 1, value: 0, default: 0},
+          {name: '-', min: 0, max: 4000, step: 1, value: 0, default: 0, curFilter: 'lowpass'},
           {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0, default: 10}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
@@ -95,6 +95,15 @@ export default {
     )
   },
   methods: {
+    iterateFilter () {
+      var s = this
+      s.browser++
+      if (s.browser > s.filterType.length) {
+        s.browser = 0
+      }
+      s.filter.type = s.filterType[s.browser]
+      s.nodes[3].sliders[0].curFilter = s.filter.type
+    },
     setReverb () {
       var self = this
       var loadImpulse = function (fileName) {
@@ -267,37 +276,38 @@ export default {
         self.sourceGain[i].connect(self.convolver)
         self.sourceGain[i].connect(self.dry)
       }
-      this.convolver.connect(this.wet);
+      self.convolver.connect(self.wet);
 
-      this.dry.connect(this.preGain)
-      this.wet.connect(this.preGain)
+      self.dry.connect(self.preGain)
+      self.wet.connect(self.preGain)
 
-      this.dry.gain.value = 1.0
-      this.wet.gain.value = 0.0
+      self.dry.gain.value = 1.0
+      self.wet.gain.value = 0.0
 
-      this.preGain.connect(this.delay)
-      this.delay.connect(this.feedbackGain)
-      this.feedbackGain.connect(this.delay)
+      self.preGain.connect(self.delay)
+      self.delay.connect(self.feedbackGain)
+      self.feedbackGain.connect(self.delay)
 
       // Spotify source I suppose
-      this.fetchGain.connect(this.masterGain)
+      self.fetchGain.connect(self.masterGain)
 
-      this.delay.connect(this.compressor)
+      self.delay.connect(self.compressor)
+      // self.filter.connect(self.compressor)
 
-      this.compressor.connect(this.filter)
-      this.filter.connect(this.masterGain)
-      this.masterGain.connect(this.analyser)
-      this.analyser.connect(this.aC.destination)
+      self.compressor.connect(self.masterGain)
+      self.masterGain.connect(self.filter)
+      self.filter.connect(self.analyser)
+      self.analyser.connect(self.aC.destination)
 
-      for (var i = 0; i < this.sourceGain.length; i++) {
-        this.sourceGain[i].gain.value = 6
+      for (var i = 0; i < self.sourceGain.length; i++) {
+        self.sourceGain[i].gain.value = 6
       }
 
-      this.feedbackGain.gain.value = 0
-      this.masterGain.gain.value = 1
-      // this.filter.type = this.filterType[this.browser]
-      this.filter.type = this.filterType[3]
-      this.filter.frequency.value = 440
+      self.feedbackGain.gain.value = 0
+      self.masterGain.gain.value = 1
+      // self.filter.type = self.filterType[self.browser]
+      self.filter.type = self.filterType[0]
+      self.filter.frequency.value = 440
     },
     frameLooper (ctx) {
       var self = this
