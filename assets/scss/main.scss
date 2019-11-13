@@ -263,12 +263,8 @@ canvas#analyser {
       &:not(:first-child) {
         margin-left: 10px;
       }
-      // &:hover {
-      //   background: darken($color: $fx-bg, $amount: 10);
-      // }
-      // &.ison {
-      //   background: lighten($color: $fx-bg, $amount: 30);
-      // }
+      @include transThis(all, 0.2s, ease-out);
+      @include makeFatBoxShadow(0px, 4px);
       // Colors
       @each $color in $node-colors {
         &[name="#{nth($color,1)}"] {
@@ -293,8 +289,6 @@ canvas#analyser {
         font-size: 12px;
         font-weight: 400;
       }
-      @include transThis(all, 0.2s, ease-out);
-      @include makeFatBoxShadow(0px, 4px);
       // @include makeFatBoxShadow(-4px, 4px);
       &:hover {
         @include makeFatBoxShadow(0px, 8px);

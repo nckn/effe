@@ -282,10 +282,10 @@ export default {
       // Spotify source I suppose
       this.fetchGain.connect(this.masterGain)
 
-      this.delay.connect(this.filter)
-      this.filter.connect(this.compressor)
+      this.delay.connect(this.compressor)
 
-      this.compressor.connect(this.masterGain)
+      this.compressor.connect(this.filter)
+      this.filter.connect(this.masterGain)
       this.masterGain.connect(this.analyser)
       this.analyser.connect(this.aC.destination)
 
@@ -296,8 +296,8 @@ export default {
       this.feedbackGain.gain.value = 0
       this.masterGain.gain.value = 1
       // this.filter.type = this.filterType[this.browser]
-      this.filter.type = this.filterType[2]
-      this.filter.frequency.value = 0
+      this.filter.type = this.filterType[3]
+      this.filter.frequency.value = 440
     },
     frameLooper (ctx) {
       var self = this
