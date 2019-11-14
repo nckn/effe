@@ -1,6 +1,8 @@
+const base = 'gh-pages' === process.env.NODE_ENV ? '/effe/' : '/';
 
 module.exports = {
-  mode: 'spa',
+  // mode: 'spa',
+  mode: 'universal',
   /*
   ** Headers of the page
   */
@@ -36,6 +38,10 @@ module.exports = {
     port: 8000, // default: 3000
     host: '0.0.0.0', // default: localhost
   },
+  router: {
+    base: process.env.NODE_ENV === 'development' ? '' : '/effe/'
+    // base,
+  },
   /*
   ** Plugins to load before mounting the App
   */
@@ -67,10 +73,13 @@ module.exports = {
   ** Build configuration
   */
   build: {
-    /*
-    ** You can extend webpack config here
-    */
-    extend (config, ctx) {
+    // publicPath: '/static/',
+    extend (config, { isDev, isClient }) {
+      if (!isDev) {
+        // relative links, please.
+        config.output.publicPath = './_nuxt/'
+      }
+      return config;
     }
   }
 }

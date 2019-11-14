@@ -9,6 +9,10 @@
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=production node server/index.js",
     "generate": "nuxt generate",
+    "deploy": "gh-pages -d dist --cleanup --dotfiles=true",
+    "build:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt build",
+    "generate:gh-pages": "DEPLOY_ENV=GH_PAGES nuxt generate",
+    "doit": "npm run build && npm run generate && npm run deploy",
     "test": "jest"
   },
   "dependencies": {
