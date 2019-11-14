@@ -60,7 +60,7 @@ export default {
       // console.log('target: ' + typeof subStr)
       var node = this.node.sliders[subStr]
       node.value = node.default
-      this.$parent.resetVal(target, )
+      this.$parent.changeVal(target, node.value)
       // self.curFilter = this.node.sliders[subStr].curFilter
       // this.node.sliders[this.index].value = 0.5
     },

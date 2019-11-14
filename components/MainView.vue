@@ -204,15 +204,14 @@ export default {
         s.sources[num] = null
       }
     },
-    changeVal (target) {
+    changeVal (target, value) {
       var s = this
-      var val = target.value
-      console.log('gets in: ' + target.name)
+      var val = value ? value : target.value
+      console.log('val is: ' + val)
       switch (target.name) {
         case 'speed':
           s.sources[0].playbackRate.value = val
           s.sources[1].playbackRate.value = val
-          console.log('gets in here too')
           break
         case 'delay':
           if (target.id === 'sli-0') {
@@ -230,7 +229,6 @@ export default {
           } else if (target.id === 'sli-1') {
             s.filter.frequency.value = val
           }
-          console.log(s.filter.frequency.value)
           break
         default:
           console.log('Nothing happens...')
