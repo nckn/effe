@@ -356,16 +356,6 @@ input[type="submit"] {
   float: right;
 }
 
-.invisible { 
-  opacity: 0.1;
-  /* border: 1px dashed #E0E0E0; */
-  -moz-box-sizing:    border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing:         border-box;
-}
-
-.visible { opacity: 1; border: none; }
-
 .button-reg-one {
   width: 6vw;
   height: 6vw;
@@ -376,7 +366,16 @@ input[type="submit"] {
   z-index: 100;
   &.on  {
     background: #9bcfea;
-  } 
+  }
+  &.invisible { 
+    opacity: 0.1;
+    box-sizing: border-box;
+    pointer-events: none;;
+  }
+  &.visible {
+    opacity: 1;
+    border: none;
+  }
 }
 
 
