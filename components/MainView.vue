@@ -207,10 +207,12 @@ export default {
     changeVal (target) {
       var s = this
       var val = target.value
+      console.log('gets in: ' + target.name)
       switch (target.name) {
         case 'speed':
           s.sources[0].playbackRate.value = val
           s.sources[1].playbackRate.value = val
+          console.log('gets in here too')
           break
         case 'delay':
           if (target.id === 'sli-0') {

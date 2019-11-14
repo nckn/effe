@@ -111,6 +111,7 @@ export default {
       } else {
         self.droppedFile = e.target.files[0]
       }
+      // alert(e.target.files)
       // var num = this.className.substring(11, 14)
       // var cur = num == 'one' ? 0 : 1
       var reader = new FileReader()

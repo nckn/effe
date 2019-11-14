@@ -54,12 +54,13 @@ export default {
     resetValue (e) {
       var self = this
       var target = e.target || e.srcElement
-      console.log('resetting')
-      console.log('node: ' + this.node.sliders[0].name)
+      // console.log('resetting')
+      // console.log('node: ' + this.node.sliders[0].name)
       var subStr = parseInt(target.id.split('-')[1])
-      console.log('target: ' + typeof subStr)
+      // console.log('target: ' + typeof subStr)
       var node = this.node.sliders[subStr]
       node.value = node.default
+      this.$parent.resetVal(target, )
       // self.curFilter = this.node.sliders[subStr].curFilter
       // this.node.sliders[this.index].value = 0.5
     },
