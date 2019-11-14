@@ -290,7 +290,8 @@ export default {
       self.dry.gain.value = 1.0
       self.wet.gain.value = 0.0
 
-      self.preGain.connect(self.delay)
+      self.preGain.connect(self.filter)
+      self.filter.connect(self.delay)
       self.delay.connect(self.feedbackGain)
       self.feedbackGain.connect(self.delay)
 
@@ -298,7 +299,7 @@ export default {
       self.fetchGain.connect(self.masterGain)
 
       self.delay.connect(self.compressor)
-      self.filter.connect(self.compressor)
+      // self.filter.connect(self.compressor)
 
       self.compressor.connect(self.masterGain)
       self.masterGain.connect(self.analyser)
