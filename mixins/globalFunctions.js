@@ -49,6 +49,14 @@ export default {
           self.assignRightSize()
         }, 100)
       }
+    },
+    logObject (obj) {
+      var output = ''
+      var object = obj
+      for (var property in object) {
+        output += property + ': ' + object[property] + '; '
+      }
+      return output
     }
   }
 }

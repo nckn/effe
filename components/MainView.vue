@@ -3,7 +3,7 @@
     .panel
       PlayerNode(v-for="(node, index) in players" :node="node" :key="index" :player_id="index")
       Node(v-for="(node, index) in nodes" :node="node" :key="`node-${index}`" :node_id="index")
-    Footer(:nodes="nodes")
+    Footer(:nodes="nodes" ref="testa")
 </template>
 
 <script>
@@ -311,7 +311,7 @@ export default {
     },
     frameLooper (ctx) {
       var self = this
-      var fbc_array, bar_x, bar_width, bar_height, graphFill = '#ececec'
+      var fbc_array, bar_x, bar_width, bar_height, graphFill = '#4897d8'
       var canvasWidth = document.getElementById('analyser').width
       var canvasHeight = document.getElementById('analyser').height
       this.analyser.fftSize = 64
@@ -321,7 +321,13 @@ export default {
       this.analyser.maxDecibels = -10
       this.analyser.smoothingTimeConstant = 0.90
       this.analyser.getByteFrequencyData(dataArray)
-      this.ctx.fillStyle = 'hsla(0, 0%, 100%, .10)'
+      this.ctx.fillStyle = 'rgba(0,0,0,0)'
+      // this.ctx.fillStyle = 'hsla(0, 0%, 100%, .10)'
+      // this.ctx.fillStyle = document.querySelector('node.effect').style.backgroundColor
+      // var elem = self.$refs.testa.style
+      // var elem = self.$refs.testa
+      // console.log('color: ' + self.logObject(elem))
+      // console.log('color: ' + elem)
       this.ctx.fillStyle = graphFill;
       this.ctx.fillRect(0, 0, canvasWidth, canvasHeight)
       var barWidth = (canvasWidth / bufferLength)
