@@ -272,8 +272,8 @@ export default {
     routeAudioNodes () {
       var self = this
       for (var i = 0; i < self.sources.length; i++) {
-        // self.sources[i] = self.aC.createBufferSource()
-        // self.sources[i].connect(self.sourceGain[i])
+        self.sources[i] = self.aC.createBufferSource()
+        self.sources[i].connect(self.sourceGain[i])
         self.sourceGain[i].connect(self.convolver)
         self.sourceGain[i].connect(self.dry)
       }

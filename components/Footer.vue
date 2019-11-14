@@ -1,10 +1,11 @@
 <template lang="pug">
   .footer
-    .effects(v-for="(node, index) in nodes" @click="toggleNodeParent(index)" v-bind:id="index" v-bind:class="{ ison: node.isOn }" v-bind:name="node.class_name")
-      h4 {{ node.name }}
-    .effects.player-two(@click="togglePlayerTwoParent")
-      h4 Player 2
-    .crossfader-box
+    .block
+      .effects(v-for="(node, index) in nodes" @click="toggleNodeParent(index)" v-bind:id="index" v-bind:class="{ ison: node.isOn }" v-bind:name="node.class_name")
+        h4 {{ node.name }}
+      .effects.player-two(@click="togglePlayerTwoParent")
+        h4 Player 2
+    .block.crossfader-box
       h4 Player 1
       input.crossfader(type='range' min='0.1' max='1.9' step='0.01' value='1' @input="crossFadeVolumeParent")
       h4 Player 2
