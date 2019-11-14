@@ -122,7 +122,13 @@ canvas#analyser {
   .panel {
     position: relative;
     width: 100%;
-    height: calc(100% - #{$footer-height});
+    height: auto;
+    @media screen and (max-width: $breakp-md) {
+      margin-bottom: 22vh;
+    }
+    @media screen and (min-width: $breakp-md) {
+      height: calc(100% - #{$footer-height});
+    }
     // height: auto;
     // margin: 6vh auto 100px auto;
     padding: $gap;
@@ -304,11 +310,15 @@ canvas#analyser {
       }
     }
     @media screen and (max-width: $breakp-md) {
-      height: $footer-height * 2;
+      // height: $footer-height * 2;
+      height: 132px;
       flex-direction: column;
       .block {
         width: 100%;
         height: 50%;
+        &.crossfader-box {
+          padding-top: 12px;
+        }
         .effects {
           &:not(:first-child) {
             margin-left: 6px;
@@ -377,8 +387,12 @@ input[type="submit"] {
 }
 
 .button-reg-one {
-  width: 6vw;
-  height: 6vw;
+  width: 48px;
+  height: 48px;
+  @media screen and (min-width: $breakp-md) {
+    width: 80px;
+    height: 80px;
+  }
   margin-right: 12px;
   color: #FFF;
   background: #a889e4;
