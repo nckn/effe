@@ -238,8 +238,12 @@ export default {
       this.sourceGain[num].gain.value = val
     },
     crossFadeVolume (val) {
-      var gainOne = 1.1 - val
-      var gainTwo = val - 0.1
+      var self = this
+      // var gainOne = 1 - val
+      // var gainTwo = val
+      var gainOne = self.convertRange( val, [ 0.1, 1.9 ], [ 1, 0 ] )
+      var gainTwo = self.convertRange( val, [ 0.1, 1.9 ], [ 0, 1 ] )
+      console.log('gainOne: ' + gainOne + ', ' + 'gainTwo: ' + gainTwo)
       // Snapping effect. Snaps to zero
       // this.sourceGain[0].gain.value = (gainOne > 0.2) ? gainOne : 0
       // this.sourceGain[1].gain.value = (gainTwo > 0.2) ? gainTwo : 0
@@ -300,9 +304,9 @@ export default {
       self.masterGain.connect(self.analyser)
       self.analyser.connect(self.aC.destination)
 
-      for (var i = 0; i < self.sourceGain.length; i++) {
-        self.sourceGain[i].gain.value = 6
-      }
+      // for (var i = 0; i < self.sourceGain.length; i++) {
+      //   self.sourceGain[i].gain.value = 6
+      // }
 
       self.feedbackGain.gain.value = 0
       self.masterGain.gain.value = 1
@@ -322,13 +326,6 @@ export default {
       this.analyser.maxDecibels = -10
       this.analyser.smoothingTimeConstant = 0.90
       this.analyser.getByteFrequencyData(dataArray)
-      this.ctx.fillStyle = 'rgba(0,0,0,0)'
-      // this.ctx.fillStyle = 'hsla(0, 0%, 100%, .10)'
-      // this.ctx.fillStyle = document.querySelector('node.effect').style.backgroundColor
-      // var elem = self.$refs.testa.style
-      // var elem = self.$refs.testa
-      // console.log('color: ' + self.logObject(elem))
-      // console.log('color: ' + elem)
       this.ctx.fillStyle = graphFill;
       this.ctx.fillRect(0, 0, canvasWidth, canvasHeight)
       var barWidth = (canvasWidth / bufferLength)
