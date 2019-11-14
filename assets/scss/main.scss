@@ -272,11 +272,15 @@ canvas#analyser {
           background-color: rgba(nth($color,2), 0.6);
           color: #777;
           &:hover {
-            background-color: lighten($color: nth($color,2), $amount: 10%);
+            background-color: lighten($color: nth($color,2), $amount: 10%) !important;
           }
           &.ison {
             background-color: nth($color,2);
             color: #151515;
+            @include transThis(all, 0.2s, ease-out);
+            @include makeFatBoxShadow(0px, 8px);
+            // @include makeFatBoxShadow(-8px, 8px);
+            transform: translateY(-4px);
           }
         }
       }
@@ -291,9 +295,7 @@ canvas#analyser {
       }
       // @include makeFatBoxShadow(-4px, 4px);
       &:hover {
-        @include makeFatBoxShadow(0px, 8px);
-        // @include makeFatBoxShadow(-8px, 8px);
-        transform: translateY(-4px);
+        
       }
     }
   }
