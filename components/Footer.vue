@@ -1,5 +1,6 @@
 <template lang="pug">
   .footer
+    //- .switch[@click="toggleFooter"]
     .block
       .effects(v-for="(node, index) in nodes" @click="toggleNodeParent(index)" v-bind:id="index" v-bind:class="{ ison: node.isOn }" v-bind:name="node.class_name")
         h4 {{ node.name }}
