@@ -10,11 +10,19 @@ $fx-bg: #BBB;
 
 // Colors. Minor change from new MacBook
 
-$c-graph: #4897d8;
-$c-speed: #ffdb5c;
-$c-reverb: #fa6e59;
-$c-filter: #f8a055;
-$c-delay: #e4fa94;
+// $c-graph: #4897d8;
+// $c-speed: #ffdb5c;
+// $c-reverb: #fa6e59;
+// $c-filter: #f8a055;
+// $c-delay: #e4fa94;
+
+
+$some-color: #d2dc8f;
+$c-graph: #dc5050;
+$c-speed: #ee7e57;
+$c-reverb: #3a3a5e;
+$c-filter: #49a49d;
+$c-delay: #d2dc8f;
 
 $node-colors: ("graph",$c-graph),("speed", $c-speed),("reverb",$c-reverb),("filter",$c-filter),("delay",$c-delay);
 
