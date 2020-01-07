@@ -21,7 +21,7 @@ $c-graph: #dc5050;
 $c-speed: #ee7e57;
 $c-reverb: #3a3a5e;
 $c-filter: #49a49d;
-$c-delay: #d2dc8f;
+$c-delay: #b7bf7f; /* d2dc8f */
 
 $node-colors: ("graph",$c-graph),("speed", $c-speed),("reverb",$c-reverb),("filter",$c-filter),("delay",$c-delay);
 
@@ -606,6 +606,9 @@ input[type=range]:focus::-moz-range-track {
   }
   input[type="range"]::-webkit-slider-thumb { /* input[type="range"]::-moz-range-thumb */
     background-color: $color !important;
+  }
+  h2, label, output {
+    color: $color !important;
   }
 }
 

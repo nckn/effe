@@ -1,5 +1,5 @@
 <template lang="pug">
-  .node.player(@drop="dropEvent" @dragover="dragOver" v-show="node.isOn" v-bind:id="player_id" v-bind:class="{ ishovering: isHovering }" @dragleave="turnOffHoverState")
+  .node.player(@drop="dropEvent" @dragover="dragOver" v-show="node.isOn" v-bind:id="player_id" v-bind:class="{ ishovering: isHovering && !fileIsLoaded }" @dragleave="turnOffHoverState")
     .gui-wrapper
       #start-one.button-reg-one.invisible.drop(for='file-upload' @click="togglePlay" ref="start_box" name="player-one" v-bind:class="{ on: node.isPlaying}")
         div#upload-button-one(for='file-upload' ref="upload_btn")
@@ -105,6 +105,8 @@ export default {
       var self = this
       e.stopPropagation()
       e.preventDefault()
+      // console.log('its in')
+      self.isHovering = false
       if (e.dataTransfer) {
         console.log(e.dataTransfer.files)
         self.droppedFile = e.dataTransfer.files[0]

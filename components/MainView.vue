@@ -318,7 +318,7 @@ export default {
     },
     frameLooper (ctx) {
       var self = this
-      var fbc_array, bar_x, bar_width, bar_height, graphFill = '#4897d8'
+      var fbc_array, bar_x, bar_width, bar_height, graphFill = '#ececec'
       var canvasWidth = document.getElementById('analyser').width
       var canvasHeight = document.getElementById('analyser').height
       this.analyser.fftSize = 64
@@ -335,7 +335,7 @@ export default {
       var x = 0
       for (var i = 0; i < bufferLength; i++) { // used to be bufferLength
         barHeight = dataArray[i]
-        this.ctx.fillStyle = '#000' // 'rgb(' + (barHeight+100) + ',50,50)'
+        this.ctx.fillStyle = '#dc5050' // 'rgb(' + (barHeight+100) + ',50,50)'
         this.ctx.fillRect(x, canvasHeight - barHeight / 2, barWidth, barHeight / 2)
         x += barWidth + 2
       }
