@@ -219,8 +219,7 @@ export default ({ app }) => {
     var canvasWidth = document.getElementById('wavetable').width;
     var canvasHeight = document.getElementById('wavetable').height;
 
-    // this.w_ctx.fillStyle = '#E1E1E1';
-    this.w_ctx.fillStyle = '#214549';
+    this.w_ctx.fillStyle = '#E1E1E1';
     this.w_ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
     var remappedAmplitude = convertRange(val, [1, 20], [1, 20]);
@@ -234,8 +233,7 @@ export default ({ app }) => {
     axes.scale = 40;                 // 40 pixels from x=0 to x=1
     axes.doNegativeX = true;
 
-    // funGraph(this.w_ctx, axes, fun1, "#214549", 3);
-    funGraph(this.w_ctx, axes, fun1, "#ececec", 3);
+    funGraph(this.w_ctx, axes, fun1, "#214549", 3);
 
     function funGraph(waveTable, axes, func, color, thick) {
       var xx, yy, dx = 4, x0 = axes.x0, y0 = axes.y0, scale = axes.scale;

@@ -107,7 +107,7 @@ export default {
     setReverb () {
       var self = this
       var loadImpulse = function (fileName) {
-        console.log('load Impulse')
+        // console.log('load Impulse')
         var url = '/snd/GraffitiHallway.wav'
         var request = new XMLHttpRequest()
         request.open('GET', url, true)
