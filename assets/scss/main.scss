@@ -208,11 +208,21 @@ canvas#analyser {
           white-space: normal;
         }
       }
-      &#graph { background: $c-graph; }
-      &#speed { background: $c-speed; }
-      &#reverb { background: $c-reverb; }
-      &#filter { background: $c-filter; }
-      &#delay { background: $c-delay; }
+      // &#graph { 
+      //   background: $c-graph;
+      // }
+      // &#speed {
+      //   background: $c-speed;
+      // }
+      // &#reverb {
+      //   background: $c-reverb;
+      // }
+      // &#filter {
+      //   background: $c-filter;
+      // }
+      // &#delay {
+      //   background: $c-delay;
+      // }
       h2 { 
         
       }
@@ -588,6 +598,38 @@ input[type=range]:-moz-focusring{
 
 input[type=range]:focus::-moz-range-track {
     background: #ccc;
+}
+
+@mixin makeGUINodeColor($color) {
+  input[type=range] {
+    background-color: $color;
+  }
+  input[type="range"]::-webkit-slider-thumb { /* input[type="range"]::-moz-range-thumb */
+    background-color: $color !important;
+  }
+}
+
+.node {
+  &#graph { 
+    // background: $c-graph;
+    @include makeGUINodeColor($c-graph);
+  }
+  &#speed {
+    // background: $c-speed;
+    @include makeGUINodeColor($c-speed);
+  }
+  &#reverb {
+    // background: $c-reverb;
+    @include makeGUINodeColor($c-reverb);
+  }
+  &#filter {
+    // background: $c-filter;
+    @include makeGUINodeColor($c-filter);
+  }
+  &#delay {
+    // background: $c-delay;
+    @include makeGUINodeColor($c-delay);
+  }
 }
 
 #impulse {
