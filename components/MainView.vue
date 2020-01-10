@@ -26,7 +26,7 @@ export default {
     return {
       players: [
         {name: 'Player 1', type: 'player', isPlaying: false, isOn: true, vol: 0.8},
-        {name: 'Player 2', type: 'player', isPlaying: false, isOn: false, vol: 0.8}
+        {name: 'Player 2', type: 'player', isPlaying: false, isOn: true, vol: 0.8}
       ],
       nodes: [
         {name: 'Graph', class_name: 'graph', isOn: true},
@@ -62,7 +62,6 @@ export default {
       duration: 0.01,
       filterOn: false,
       effect_is_on: [false, false, false, false, false, false],
-      newPlayer: false,
       tremoloIsAllowed: false,
       browser: 0,
       filterType: ['allpass', 'lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch'],
