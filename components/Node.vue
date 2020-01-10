@@ -2,7 +2,9 @@
   .node.effect(v-bind:id="node.class_name" v-show="node.isOn")
     .gui-wrapper
       h2 {{ node.name }}
-      .iterator(v-if="node.class_name === 'filter'" @click="iterateFilterParent") {{ node.sliders[0].curFilter }}
+      .iterator-group(v-if="node.class_name === 'filter'")
+        h4 {{ node.sliders[0].curFilter }}
+        .button.next-filter-btn(@click="iterateFilterParent")
     canvas#analyser(v-if="node.class_name === 'graph'")
     .gui-wrapper.sliders(v-for="(s, index) in node.sliders" v-if="node.sliders")
       .slider-text

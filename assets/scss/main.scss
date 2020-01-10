@@ -447,6 +447,40 @@ input[type="submit"] {
 }
 
 
+// Browse filter button
+.iterator-group {
+  position: relative;
+  width: auto;
+  .next-filter-btn {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    left: 86px;
+    top: 0;
+    margin-top: -1px;
+    // background: red;
+    background: url(/svg/arrow-going-right.svg) no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+}
+
+@mixin assignTransition($attr, $time, $easing) {
+  -webkit-transition: $attr $time $easing;
+  -moz-transition: $attr $time $easing;
+  -o-transition: $attr $time $easing;
+  transition: $attr $time $easing;
+}
+
+.button {
+  opacity: 0.5;
+  @include assignTransition(opacity, 0.2s, ease-out);
+  &:hover {
+    opacity: 1;
+  }
+}
+
+
 .on-two { background: #03623F; }
 
 // .button-reg-one, .button-reg-two, .totwogle-effect, .effects { 

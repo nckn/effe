@@ -37,7 +37,7 @@ export default {
           {name: 'Wet', min: 0, max: 200, step: 1, value: 0, default: 0}
         ]},
         {name: 'Filter', class_name: 'filter', isOn: true, sliders: [
-          {name: '-', min: 0, max: 22050, step: 1, value: 0, default: 0, curFilter: 'lowpass'},
+          {name: '-', min: 0, max: 22050, step: 1, value: 0, default: 0, curFilter: 'allpass'},
           {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0, default: 10}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
