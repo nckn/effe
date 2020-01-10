@@ -65,7 +65,7 @@ export default {
       newPlayer: false,
       tremoloIsAllowed: false,
       browser: 0,
-      filterType: ['lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch', 'allpass'],
+      filterType: ['allpass', 'lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch'],
       filterValue: 0,
       // Tremolo
       tremolo: {
