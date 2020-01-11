@@ -29,8 +29,8 @@ export default {
   data () {
     return {
       players: [
-        {name: 'Player 1', type: 'player', isPlaying: false, isOn: true, vol: 0.8},
-        {name: 'Player 2', type: 'player', isPlaying: false, isOn: true, vol: 0.8}
+        {name: 'Player 1', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 1},
+        {name: 'Player 2', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 2}
       ],
       nodes: [
         {name: 'Graph', class_name: 'graph', isOn: true},
@@ -98,6 +98,21 @@ export default {
     )
   },
   methods: {
+    playDemo (id) {
+      var s = this
+      console.log(id)
+      const URL = 'https://freesound.org/data/previews/320/320801_2626519-lq.mp3'
+      let yodelBuffer
+      window
+        .fetch(URL)
+        .then(response => response.arrayBuffer())
+        .then(arrayBuffer => s.aC.decodeAudioData(arrayBuffer))
+        .then(audioBuffer => {
+          // playButton.disabled = false
+          // yodelBuffer = audioBuffer
+          console.log(audioBuffer)
+        })
+    },
     iterateFilter () {
       var s = this
       s.browser++

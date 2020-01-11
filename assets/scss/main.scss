@@ -509,6 +509,20 @@ input[type="submit"] {
   &:hover {
     opacity: 1;
   }
+  border-radius: 2px;
+  &.square {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    background: red;
+    &.top-right {
+      // top: 12px;
+      // right: 12px;
+      top: 0;
+      right: 0;
+      z-index: 10;
+    }
+  }
 }
 
 
