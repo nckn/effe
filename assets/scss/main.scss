@@ -97,38 +97,53 @@ canvas#analyser {
   cursor: pointer;
 }
 
+@mixin setOrder($order-sm, $order-md) {
+  order: $order-sm;
+  @media screen and (min-width: $breakp-md) {
+    order: $order-md;
+  }
+}
+
 .master {
   // height: auto;
-  height: 100vh;
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-gap: 12px;
   grid-template-columns: 1fr 1fr;
-  grid-template-areas:
-  "player-one player-two"
-  "fxs fxs"
-  "footer footer";
+  grid-template-rows: 1fr 2fr 1fr;
+  grid-gap: 12px;
+  // grid-template-areas:
+  // "player-one player-two"
+  // "footer footer";
+  // grid-template-rows:auto minmax(60px, auto) 1fr minmax(70px, auto) auto;
   @media screen and (min-width: $breakp-md) {
     grid-template-columns: 1fr 3fr 1fr;
-    grid-template-areas:
-    "player-one fxs player-two"
-    "footer footer footer";
+    grid-template-rows: 1fr 1fr;
+    // grid-template-areas:
+    // "player-one fxs player-two"
+    // "footer footer footer";
   }
+  height: 100vh;
   .containers {
     &.player {
       &.one {
-        grid-area: player-one;
+        order: 1;
+        // grid-area: player-one;
+        // @include setOrder(1, 1);
       }
-      &.one {
-        grid-area: player-two;
+      &.two {
+        order: 2;
+        // grid-area: player-two;
+        // @include setOrder(2, 3);
       }
     }
     &.fx {
-      grid-area: fxs;
+      order: 3;
+      // @include setOrder(3, 2);
+      // order: 3;
+      // grid-area: fxs;
       // New grid
-      display: grid;
-      // grid-template-columns: 100px 50px 100px;
-      grid-template-rows: 1fr 1fr 1fr; 
+      // display: grid;
+      // // grid-template-columns: 100px 50px 100px;
+      // grid-template-rows: 1fr 1fr 1fr; 
       // // Org grid
       // display: grid;
       // grid-gap: $gap;
@@ -247,7 +262,8 @@ canvas#analyser {
   }
   /* Lower bar */
   .footer {
-    grid-area: footer;
+    order: 4;
+    // grid-area: footer;
     width: 100%;
     height: $footer-height;
     position: fixed;
