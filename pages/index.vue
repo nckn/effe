@@ -23,18 +23,20 @@ export default {
 
 <style lang="scss">
 
-* {
-  padding: 0;
-  margin: 0;
-}
+@import "./assets/scss/main.scss";
 
-html, body {
-  width: 100%;
-  height: 100%;
-}
+// * {
+//   padding: 0;
+//   margin: 0;
+// }
 
-body {
+// html, body {
+//   width: 100%;
+//   height: 100%;
+// }
 
-}
+// body {
+
+// }
 
 </style>
