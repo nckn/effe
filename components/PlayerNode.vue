@@ -2,6 +2,7 @@
   .node.player(@drop="dropEvent" @dragover="dragOver" v-show="node.isOn" v-bind:id="player_id" v-bind:class="{ ishovering: isHovering && !fileIsLoaded }" @dragleave="turnOffHoverState")
     .gui-wrapper
       h2 {{ node.name }}
+      .button.load-demo-btn
       #start-one.button-reg-one.invisible.drop(for='file-upload' @click="togglePlay" ref="start_box" name="player-one" v-bind:class="{ on: node.isPlaying}")
         div#upload-button-one(for='file-upload' ref="upload_btn")
         .play-icon(ref="buttonicon")
@@ -31,6 +32,7 @@
 <script>
 
 // import Logo from '~/components/Logo.vue'
+// https://freesound.org/data/previews/320/320801_2626519-lq.mp3
 
 export default {
   name: 'Node',
