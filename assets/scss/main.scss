@@ -81,26 +81,6 @@ body {
 
 a, a:visited, a:hover, a:focus, a:hover, a:active { text-decoration: none; }
 
-header {
-  width: 100%;
-  height: $header-height;
-  text-align: center; 
-  background: #75C2BF; /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(-90deg, #75C2BF, #6BD6B8); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(-90deg, #75C2BF, #6BD6B8); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(-90deg, #75C2BF, #6BD6B8); /* For Firefox 3.6 to 15 */
-  background: linear-gradient(-90deg, #75C2BF, #6BD6B8); /* Standard syntax */
-  /*position: fixed;*/
-  .logo { 
-    width: 100px;
-    height: 100%;
-    background-image: url("/img/efe-w.png"); 
-    background-size: 40px 40px; 
-    background-repeat: no-repeat;
-    background-position: 20px; 
-  }
-}
-
 /* analyser */
 canvas { 
   width: 16vw;
@@ -112,53 +92,58 @@ canvas#analyser {
   left: 5%;
 }
 
-.alter-filter, #filter-title, .toggle-effect, .button-reg.tremolo { 
-  cursor: pointer;
-  -webkit-user-select: none;  /* Chrome all / Safari all */
-  -moz-user-select: none;     /* Firefox all */
-  -ms-user-select: none;      /* IE 10+ */
-}
-
 /* border radius */
 .node, #start-one, #start-two, .effects, input[type="submit"], input[type="text"] {
   cursor: pointer;
 }
 
 .master {
-  height: auto;
-  .panel {
-    position: relative;
-    width: 100%;
-    height: auto;
-    @media screen and (max-width: $breakp-md) {
-      margin-bottom: 22vh;
+  // height: auto;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-gap: 12px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+  "player-one player-two"
+  "fxs fxs"
+  "footer footer";
+  @media screen and (min-width: $breakp-md) {
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-areas:
+    "player-one fxs player-two"
+    "footer footer footer";
+  }
+  .containers {
+    &.player {
+      &.one {
+        grid-area: player-one;
+      }
+      &.one {
+        grid-area: player-two;
+      }
     }
-    @media screen and (min-width: $breakp-md) {
-      height: calc(100% - #{$footer-height});
+    &.fx {
+      grid-area: fxs;
+      // New grid
+      display: grid;
+      // grid-template-columns: 100px 50px 100px;
+      grid-template-rows: 1fr 1fr 1fr; 
+      // // Org grid
+      // display: grid;
+      // grid-gap: $gap;
+      // grid-template-columns: repeat(2, minmax(100px, 1fr));
+      // // Org grid - end
+      // grid-template-columns: 1fr 1fr 1fr;
+      @media screen and (min-width: $breakp-md) {
+        grid-template-columns: repeat(4, minmax(100px, 1fr));
+        // grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
+      @media screen and (min-width: 1024px) {
+        grid-template-columns: repeat(5, minmax(100px, 1fr));
+        // grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
     }
-    // height: auto;
-    // margin: 6vh auto 100px auto;
-    padding: $gap;
-    /*background: #69ACBE;*/
-    // display: flex;
-    // flex-wrap: wrap;
-    display: grid;
-    grid-gap: $gap;
-    grid-template-columns: repeat(2, minmax(100px, 1fr));
-    // grid-template-columns: 1fr 1fr 1fr;
-    @media screen and (min-width: $breakp-md) {
-      grid-template-columns: repeat(4, minmax(100px, 1fr));
-      // grid-template-columns: 1fr 1fr 1fr 1fr;
-    }
-    @media screen and (min-width: 1024px) {
-      grid-template-columns: repeat(5, minmax(100px, 1fr));
-      // grid-template-columns: 1fr 1fr 1fr 1fr;
-    }
-    // overflow-y: scroll;
-    overflow-y: scroll;
-    &::-webkit-scrollbar { 
-      display: none; 
-    } 
     .node { 
       // width: 18vw;
       // height: 30vh;
@@ -189,6 +174,7 @@ canvas#analyser {
         // background: red;
       }
       &.player { 
+        align-self: stretch;
         // display: block;
         @include transThis(all, 0.5s, ease-out);
         &.ishovering {
@@ -261,6 +247,7 @@ canvas#analyser {
   }
   /* Lower bar */
   .footer {
+    grid-area: footer;
     width: 100%;
     height: $footer-height;
     position: fixed;
@@ -792,3 +779,44 @@ and (-webkit-min-device-pixel-ratio: 2) {
 @media only screen and (min-width : 1680px) {
 
 }
+
+// .panel {
+//   position: relative;
+//   width: 100%;
+//   height: auto;
+//   @media screen and (max-width: $breakp-md) {
+//     margin-bottom: 22vh;
+//   }
+//   @media screen and (min-width: $breakp-md) {
+//     max-height: calc(100% - #{$footer-height});
+//   }
+//   // height: auto;
+//   // margin: 6vh auto 100px auto;
+//   padding: $gap;
+//   // overflow-y: scroll;
+//   overflow-y: scroll;
+//   &::-webkit-scrollbar { 
+//     display: none; 
+//   }
+//   /*background: #69ACBE;*/
+//   // display: flex;
+//   // flex-wrap: wrap;
+//   // New grid
+//   display: grid;
+//   // grid-template-columns: 100px 50px 100px;
+//   grid-template-rows: 1fr 1fr 1fr; 
+//   // // Org grid
+//   // display: grid;
+//   // grid-gap: $gap;
+//   // grid-template-columns: repeat(2, minmax(100px, 1fr));
+//   // // Org grid - end
+//   // grid-template-columns: 1fr 1fr 1fr;
+//   @media screen and (min-width: $breakp-md) {
+//     grid-template-columns: repeat(4, minmax(100px, 1fr));
+//     // grid-template-columns: 1fr 1fr 1fr 1fr;
+//   }
+//   @media screen and (min-width: 1024px) {
+//     grid-template-columns: repeat(5, minmax(100px, 1fr));
+//     // grid-template-columns: 1fr 1fr 1fr 1fr;
+//   }
+// }

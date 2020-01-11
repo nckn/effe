@@ -1,8 +1,12 @@
 <template lang="pug">
   div.master
-    .panel
-      PlayerNode(v-for="(node, index) in players" :node="node" :key="index" :player_id="index")
+    .player-block
+      //- PlayerNode(v-for="(node, index) in players" :node="node" :key="index" :player_id="index")
+      PlayerNode(:node="players[0]" :key="0" :player_id="0")
+    .effect-block
       Node(v-for="(node, index) in nodes" :node="node" :key="`node-${index}`" :node_id="index")
+    .player-block
+      PlayerNode(:node="players[1]" :key="1" :player_id="1")
     Footer(:nodes="nodes" ref="testa")
 </template>
 
