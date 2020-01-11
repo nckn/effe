@@ -61,7 +61,23 @@ export default {
   },
   methods: {
     loadDemo () {
+      var self = this
       this.$parent.playDemo(this.node.id)
+      self.songData = ''
+      // Not very dry
+      // var str = self.droppedFile.name
+      // self.artistInfo.innerHTML = 'Song:<br />' + str
+      // self.artistInfo.innerHTML = str
+      // Succesful load, allow window for playing
+      self.windowIsOpen = true
+      self.toggleHoverState()
+      self.$parent.frameLooper()
+      self.startBox.classList.remove('invisible')
+      self.startBox.classList.add('visible')
+      self.uploadBtn.style.zIndex = -10
+      // var playButton = 'start-' + num
+      // document.getElementById(playButton).removeChild(document.getElementById('drag-instr'));
+      // Not very dry - end
     },
     onFileSelected (e) {
       var self = this
@@ -129,6 +145,8 @@ export default {
       e.preventDefault()
       reader.onload = function (fileEvent) {
         self.songData = fileEvent.target.result
+        // console.log('songData: ' + self.songData)
+        console.log(self.songData)
         var str = self.droppedFile.name
         // self.artistInfo.innerHTML = 'Song:<br />' + str
         self.artistInfo.innerHTML = str

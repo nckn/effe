@@ -102,16 +102,17 @@ export default {
       var s = this
       console.log(id)
       const URL = 'https://freesound.org/data/previews/320/320801_2626519-lq.mp3'
-      let yodelBuffer
+      // let yodelBuffer
       window
         .fetch(URL)
         .then(response => response.arrayBuffer())
-        .then(arrayBuffer => s.aC.decodeAudioData(arrayBuffer))
-        .then(audioBuffer => {
+        .then(arrayBuffer => {
           // playButton.disabled = false
           // yodelBuffer = audioBuffer
-          console.log(audioBuffer)
+          console.log(arrayBuffer)
+          s.playAudio(arrayBuffer, id)
         })
+        // .then(arrayBuffer => s.aC.decodeAudioData(arrayBuffer))
     },
     iterateFilter () {
       var s = this
