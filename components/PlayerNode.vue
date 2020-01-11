@@ -1,6 +1,7 @@
 <template lang="pug">
   .node.player(@drop="dropEvent" @dragover="dragOver" v-show="node.isOn" v-bind:id="player_id" v-bind:class="{ ishovering: isHovering && !fileIsLoaded }" @dragleave="turnOffHoverState")
     .gui-wrapper
+      h2 {{ node.name }}
       #start-one.button-reg-one.invisible.drop(for='file-upload' @click="togglePlay" ref="start_box" name="player-one" v-bind:class="{ on: node.isPlaying}")
         div#upload-button-one(for='file-upload' ref="upload_btn")
         .play-icon(ref="buttonicon")

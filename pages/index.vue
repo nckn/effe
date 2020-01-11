@@ -26,7 +26,13 @@ export default {
 // @import "./assets/scss/main.scss";
 
 // Variables
+// Break points
+$breakp-xs: 480px;
+$breakp-sm: 576px;
 $breakp-md: 768px;
+$breakp-lg: 992px;
+$breakp-xl: 1200px;
+$breakp-xxl: 1600px;
 // $header-height: 40px;
 $header-height: 0;
 $footer-height: 76px;
@@ -112,9 +118,11 @@ a, a:visited, a:hover, a:focus, a:hover, a:active { text-decoration: none; }
 
 /* analyser */
 canvas { 
-  width: 16vw;
-  bottom: 5%;
-  position: absolute;
+  width: 100%;
+  // width: calc(100% - #{2 * $gap});
+  // position: absolute;
+  // left: $gap;
+  // bottom: $gap;
 }
 
 canvas#analyser {
@@ -142,7 +150,7 @@ canvas#analyser {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 2fr 1fr;
-  grid-gap: 12px;
+  grid-gap: $gap;
   grid-auto-flow: dense;
   grid-template-areas:
   "player-one player-two"
@@ -150,7 +158,7 @@ canvas#analyser {
   "footer footer";
   padding: $gap;
   // grid-template-rows:auto minmax(60px, auto) 1fr minmax(70px, auto) auto;
-  @media screen and (min-width: $breakp-md) {
+  @media screen and (min-width: $breakp-lg) {
     grid-template-columns: 1fr 3fr 1fr;
     grid-template-rows: 1fr 1fr;
     grid-template-areas:
@@ -158,7 +166,7 @@ canvas#analyser {
     "footer footer footer";
   }
   height: 100vh;
-  .containers {
+  .container {
     &.players {
       &.p-one {
         grid-area: player-one;
@@ -177,23 +185,27 @@ canvas#analyser {
       @include setOrder(3, 2);
       // order: 3;
       // New grid
-      // display: grid;
-      // // grid-template-columns: 100px 50px 100px;
-      // grid-template-rows: 1fr 1fr 1fr; 
+      display: grid;
+      grid-gap: $gap;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr; 
+      @media screen and (min-width: $breakp-md) {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        // grid-template-rows: 1fr 1fr 1fr; 
+      }
       // // Org grid
       // display: grid;
-      // grid-gap: $gap;
       // grid-template-columns: repeat(2, minmax(100px, 1fr));
       // // Org grid - end
       // grid-template-columns: 1fr 1fr 1fr;
-      @media screen and (min-width: $breakp-md) {
-        grid-template-columns: repeat(4, minmax(100px, 1fr));
-        // grid-template-columns: 1fr 1fr 1fr 1fr;
-      }
-      @media screen and (min-width: 1024px) {
-        grid-template-columns: repeat(5, minmax(100px, 1fr));
-        // grid-template-columns: 1fr 1fr 1fr 1fr;
-      }
+      // @media screen and (min-width: $breakp-md) {
+      //   grid-template-columns: repeat(4, minmax(100px, 1fr));
+      //   // grid-template-columns: 1fr 1fr 1fr 1fr;
+      // }
+      // @media screen and (min-width: 1024px) {
+      //   grid-template-columns: repeat(5, minmax(100px, 1fr));
+      //   // grid-template-columns: 1fr 1fr 1fr 1fr;
+      // }
     }
   }
   /* Lower bar */
