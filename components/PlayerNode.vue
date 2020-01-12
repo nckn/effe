@@ -3,10 +3,9 @@
     .gui-wrapper
       h2 {{ node.name }}
       .button.square.top-right(@click="loadDemo")
-      #start-one.button-reg-one.invisible.drop(for='file-upload' @click="togglePlay" ref="start_box" name="player-one" v-bind:class="{ on: node.isPlaying}")
+      .play-btn.invisible.drop(for='file-upload' @click="togglePlay" ref="start_box" v-bind:class="{ on: node.isPlaying}")
         div#upload-button-one(for='file-upload' ref="upload_btn")
         .play-icon(ref="buttonicon")
-        // <h4 id="drag-instr"><p>drag song here</p></h4>
       output#infolist.artistinfo.one(ref="artist_info")
       input(
         style="display: none;"
