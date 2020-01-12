@@ -62,14 +62,13 @@ export default {
   methods: {
     loadDemo () {
       var self = this
-      this.$parent.playDemo(this.node.id)
-      self.songData = ''
+      self.songData = self.$parent.playDemo(this.node.id)
       // Not very dry
       // var str = self.droppedFile.name
       // self.artistInfo.innerHTML = 'Song:<br />' + str
       // self.artistInfo.innerHTML = str
       // Succesful load, allow window for playing
-      self.windowIsOpen = true
+      // self.isSoundPlaying = true
       self.toggleHoverState()
       self.$parent.frameLooper()
       self.startBox.classList.remove('invisible')

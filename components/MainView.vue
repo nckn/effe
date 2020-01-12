@@ -29,8 +29,8 @@ export default {
   data () {
     return {
       players: [
-        {name: 'Player 1', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 1},
-        {name: 'Player 2', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 2}
+        {name: 'Player 1', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 0},
+        {name: 'Player 2', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 1}
       ],
       nodes: [
         {name: 'Graph', class_name: 'graph', isOn: true},
@@ -101,7 +101,7 @@ export default {
     playDemo (id) {
       var s = this
       console.log(id)
-      const URL = 'https://freesound.org/data/previews/320/320801_2626519-lq.mp3'
+      const URL = 'https://freesound.org/data/previews/244/244337_4469980-lq.mp3'
       // let yodelBuffer
       window
         .fetch(URL)
@@ -111,6 +111,7 @@ export default {
           // yodelBuffer = audioBuffer
           console.log(arrayBuffer)
           s.playAudio(arrayBuffer, id)
+          return arrayBuffer
         })
         // .then(arrayBuffer => s.aC.decodeAudioData(arrayBuffer))
     },
