@@ -52,6 +52,9 @@ export default {
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
           {name: 'Delay time', min: 0, max: 4.9, step: 0.001, value: 0, default: 10},
           {name: 'Feedback', min: 0, max: 0.9, step: 0.01, value: 0, default: 0.45}
+        ]},
+        {name: 'Distortion', class_name: 'distortion', isOn: true, sliders: [
+          {name: 'Drive', min: 0, max: 300, step: 1, value: 0, default: 0}
         ]}
       ],
       aC: null,
@@ -268,6 +271,10 @@ export default {
           } else if (target.id === 'sli-1') {
             s.filter.frequency.value = val
           }
+          break
+        case 'distortion':
+          // s.changeReverb(val, 'mix')
+          console.log('valyuhuuue: ' + val)
           break
         default:
           console.log('Nothing happens...')

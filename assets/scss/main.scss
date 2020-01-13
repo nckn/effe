@@ -28,8 +28,9 @@ $c-speed: #ee7e57;
 $c-reverb: #626292; /* #3a3a5e */
 $c-filter: #49a49d;
 $c-delay: #b7bf7f; /* d2dc8f */
+$c-distortion: #5c82a6; /* d2dc8f */
 
-$node-colors: ("graph",$c-graph),("speed", $c-speed),("reverb",$c-reverb),("filter",$c-filter),("delay",$c-delay);
+$node-colors: ("graph",$c-graph),("speed", $c-speed),("reverb",$c-reverb),("filter",$c-filter),("delay",$c-delay),("distortion",$c-distortion);
 
 // $c-graph: #ff7be0, $c-speed: #9991fc, $c-reverb: #7be2ff, $c-filter: #7bffd1, $c-delay: #e4fa94;
 $color-cross-fader: #444;
@@ -719,6 +720,10 @@ input[type=range]:focus::-moz-range-track {
   &#delay {
     // background: $c-delay;
     @include makeGUINodeColor($c-delay);
+  }
+  &#distortion {
+    // background: $c-delay;
+    @include makeGUINodeColor($c-distortion);
   }
 }
 
