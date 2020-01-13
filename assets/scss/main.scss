@@ -135,8 +135,10 @@ canvas {
     "player-one fxs player-two"
     "footer footer footer";
   }
-  height: 100vh;
+  height: calc(100vh - #{$footer-height});
+  overflow: scroll;
   .container {
+    height: 100%;
     &.players {
       &.p-one {
         grid-area: player-one;
