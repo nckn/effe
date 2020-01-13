@@ -28,7 +28,8 @@ Vue.prototype.$myInjectedFunction = function (_options) {
         x = (i * 2) / n_samples - 1
         curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x))
       }
-      console.log(amount)
+      console.log('val is: ' + amount)
+      // volume.gain.value += -(amount * 0.01)
       return curve
     }
     overdrive.curve = makeDistortionCurve(defaults.drive);
