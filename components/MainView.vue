@@ -229,8 +229,12 @@ export default {
       console.log('val is: ' + val)
       switch (target.name) {
         case 'speed':
-          s.sources[0].playbackRate.value = val
-          s.sources[1].playbackRate.value = val
+          if (s.sources[0]) {
+            s.sources[0].playbackRate.value = val
+          }
+          if (s.sources[1]) {
+            s.sources[1].playbackRate.value = val
+          }
           break
         case 'delay':
           if (target.id === 'sli-0') {
