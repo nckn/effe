@@ -46,7 +46,7 @@ export default {
           {name: 'Wet', min: 0, max: 200, step: 1, value: 0, default: 0}
         ]},
         {name: 'Filter', class_name: 'filter', isOn: true, sliders: [
-          {name: '-', min: 0, max: 22050, step: 1, value: 0, default: 0, curFilter: 'allpass'},
+          {name: 'Value', min: 0, max: 22050, step: 1, value: 0, default: 0, curFilter: 'allpass'},
           {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0, default: 10}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
@@ -87,7 +87,8 @@ export default {
       startTime: [0, 0],
       startOffset: [0, 0],
       curBuffer: [null, null],
-      sD: [null, null]
+      sD: [null, null],
+      arrayBuffersDone: 0
     }
   },
   mounted () {
@@ -118,11 +119,17 @@ export default {
             // playButton.disabled = false
             // yodelBuffer = audioBuffer
             console.log(arrayBuffer)
-            self.playAudio(arrayBuffer, elem.id)
+            elem.arrayBuffer = arrayBuffer
+            self.arrayBuffersDone++
+            if (self.arrayBuffersDone >= 2) {
+              self.playAudio(self.players[0].arrayBuffer, 0)
+              self.playAudio(self.players[1].arrayBuffer, 1)
+            }
             // return arrayBuffer
           })
       })
-        // .then(arrayBuffer => s.aC.decodeAudioData(arrayBuffer))
+      // Hide demo load button
+      self.demoLoaded = true
     },
     iterateFilter () {
       var s = this
@@ -202,10 +209,10 @@ export default {
           self.sources[num].buffer = buffer
           self.sD[num] = buffer
           self.sourceGain[num].gain.value = 0.5
-          self.sources[num].loop = true
           // self.sources[num].connect(self.sourceGain[num])
           self.sources[num].start(self.aC.currentTime, self.startOffset[num], self.sources[num].buffer.duration)
           // self.startAudio(buffer, num)
+          self.sources[num].loop = true
         }, function (e) {
           // console.log(e);
         })
@@ -214,10 +221,10 @@ export default {
         self.sources[num] = self.aC.createBufferSource()
         self.sources[num].buffer = self.sD[num]
         self.sourceGain[num].gain.value = 0.5
-        self.sources[num].loop = true
         self.sources[num].connect(self.sourceGain[num])
         // self.sourceGain[num].connect(self.aC.destination)
         self.sources[num].start(0, self.startOffset[num] % self.sources[num].buffer.duration)
+        self.sources[num].loop = true
       }
     },
     startAudio (buffer, num) {
