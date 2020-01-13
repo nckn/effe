@@ -165,6 +165,10 @@ canvas {
         grid-template-columns: 1fr 1fr 1fr 1fr;
         // grid-template-rows: 1fr 1fr 1fr; 
       }
+      @media screen and (min-width: $breakp-lg) {
+        grid-template-columns: 1fr 1fr 1fr;
+        // grid-template-rows: 1fr 1fr 1fr; 
+      }
       // // Org grid
       // display: grid;
       // grid-template-columns: repeat(2, minmax(100px, 1fr));
@@ -441,6 +445,7 @@ input[type="submit"] {
     height: 64px;
   }
   margin-right: 12px;
+  margin-top: 12px;
   color: #FFF;
   background: #a889e4;
   @include borderRadius(1px);

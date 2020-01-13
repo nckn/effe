@@ -2,7 +2,7 @@
   .node.player(@drop="dropEvent" @dragover="dragOver" v-show="node.isOn" v-bind:id="player_id" v-bind:class="{ ishovering: isHovering && !fileIsLoaded }" @dragleave="turnOffHoverState")
     .gui-wrapper
       h2 {{ node.name }}
-      .button.square.top-right(@click="loadDemo")
+      .button.square.top-right(@click="loadDemo" v-show="demoLoaded === false")
       .play-btn.invisible.drop(for='file-upload' @click="togglePlay" ref="start_box" v-bind:class="{ on: node.isPlaying}")
         div#upload-button-one(for='file-upload' ref="upload_btn")
         .play-icon(ref="buttonicon")
@@ -48,7 +48,8 @@ export default {
       zero: this.player_id,
       isHovering: false,
       droppedFile: null,
-      fileIsLoaded: false
+      fileIsLoaded: false,
+      demoLoaded: false
     }
   },
   mounted () {
@@ -68,11 +69,13 @@ export default {
       // self.artistInfo.innerHTML = str
       // Succesful load, allow window for playing
       // self.isSoundPlaying = true
-      self.toggleHoverState()
+      self.togglePlay()
       self.$parent.frameLooper()
       self.startBox.classList.remove('invisible')
       self.startBox.classList.add('visible')
       self.uploadBtn.style.zIndex = -10
+      // Hide demo load button
+      self.demoLoaded = true
       // var playButton = 'start-' + num
       // document.getElementById(playButton).removeChild(document.getElementById('drag-instr'));
       // Not very dry - end
