@@ -9,7 +9,7 @@ Vue.prototype.$myInjectedFunction = function (_options) {
     const input = _options.input
     const defaults = {
       active: false,
-      drive: 400,
+      drive: 0,
       volume: 1
     }
     const sum = ctx.createGain()
@@ -17,7 +17,7 @@ Vue.prototype.$myInjectedFunction = function (_options) {
     const overdrive = ctx.createWaveShaper()
     
     // console.log('is it this: ' + ctx)
-    function makeDistortionCurve (amount) {
+    var makeDistortionCurve = function (amount) {
       var k = typeof amount === 'number' ? amount : 50,
         n_samples = 44100,
         curve = new Float32Array(n_samples),
@@ -28,6 +28,7 @@ Vue.prototype.$myInjectedFunction = function (_options) {
         x = (i * 2) / n_samples - 1
         curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x))
       }
+      console.log(amount)
       return curve
     }
     overdrive.curve = makeDistortionCurve(defaults.drive);
@@ -39,7 +40,12 @@ Vue.prototype.$myInjectedFunction = function (_options) {
     overdrive.connect(volume);
     volume.connect(sum);
     // sum.connect(ctx.destination);
-    return sum
+    return { 
+      sum: sum,
+      overdrive: overdrive,
+      volume: volume,
+      obj: makeDistortionCurve
+    }
   }
   return createAudioNodes()
 }
@@ -49,7 +55,7 @@ class NewNode {
     this.writeThis()
   }
   writeThis() {
-    console.log('haasdasdasd')
+    // console.log('haasdasdasd')
   }
 }
 

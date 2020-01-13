@@ -54,7 +54,7 @@ export default {
           {name: 'Feedback', min: 0, max: 0.9, step: 0.01, value: 0, default: 0.45}
         ]},
         {name: 'Distortion', class_name: 'distortion', isOn: true, sliders: [
-          {name: 'Drive', min: 0, max: 300, step: 1, value: 0, default: 0}
+          {name: 'Drive', min: 0, max: 100, step: 1, value: 0, default: 0}
         ]}
       ],
       aC: null,
@@ -66,6 +66,7 @@ export default {
       compressor: null,
       analyser: null,
       filter: null,
+      distortion: null,
       masterGain: null,
       preGain: null,
       convoler: null,
@@ -156,7 +157,7 @@ export default {
             self.convolver.buffer = buffer;
           }, function (e) { 
             console.log(e)
-            console.log('it worked')
+            // console.log('it worked')
           })
         }
         request.onerror = function (e) {
@@ -181,6 +182,11 @@ export default {
           self.mix(value)
           break
       }
+    },
+    changeDrive (value) {
+      var self = this
+      self.distortion.overdrive.curve = self.distortion.obj(Number(value))
+      self.distortion.volume.gain.value = 0.5
     },
     prepareAnalyser () {
       if (document.getElementById('analyser')) {
@@ -245,7 +251,7 @@ export default {
     changeVal (target, value) {
       var s = this
       var val = value ? value : target.value
-      console.log('val is: ' + val)
+      // console.log('val is: ' + val)
       switch (target.name) {
         case 'speed':
           if (s.sources[0]) {
@@ -274,7 +280,8 @@ export default {
           break
         case 'distortion':
           // s.changeReverb(val, 'mix')
-          console.log('valyuhuuue: ' + val)
+          // console.log('valyuhuuue: ' + val)
+          s.changeDrive(val)
           break
         default:
           console.log('Nothing happens...')
@@ -306,19 +313,20 @@ export default {
     setupFlanger () {
       var self = this
       // flanger.logThis()
-      const newNode = this.$myInjectedFunction({
+      // makeDistortionCurve(Number(event.target.value))
+      self.distortion = this.$myInjectedFunction({
         input: self.compressor,
         ctx: self.aC
       })
       self.compressor.disconnect(self.masterGain)
-      // self.compressor.connect(newNode)
-      newNode.connect(self.masterGain)
-      // const newNode = new this.myInjectedFunction.NewNode()
+      // self.compressor.connect(distortion)
+      self.distortion.sum.connect(self.masterGain)
+      // const distortion = new this.myInjectedFunction.distortion()
       // self.overdrive = new Flanger.Overdrive()
       // console.log(self.overdrive)
-      console.log('sum is: ' + newNode)
+      console.log('obj is: ' + self.distortion.obj)
       console.log('compressor is: ' + self.compressor)
-      // newNode.connect(s.aC)
+      // distortion.connect(s.aC)
       // Prepare flanger node
       // flanger = new Flanger(s.aC)
       // flanger.delay = 0.005; // Set the delay to 0.005 seconds
