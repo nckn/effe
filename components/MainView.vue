@@ -18,7 +18,7 @@ import Footer from '~/components/Footer.vue'
 
 import globalFunctions from '~/mixins/globalFunctions'
 
-import Flanger from '~/plugins/flanger.js'
+// import flanger from '~/plugins/flanger.js'
 
 // import {Flanger} from 'audio-effects'
 // const flanger = null
@@ -298,6 +298,8 @@ export default {
     },
     setupFlanger () {
       var s = this
+      // flanger.logThis()
+      this.$myInjectedFunction({aC: s.aC})
       // self.overdrive = new Flanger.Overdrive()
       // console.log(self.overdrive)
       // Prepare flanger node

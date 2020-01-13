@@ -46,8 +46,9 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    {src: '~/plugins/flanger.js', ssr: false},
+    {src: '@/plugins/window-fix', ssr: false}
     // {src: '@/plugins/main', ssr: false},
-    {src: '@/plugins/window-fix', ssr: false},
     // {src: '@/plugins/fetchsong', ssr: false}
   ],
   /*
