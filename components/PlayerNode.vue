@@ -2,7 +2,7 @@
   .node.player(@drop="dropEvent" @dragover="dragOver" v-show="node.isOn" v-bind:id="player_id" v-bind:class="{ ishovering: isHovering && !fileIsLoaded }" @dragleave="turnOffHoverState")
     .gui-wrapper
       h2 {{ node.name }}
-      .button.square.top-right(@click="loadDemo" v-show="demoLoaded === false")
+      .button.square.top-right(@click="loadDemo" v-if="!isDemoPlaying")
       .play-btn.invisible.drop(for='file-upload' @click="togglePlay" ref="start_box" v-bind:class="{ on: node.isPlaying}")
         div#upload-button-one(for='file-upload' ref="upload_btn")
         .play-icon(ref="buttonicon")
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+
+import { mapGetters, mapMutations } from 'vuex';
 
 // import Logo from '~/components/Logo.vue'
 // https://freesound.org/data/previews/320/320801_2626519-lq.mp3
@@ -58,8 +60,13 @@ export default {
     self.buttonIcon = self.$refs.buttonicon
     self.artistInfo = self.$refs.artist_info
     self.uploadBtn = self.$refs.upload_btn
+    // console.log('here we go: ' + this.$store.isDemoPlaying)
+  },
+  computed: {
+    ...mapGetters({ isDemoPlaying:  "store/getPlayingState" })
   },
   methods: {
+    ...mapMutations({ toggleDemo:  "store/toggleDemo" }),
     loadDemo () {
       var self = this
       self.songData = self.$parent.playDemo(this.node.id)
@@ -76,6 +83,10 @@ export default {
       self.uploadBtn.style.zIndex = -10
       // Hide demo load button
       self.demoLoaded = true
+      self.toggleDemo()
+      // Hide the click load gui
+      self.windowIsOpen = true
+      self.fileIsLoaded = true
       // var playButton = 'start-' + num
       // document.getElementById(playButton).removeChild(document.getElementById('drag-instr'));
       // Not very dry - end

@@ -49,6 +49,8 @@ export default {
   },
   methods: {
     changeValParent (e) {
+      e.stopPropagation()
+      e.preventDefault()
       var target = e.target || e.srcElement
       // console.log(target.name)
       this.$parent.changeVal(target)
