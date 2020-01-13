@@ -18,6 +18,11 @@ import Footer from '~/components/Footer.vue'
 
 import globalFunctions from '~/mixins/globalFunctions'
 
+import Flanger from '~/plugins/flanger.js'
+
+// import {Flanger} from 'audio-effects'
+// const flanger = null
+
 export default {
   name: 'MainView',
   mixins: [globalFunctions],
@@ -29,8 +34,8 @@ export default {
   data () {
     return {
       players: [
-        {name: 'Player 1', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 0},
-        {name: 'Player 2', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 1}
+        {name: 'Player 1', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 0, demoUrl: '/snd/effe-beat-1.wav'},
+        {name: 'Player 2', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 1, demoUrl: '/snd/effe-bass-1.wav'}
       ],
       nodes: [
         {name: 'Graph', class_name: 'graph', isOn: true},
@@ -94,25 +99,29 @@ export default {
       // self.assignRightSize('effects'),
       self.trackWindowResize(),
       self.prepareAnalyser(),
-      self.setReverb()
+      self.setReverb(),
+      self.setupFlanger()
     )
   },
   methods: {
     playDemo (id) {
-      var s = this
+      var self = this
       console.log(id)
-      const URL = 'https://freesound.org/data/previews/244/244337_4469980-lq.mp3'
+      // const URL = 'https://freesound.org/data/previews/244/244337_4469980-lq.mp3'
+      // const URL = id === 0 ? '/snd/effe-beat-1.wav' : '/snd/effe-bass-1.wav'
       // let yodelBuffer
-      window
-        .fetch(URL)
-        .then(response => response.arrayBuffer())
-        .then(arrayBuffer => {
-          // playButton.disabled = false
-          // yodelBuffer = audioBuffer
-          console.log(arrayBuffer)
-          s.playAudio(arrayBuffer, id)
-          return arrayBuffer
-        })
+      self.players.forEach(elem => {
+        window
+          .fetch(elem.demoUrl)
+          .then(response => response.arrayBuffer())
+          .then(arrayBuffer => {
+            // playButton.disabled = false
+            // yodelBuffer = audioBuffer
+            console.log(arrayBuffer)
+            self.playAudio(arrayBuffer, elem.id)
+            // return arrayBuffer
+          })
+      })
         // .then(arrayBuffer => s.aC.decodeAudioData(arrayBuffer))
     },
     iterateFilter () {
@@ -279,6 +288,17 @@ export default {
       this.sourceGain[1].gain.value = gainTwo
       this.players[0].vol = gainOne
       this.players[1].vol = gainTwo
+    },
+    setupFlanger () {
+      var s = this
+      // self.overdrive = new Flanger.Overdrive()
+      // console.log(self.overdrive)
+      // Prepare flanger node
+      // flanger = new Flanger(s.aC)
+      // flanger.delay = 0.005; // Set the delay to 0.005 seconds
+      // flanger.depth = 0.002; // Set the depth to 0.002
+      // flanger.feedback = 0.5; // Set the feedback to 50%
+      // flanger.speed = 0.25; // Set the speed to 0.25 Hz
     },
     setupAudioNodes () {
       var s = this

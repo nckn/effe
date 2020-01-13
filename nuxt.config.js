@@ -32,7 +32,7 @@ module.exports = {
   */
   css: [
     // SCSS file in the project
-    '@/assets/scss/main.scss'
+    // '@/assets/scss/main.scss'
   ],
   server: {
     port: 8000, // default: 3000
