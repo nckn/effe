@@ -297,11 +297,21 @@ export default {
       this.players[1].vol = gainTwo
     },
     setupFlanger () {
-      var s = this
+      var self = this
       // flanger.logThis()
-      this.$myInjectedFunction({aC: s.aC})
+      const newNode = this.$myInjectedFunction({
+        input: self.compressor,
+        ctx: self.aC
+      })
+      self.compressor.disconnect(self.masterGain)
+      // self.compressor.connect(newNode)
+      newNode.connect(self.masterGain)
+      // const newNode = new this.myInjectedFunction.NewNode()
       // self.overdrive = new Flanger.Overdrive()
       // console.log(self.overdrive)
+      console.log('sum is: ' + newNode)
+      console.log('compressor is: ' + self.compressor)
+      // newNode.connect(s.aC)
       // Prepare flanger node
       // flanger = new Flanger(s.aC)
       // flanger.delay = 0.005; // Set the delay to 0.005 seconds
