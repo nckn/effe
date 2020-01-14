@@ -3,6 +3,7 @@
     .gui-wrapper
       h2 {{ node.name }}
       .button.square.top-right(@click="loadDemo" v-if="!isDemoPlaying")
+        p Load demo
       .play-btn.invisible.drop(for='file-upload' @click="togglePlay" ref="start_box" v-bind:class="{ on: node.isPlaying}")
         div#upload-button-one(for='file-upload' ref="upload_btn")
         .play-icon(ref="buttonicon")

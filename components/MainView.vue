@@ -47,7 +47,7 @@ export default {
         ]},
         {name: 'Filter', class_name: 'filter', isOn: true, sliders: [
           {name: 'Value', min: 0, max: 22050, step: 1, value: 0, default: 0, curFilter: 'allpass'},
-          {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0, default: 10}
+          // {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0, default: 10}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
           {name: 'Delay time', min: 0, max: 4.9, step: 0.001, value: 0, default: 10},
@@ -79,14 +79,17 @@ export default {
       filterType: ['allpass', 'lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch'],
       filterValue: 0,
       // Tremolo
-      tremolo: {
-        isOn: true,
-        ms: 0,
-        round: 14,
-        step: 0,
-        period: 0,
-        filterVal: 0
-      },
+      tDuration: 12, // T for Tremolo
+      tFrequency: 50,
+      tScale: 0.4,
+      // tremolo: {
+      //   isOn: true,
+      //   ms: 0,
+      //   round: 14,
+      //   step: 0,
+      //   period: 0,
+      //   filterVal: 0
+      // },
       // PlayerNodes
       startTime: [0, 0],
       startOffset: [0, 0],
@@ -106,7 +109,7 @@ export default {
       self.prepareAnalyser(),
       self.setReverb(),
       self.setupFlanger(),
-      self.runTremoloEffect()
+      // self.runTremoloEffect()
     )
   },
   methods: {
@@ -194,27 +197,45 @@ export default {
           break
       }
     },
-    changeTremolo (value) {
+    // changeTremolo (value) {
+    //   var self = this
+    //   self.tFrequency = value
+    //   // self.runTremoloEffect()
+    //   console.log('in here')
+    //   // self.tremolo.filterVal = value
+    // },
+    runTremoloEffect (value) {
       var self = this
-      self.tremolo.filterVal = value
-    },
-    runTremoloEffect () {
-      var self = this
-      var now = self.getMillis()
-      var dT = now - self.ms
-      self.step++;
-      if (self.step > self.round) { 
-        self.step = 0
+      // Split the time into valueCount discrete steps.
+      var valueCount = 4096
+      self.tFrequency = value ? value : self.tFrequency
+      // Create a random value curve.
+      var values = new Float32Array(valueCount)
+      for (var i = 0; i < valueCount; i++) {
+        var percent = (i / valueCount) * self.tDuration * self.tFrequency
+        values[i] = 1 + (Math.sin(percent * 2*Math.PI) * self.tScale);
+        // Set the last value to one, to restore playbackRate to normal at the end.
+        if (i == valueCount - 1) {
+          values[i] = 1;
+        }
       }
-      var r = (self.step / self.round) * 2.0 * Math.PI
-      self.ms = now
-      self.period = 300 - 150 * Math.sin(r)
-      var remappedPeriod = self.convertRange(self.period, [150, 450], [0, self.tremolo.filterVal])
-      // self.filter.frequency.value = self.tremolo.filterVal + remappedPeriod
-      console.log('tremolo value: ' + remappedPeriod)
-      if (self.tremolo.isOn) {
-        window.requestAnimationFrame(self.runTremoloEffect())
-      }
+      // Apply it to the gain node immediately, and make it last for 2 seconds.
+      this.masterGain.gain.setValueCurveAtTime(values, self.aC.currentTime, self.tDuration);
+      // var now = self.getMillis()
+      // var dT = now - self.ms
+      // self.step++;
+      // if (self.step > self.round) { 
+      //   self.step = 0
+      // }
+      // var r = (self.step / self.round) * 2.0 * Math.PI
+      // self.ms = now
+      // self.period = 300 - 150 * Math.sin(r)
+      // var remappedPeriod = self.convertRange(self.period, [150, 450], [0, self.tremolo.filterVal])
+      // // self.filter.frequency.value = self.tremolo.filterVal + remappedPeriod
+      // console.log('tremolo value: ' + remappedPeriod)
+      // if (self.tremolo.isOn) {
+      //   window.requestAnimationFrame(self.runTremoloEffect())
+      // }
     },
     changeDrive (value) {
       var self = this
@@ -309,7 +330,7 @@ export default {
           if (target.id === 'sli-0') {
             s.filter.frequency.value = val
           } else if (target.id === 'sli-1') {
-            s.changeReverb(val)
+            s.runTremoloEffect(val)
           }
           break
         case 'distortion':

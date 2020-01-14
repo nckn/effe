@@ -520,10 +520,18 @@ input[type="submit"] {
   }
   border-radius: 2px;
   &.square {
+    // width: 120px;
     width: 24px;
     height: 24px;
     position: absolute;
-    background: red;
+    // background: red;
+    p {
+      text-align: right;
+      white-space: nowrap;
+      position: absolute;
+      margin-top: 4px;
+      right: 0;
+    }
     &.top-right {
       // top: 12px;
       // right: 12px;
