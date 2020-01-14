@@ -13,7 +13,7 @@
         @change="dropEvent"
         ref="fileInput"
       )
-    button.upload-btn(@click="$refs.fileInput.click()" v-show="!fileIsLoaded") Drag a file or click to open
+    button.upload-btn(@click="$refs.fileInput.click()" v-show="!fileIsLoaded") {{ dragText }}
     .gui-wrapper
       input.volume-slider-one(type='range' name='color' min='0' max='1' step='0.01' @input="ctlVol" v-model="node.vol")
     //- .songsearch
@@ -32,11 +32,14 @@
 
 import { mapGetters, mapMutations } from 'vuex';
 
+import globalFunctions from '~/mixins/globalFunctions'
+
 // import Logo from '~/components/Logo.vue'
 // https://freesound.org/data/previews/320/320801_2626519-lq.mp3
 
 export default {
   name: `PlayerNode${1}`,
+  mixins: [globalFunctions],
   props: ['node', 'player_id'],
   components: {
     //
@@ -52,7 +55,8 @@ export default {
       droppedFile: null,
       fileIsLoaded: false,
       demoLoaded: false,
-      id: this.player_id
+      id: this.player_id,
+      dragText: 'Drag an mp3 or wav file here or click this node'
     }
   },
   mounted () {
@@ -145,7 +149,18 @@ export default {
       var self = this
       e.stopPropagation()
       e.preventDefault()
-      // console.log('its in')
+      var isSoundOkay = self.isFileSound(e.dataTransfer.files[0])
+      // console.log('file: ' + isSoundOkay)
+      if (!isSoundOkay) {
+        self.toggleHoverState()
+        self.dragText = 'You need a good old mp3 or wav file. Try again!'
+        return
+      }
+      // console.log('file: ' + typeof e.dataTransfer.files[0].type)
+      // if (e.dataTransfer.files[0].type !== 'audio/mp3' || e.dataTransfer.files[0].type !== 'audio/wav') {
+      //   console.log('no can do!')
+      //   return
+      // }
       self.isHovering = false
       if (e.dataTransfer) {
         console.log(e.dataTransfer.files)

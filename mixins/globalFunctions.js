@@ -1,7 +1,12 @@
 export default {
   methods: {
     convertRange: function (value, r1, r2) {
-      return (value - r1[0]) * (r2[1] - r2[0]) / (r1[1] - r1[0]) + r2[0]
+      return ((value - r1[0]) * (r2[1] - r2[0])) / (r1[1] - r1[0]) + r2[0]
+    },
+    isFileSound (file) {
+      // const acceptedImageTypes = ['image/gif', 'image/jpeg', 'image/png']
+      const acceptedImageTypes = ['audio/mp3', 'audio/wav']
+      return file && acceptedImageTypes.includes(file['type'])
     },
     isSmall: function (val) {
       var self = this
@@ -36,7 +41,7 @@ export default {
       if (!self.isSmScreen) {
         if (idol.length > 0) {
           var idolStyle = document.defaultView.getComputedStyle(idol[0], null)
-          var idolWidth = (parseInt(idolStyle.width, 10))
+          var idolWidth = parseInt(idolStyle.width, 10)
           for (var i = 0; i < idol.length; i++) {
             // console.log('here they are:' + idol[i])
             idol[i].style.height = '' + idolWidth + 'px'
