@@ -196,7 +196,8 @@ export default {
     changeDrive (value) {
       var self = this
       self.distortion.overdrive.curve = self.distortion.obj(Number(value))
-      self.distortion.volume.gain.value = 0.5
+      var distGain = self.convertRange(value, [0, 100], [0.9, 0.3])
+      self.distortion.volume.gain.value = distGain
     },
     prepareAnalyser () {
       if (document.getElementById('analyser')) {
