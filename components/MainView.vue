@@ -111,7 +111,7 @@ export default {
   methods: {
     playDemo (id) {
       var self = this
-      console.log(id)
+      // console.log(id)
       // const URL = 'https://freesound.org/data/previews/244/244337_4469980-lq.mp3'
       // const URL = id === 0 ? '/snd/effe-beat-1.wav' : '/snd/effe-bass-1.wav'
       // let yodelBuffer
@@ -122,12 +122,22 @@ export default {
           .then(arrayBuffer => {
             // playButton.disabled = false
             // yodelBuffer = audioBuffer
-            console.log(arrayBuffer)
+            // console.log('arrayBuffersDone: ' + self.arrayBuffersDone)
             elem.arrayBuffer = arrayBuffer
             self.arrayBuffersDone++
             if (self.arrayBuffersDone >= 2) {
+              // alert('arrayBuffersDone: ' + self.arrayBuffersDone)
               self.playAudio(self.players[0].arrayBuffer, 0)
               self.playAudio(self.players[1].arrayBuffer, 1)
+              if (id === 0) {
+                // console.log('id is: ' + id)
+                this.$children[7].togglePlay()
+                this.$children[7].changeAppearance()
+              } else if (id === 1) {
+                // console.log('id is: ' + id)
+                this.$children[0].togglePlay()
+                this.$children[0].changeAppearance()
+              }
             }
             // return arrayBuffer
           })
@@ -312,6 +322,10 @@ export default {
     },
     setupFlanger () {
       var self = this
+      var obj = self.logObject(this.$children)
+      console.log('finding other player: ')
+      console.log(this.$children)
+      // console.log(this.$children[0])
       // flanger.logThis()
       // makeDistortionCurve(Number(event.target.value))
       self.distortion = this.$myInjectedFunction({

@@ -32,13 +32,13 @@ export default {
   },
   watch: {
     sliderVal () {
-      console.log('its changing ' + this.sliderVal)
+      // console.log('its changing ' + this.sliderVal)
     }
   },
   mounted () {
     var self = this
     if (self.node.sliders) {
-      console.log(self.node.sliders[0])
+      // console.log(self.node.sliders[0])
     }
     // if (self.node.class_name === 'graph') {
     //   var canvas = document.getElementById('analyser');

@@ -36,7 +36,7 @@ import { mapGetters, mapMutations } from 'vuex';
 // https://freesound.org/data/previews/320/320801_2626519-lq.mp3
 
 export default {
-  name: 'Node',
+  name: `PlayerNode${1}`,
   props: ['node', 'player_id'],
   components: {
     //
@@ -51,7 +51,8 @@ export default {
       isHovering: false,
       droppedFile: null,
       fileIsLoaded: false,
-      demoLoaded: false
+      demoLoaded: false,
+      id: this.player_id
     }
   },
   mounted () {
@@ -78,18 +79,22 @@ export default {
       // self.isSoundPlaying = true
       self.togglePlay()
       self.$parent.frameLooper()
+      self.toggleDemo()
+      self.changeAppearance()
+      // var playButton = 'start-' + num
+      // document.getElementById(playButton).removeChild(document.getElementById('drag-instr'));
+      // Not very dry - end
+    },
+    changeAppearance () {
+      var self = this
       self.startBox.classList.remove('invisible')
       self.startBox.classList.add('visible')
       self.uploadBtn.style.zIndex = -10
       // Hide demo load button
       self.demoLoaded = true
-      self.toggleDemo()
       // Hide the click load gui
       self.windowIsOpen = true
       self.fileIsLoaded = true
-      // var playButton = 'start-' + num
-      // document.getElementById(playButton).removeChild(document.getElementById('drag-instr'));
-      // Not very dry - end
     },
     onFileSelected (e) {
       var self = this
@@ -104,9 +109,10 @@ export default {
       var self = this
       // self.playToggle = click.target.id
       // Get drop event target number
-      if (self.songData === null) {
-        return
-      }
+      // if (self.songData === null) {
+      //   console.log('songdata is null')
+      //   return
+      // }
       if (self.isSoundPlaying) {
         self.isSoundPlaying = false
         self.$parent.pauseTrack(self.zero)
