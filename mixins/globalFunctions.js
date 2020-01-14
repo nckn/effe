@@ -8,6 +8,10 @@ export default {
       const acceptedImageTypes = ['audio/mp3', 'audio/wav']
       return file && acceptedImageTypes.includes(file['type'])
     },
+    getMillis() {
+      var d = new Date()
+      return d.getTime()
+    },
     isSmall: function (val) {
       var self = this
       var breakp = val

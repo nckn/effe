@@ -75,17 +75,17 @@ export default {
       duration: 0.01,
       filterOn: false,
       effect_is_on: [false, false, false, false, false, false],
-      tremoloIsAllowed: false,
       browser: 0,
       filterType: ['allpass', 'lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch'],
       filterValue: 0,
       // Tremolo
       tremolo: {
-        isOn: false,
+        isOn: true,
         ms: 0,
         round: 14,
         step: 0,
-        period: 0
+        period: 0,
+        filterVal: 0
       },
       // PlayerNodes
       startTime: [0, 0],
@@ -105,7 +105,8 @@ export default {
       self.trackWindowResize(),
       self.prepareAnalyser(),
       self.setReverb(),
-      self.setupFlanger()
+      self.setupFlanger(),
+      self.runTremoloEffect()
     )
   },
   methods: {
@@ -191,6 +192,28 @@ export default {
         case 'mix':
           self.mix(value)
           break
+      }
+    },
+    changeTremolo (value) {
+      var self = this
+      self.tremolo.filterVal = value
+    },
+    runTremoloEffect () {
+      var self = this
+      var now = self.getMillis()
+      var dT = now - self.ms
+      self.step++;
+      if (self.step > self.round) { 
+        self.step = 0
+      }
+      var r = (self.step / self.round) * 2.0 * Math.PI
+      self.ms = now
+      self.period = 300 - 150 * Math.sin(r)
+      var remappedPeriod = self.convertRange(self.period, [150, 450], [0, self.tremolo.filterVal])
+      // self.filter.frequency.value = self.tremolo.filterVal + remappedPeriod
+      console.log('tremolo value: ' + remappedPeriod)
+      if (self.tremolo.isOn) {
+        window.requestAnimationFrame(self.runTremoloEffect())
       }
     },
     changeDrive (value) {
@@ -286,7 +309,7 @@ export default {
           if (target.id === 'sli-0') {
             s.filter.frequency.value = val
           } else if (target.id === 'sli-1') {
-            s.filter.frequency.value = val
+            s.changeReverb(val)
           }
           break
         case 'distortion':
