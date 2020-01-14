@@ -48,6 +48,9 @@ export default {
         {name: 'Filter', class_name: 'filter', isOn: true, sliders: [
           {name: 'Value', min: 0, max: 22050, step: 1, value: 0, default: 0, curFilter: 'allpass'},
           // {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0, default: 10}
+          {name: 'vSpeed', min: 0.5, max: 15, step: 0.25, value: 3.5, default: 3.5},
+          {name: 'vDelay', min: 0.005, max: 0.055, step: 0.005, value: 0.03, default: 0.03},
+          {name: 'vDepth', min: 0.0005, max: 0.0004, step: 0.0005, value: 0.002, default: 0.002}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
           {name: 'Delay time', min: 0, max: 4.9, step: 0.001, value: 0, default: 10},
@@ -82,6 +85,9 @@ export default {
       tDuration: 12, // T for Tremolo
       tFrequency: 50,
       tScale: 0.4,
+      cspeed: 3.5,
+      cdelay: 0.03,
+      cdepth: 0.002,
       // tremolo: {
       //   isOn: true,
       //   ms: 0,
@@ -204,6 +210,43 @@ export default {
     //   console.log('in here')
     //   // self.tremolo.filterVal = value
     // },
+    createVibrato() {
+      var self = this
+      var delayNode = self.aC.createDelay()
+      // delayNode.delayTime.value = parseFloat( document.getElementById("vdelay").value );*
+      self.cdelay = delayNode
+      var inputNode = self.aC.createGain()
+
+      var osc = self.aC.createOscillator()
+      var gain = self.aC.createGain()
+
+      // gain.gain.value = parseFloat( document.getElementById("vdepth").value ) // depth of change to the delay: // **
+      self.cdepth = gain
+
+      osc.type = osc.SINE
+      // osc.frequency.value = parseFloat( document.getElementById("vspeed").value ) // ***
+      self.cspeed = osc
+
+      osc.connect(gain)
+      gain.connect(delayNode.delayTime)
+      inputNode.connect( delayNode )
+      // delayNode.connect( wetGain )
+      osc.start(0)
+      // return inputNode
+      return delayNode
+    },
+    changeVibrato (target) {
+      var self = this
+      // console.log('im here')
+      if (target.id === 'sli-1') {
+        self.cdelay.delayTime.value = parseFloat( target.value ) // *
+        console.log('im here')
+      } else if (target.id === 'sli-2') {
+        self.cdepth.gain.value = parseFloat( target.value ) // **
+      } else if (target.id === 'sli-3') {
+        self.cspeed.frequency.value = parseFloat( target.value ) // ***
+      }
+    },
     runTremoloEffect (value) {
       var self = this
       // Split the time into valueCount discrete steps.
@@ -329,8 +372,9 @@ export default {
         case 'filter':
           if (target.id === 'sli-0') {
             s.filter.frequency.value = val
-          } else if (target.id === 'sli-1') {
-            s.runTremoloEffect(val)
+          } else if (target.id === 'sli-1' || target.id === 'sli-2' || target.id === 'sli-3') {
+            // s.runTremoloEffect(val)
+            s.changeVibrato(target)
           }
           break
         case 'distortion':
@@ -440,7 +484,10 @@ export default {
       // self.filter.connect(self.compressor)
 
       self.compressor.connect(self.masterGain)
-      self.masterGain.connect(self.analyser)
+      self.vibrato = self.createVibrato()
+
+      self.masterGain.connect(self.vibrato)
+      self.vibrato.connect(self.analyser)
       self.analyser.connect(self.aC.destination)
 
       // for (var i = 0; i < self.sourceGain.length; i++) {
