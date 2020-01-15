@@ -48,7 +48,7 @@ export default {
         {name: 'Filter', class_name: 'filter', isOn: true, sliders: [
           {name: 'Value', min: 0, max: 22050, step: 1, value: 0, default: 0, curFilter: 'allpass'},
           // {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0, default: 10}
-          {name: 'vSpeed', min: 0, max: 10, step: 0.1, value: 3, default: 3},
+          {name: 'vSpeed', min: 0, max: 20, step: 0.1, value: 3, default: 3},
           {name: 'vDepth', min: 0, max: 1, step: 0.01, value: 0.3, default: 0.002}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
@@ -325,7 +325,15 @@ export default {
       const tremolo = self.aC.createGain()
       const depthIn = self.aC.createGain()
       const depthOut = self.aC.createGain()
+      const filter = self.aC.createBiquadFilter()
 
+      filter.type = 'lowpass';
+      filter.Q.value = parseFloat(1)
+      // lplfofilter = filter
+
+      filter.frequency.value = 2500;  // center frequency - this is kinda arbitrary.
+      depthOut.gain.value = 2500 * parseFloat( 1 )
+      
       // const [output, toggle] = self.createInputSwitch(input, sum, defaults.active)
 
       // Set default values
@@ -334,7 +342,8 @@ export default {
       depthOut.gain.value = self.cdepth
 
       // Connect the nodes togther
-      lfo.connect(tremolo.gain)
+      lfo.connect(filter)
+      filter.connect(tremolo.gain)
       lfo.start()
       // input.connect(tremolo)
       // tremolo.connect(depthOut)
@@ -345,7 +354,7 @@ export default {
         speed: lfo.frequency.value,
         depth: depthIn.gain.value
       }
-      return {lfo, sum, tremolo, depthOut, depthIn}
+      return {lfo, sum, tremolo, depthOut, depthIn, filter}
     },
     changeVibrato (target) {
       var self = this
