@@ -50,7 +50,7 @@ export default {
           // {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0, default: 10}
           {name: 'vSpeed', min: 0.5, max: 15, step: 0.25, value: 3.5, default: 3.5},
           {name: 'vDelay', min: 0.005, max: 0.055, step: 0.005, value: 0.03, default: 0.03},
-          {name: 'vDepth', min: 0.0005, max: 0.0004, step: 0.0005, value: 0.002, default: 0.002}
+          {name: 'vDepth', min: 0.0005, max: 0.004, step: 0.0005, value: 0.002, default: 0.002}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
           {name: 'Delay time', min: 0, max: 4.9, step: 0.001, value: 0, default: 10},
@@ -244,7 +244,7 @@ export default {
       } else if (target.id === 'sli-2') {
         self.cdepth.gain.value = parseFloat( target.value ) // **
       } else if (target.id === 'sli-3') {
-        self.cspeed.frequency.value = parseFloat( target.value ) // ***
+        // self.cspeed.frequency.value = parseFloat( target.value ) // ***
       }
     },
     runTremoloEffect (value) {
@@ -453,6 +453,9 @@ export default {
       s.convolver = s.aC.createConvolver()
       s.dry = s.aC.createGain()
       s.wet = s.aC.createGain()
+      s.outputMix = s.aC.createGain()
+      // dryGain = audioContext.createGain();
+      s.wetGain = s.aC.createGain()
       s.routeAudioNodes()
     },
     routeAudioNodes () {
@@ -480,14 +483,15 @@ export default {
       // Spotify source I suppose
       self.fetchGain.connect(self.masterGain)
 
-      self.delay.connect(self.compressor)
       // self.filter.connect(self.compressor)
-
-      self.compressor.connect(self.masterGain)
       self.vibrato = self.createVibrato()
+      self.delay.connect(self.vibrato)
 
-      self.masterGain.connect(self.vibrato)
-      self.vibrato.connect(self.analyser)
+      self.vibrato.connect(self.compressor)
+      // self.compressor.connect(self.wetGain)
+      // self.wetGain.connect(self.wetGain)
+      self.compressor.connect(self.masterGain)
+      self.masterGain.connect(self.analyser)
       self.analyser.connect(self.aC.destination)
 
       // for (var i = 0; i < self.sourceGain.length; i++) {
