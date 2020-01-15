@@ -52,7 +52,7 @@ export default {
           {name: 'vDepth', min: 0, max: 1, step: 0.01, value: 0.3, default: 0.002}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
-          {name: 'Delay time', min: 0, max: 4.9, step: 0.001, value: 0, default: 10},
+          {name: 'Delay time', min: 0, max: 1.5, step: 0.05, value: 0, default: 10},
           {name: 'Feedback', min: 0, max: 0.9, step: 0.01, value: 0, default: 0.45}
         ]},
         {name: 'Distortion', class_name: 'distortion', isOn: true, sliders: [
