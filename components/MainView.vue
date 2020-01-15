@@ -48,9 +48,8 @@ export default {
         {name: 'Filter', class_name: 'filter', isOn: true, sliders: [
           {name: 'Value', min: 0, max: 22050, step: 1, value: 0, default: 0, curFilter: 'allpass'},
           // {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0, default: 10}
-          {name: 'vSpeed', min: 0.5, max: 15, step: 0.25, value: 3.5, default: 3.5},
-          {name: 'vDelay', min: 0.005, max: 0.055, step: 0.005, value: 0.03, default: 0.03},
-          {name: 'vDepth', min: 0.0005, max: 0.004, step: 0.0005, value: 0.002, default: 0.002}
+          {name: 'vSpeed', min: 0, max: 10, step: 0.1, value: 3, default: 3},
+          {name: 'vDepth', min: 0, max: 1, step: 0.01, value: 0.3, default: 0.002}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
           {name: 'Delay time', min: 0, max: 4.9, step: 0.001, value: 0, default: 10},
@@ -87,7 +86,7 @@ export default {
       tScale: 0.4,
       cspeed: 3.5,
       cdelay: 0.03,
-      cdepth: 0.002,
+      cdepth: 3,
       // tremolo: {
       //   isOn: true,
       //   ms: 0,
@@ -119,6 +118,89 @@ export default {
     )
   },
   methods: {
+    setupAudioNodes () {
+      var s = this
+      s.aC = new AudioContext()
+      s.feedbackGain = s.aC.createGain() || s.aC.createmasterGain()
+      s.fetchGain = s.aC.createGain() || s.aC.createmasterGain()
+      s.delay = s.aC.createDelay() || s.aC.createDelayNode()
+      s.compressor = s.aC.createDynamicsCompressor()
+      s.analyser = s.aC.createAnalyser()
+      s.filter = s.aC.createBiquadFilter()
+      s.masterGain = s.aC.createGain()
+      s.preGain = s.aC.createGain()
+      s.sourceGain[0] = s.aC.createGain()
+      s.sourceGain[1] = s.aC.createGain()
+      s.convolver = s.aC.createConvolver()
+      s.dry = s.aC.createGain()
+      s.wet = s.aC.createGain()
+      s.outputMix = s.aC.createGain()
+      // dryGain = audioContext.createGain();
+      s.wetGain = s.aC.createGain()
+      s.routeAudioNodes()
+    },
+    routeAudioNodes () {
+      var self = this
+      for (var i = 0; i < self.sources.length; i++) {
+        self.sources[i] = self.aC.createBufferSource()
+        // self.sources[i].loop = true
+        self.sources[i].connect(self.sourceGain[i])
+        self.sourceGain[i].connect(self.convolver)
+        self.sourceGain[i].connect(self.dry)
+      }
+      self.convolver.connect(self.wet);
+
+      self.dry.connect(self.preGain)
+      self.wet.connect(self.preGain)
+
+      self.dry.gain.value = 1.0
+      self.wet.gain.value = 0.0
+
+      self.preGain.connect(self.filter)
+      self.filter.connect(self.delay)
+      self.delay.connect(self.feedbackGain)
+      self.feedbackGain.connect(self.delay)
+
+      // Spotify source I suppose
+      self.fetchGain.connect(self.masterGain)
+
+      // self.filter.connect(self.compressor)
+      self.tNode = self.createVibrato()
+
+      self.delay.connect(self.tNode.tremolo)
+      self.tNode.tremolo.connect(self.tNode.depthOut)
+      self.tNode.depthOut.connect(self.tNode.sum)
+      self.delay.connect(self.tNode.depthIn)
+      self.tNode.depthIn.connect(self.tNode.sum)
+      self.tNode.sum.connect(self.compressor)
+      // console.log('check this out')
+      // console.log(self.tNode)
+      // self.depthIn = self.createVibrato().depthIn
+      // self.depthOut = self.createVibrato().depthOut
+      
+      // self.delay.connect(self.tremolo)
+      // self.tremolo.connect(self.depthOut)
+      // self.depthOut.connect(self.sum)
+      // self.delay.connect(self.depthIn)
+
+      // self.depthOut.connect(self.compressor)
+      // self.depthIn.connect(self.compressor)
+      // self.compressor.connect(self.wetGain)
+      // self.wetGain.connect(self.wetGain)
+      self.compressor.connect(self.masterGain)
+      self.masterGain.connect(self.analyser)
+      self.analyser.connect(self.aC.destination)
+
+      // for (var i = 0; i < self.sourceGain.length; i++) {
+      //   self.sourceGain[i].gain.value = 6
+      // }
+
+      self.feedbackGain.gain.value = 0
+      self.masterGain.gain.value = 1
+      // self.filter.type = self.filterType[self.browser]
+      self.filter.type = self.filterType[0]
+      self.filter.frequency.value = 440
+    },
     playDemo (id) {
       var self = this
       // console.log(id)
@@ -210,41 +292,73 @@ export default {
     //   console.log('in here')
     //   // self.tremolo.filterVal = value
     // },
+    createInputSwitch (input, output, active = false) {
+      var self = this
+      const dry = self.aC.ctx.createGain();
+      const wet = self.aC.ctx.createGain();
+      const out = self.aC.ctx.createGain();
+
+      const toggle = toggleOnOff(dry, wet);
+      toggle(active);
+
+      input.connect(dry);
+      output.connect(wet);
+
+      dry.connect(out);
+      wet.connect(out);
+
+      return [out, toggle];
+    },
     createVibrato() {
       var self = this
-      var delayNode = self.aC.createDelay()
-      // delayNode.delayTime.value = parseFloat( document.getElementById("vdelay").value );*
-      self.cdelay = delayNode
-      var inputNode = self.aC.createGain()
+      // Default settings
+      const defaults = {
+        speed: 3,
+        depth: 0.3,
+        wave: 'sine',
+        active: true
+      };
 
-      var osc = self.aC.createOscillator()
-      var gain = self.aC.createGain()
+      // Create audio nodes
+      const sum = self.aC.createGain()
+      const lfo = self.aC.createOscillator()
+      const tremolo = self.aC.createGain()
+      const depthIn = self.aC.createGain()
+      const depthOut = self.aC.createGain()
 
-      // gain.gain.value = parseFloat( document.getElementById("vdepth").value ) // depth of change to the delay: // **
-      self.cdepth = gain
+      // const [output, toggle] = self.createInputSwitch(input, sum, defaults.active)
 
-      osc.type = osc.SINE
-      // osc.frequency.value = parseFloat( document.getElementById("vspeed").value ) // ***
-      self.cspeed = osc
+      // Set default values
+      lfo.frequency.value = self.cspeed
+      depthIn.gain.value = 1 - self.cdepth
+      depthOut.gain.value = self.cdepth
 
-      osc.connect(gain)
-      gain.connect(delayNode.delayTime)
-      inputNode.connect( delayNode )
-      // delayNode.connect( wetGain )
-      osc.start(0)
-      // return inputNode
-      return delayNode
+      // Connect the nodes togther
+      lfo.connect(tremolo.gain)
+      lfo.start()
+      // input.connect(tremolo)
+      // tremolo.connect(depthOut)
+      // depthOut.connect(sum)
+      // input.connect(depthIn)
+      // depthIn.connect(sum)
+      self.tremolo = {
+        speed: lfo.frequency.value,
+        depth: depthIn.gain.value
+      }
+      return {lfo, sum, tremolo, depthOut, depthIn}
     },
     changeVibrato (target) {
       var self = this
       // console.log('im here')
       if (target.id === 'sli-1') {
-        self.cdelay.delayTime.value = parseFloat( target.value ) // *
-        console.log('im here')
+        self.tNode.lfo.frequency.value = parseFloat( target.value )
+        console.log('slider 1')
       } else if (target.id === 'sli-2') {
-        self.cdepth.gain.value = parseFloat( target.value ) // **
+        self.tNode.depthIn.gain.value = 1 - Number(target.value)
+        self.tNode.depthOut.gain.value = Number(target.value)
+        console.log('slider 2')
       } else if (target.id === 'sli-3') {
-        // self.cspeed.frequency.value = parseFloat( target.value ) // ***
+        // self.cspeed.frequency.value = parseFloat( target.value )
       }
     },
     runTremoloEffect (value) {
@@ -436,73 +550,6 @@ export default {
       // flanger.depth = 0.002; // Set the depth to 0.002
       // flanger.feedback = 0.5; // Set the feedback to 50%
       // flanger.speed = 0.25; // Set the speed to 0.25 Hz
-    },
-    setupAudioNodes () {
-      var s = this
-      s.aC = new AudioContext()
-      s.feedbackGain = s.aC.createGain() || s.aC.createmasterGain()
-      s.fetchGain = s.aC.createGain() || s.aC.createmasterGain()
-      s.delay = s.aC.createDelay() || s.aC.createDelayNode()
-      s.compressor = s.aC.createDynamicsCompressor()
-      s.analyser = s.aC.createAnalyser()
-      s.filter = s.aC.createBiquadFilter()
-      s.masterGain = s.aC.createGain()
-      s.preGain = s.aC.createGain()
-      s.sourceGain[0] = s.aC.createGain()
-      s.sourceGain[1] = s.aC.createGain()
-      s.convolver = s.aC.createConvolver()
-      s.dry = s.aC.createGain()
-      s.wet = s.aC.createGain()
-      s.outputMix = s.aC.createGain()
-      // dryGain = audioContext.createGain();
-      s.wetGain = s.aC.createGain()
-      s.routeAudioNodes()
-    },
-    routeAudioNodes () {
-      var self = this
-      for (var i = 0; i < self.sources.length; i++) {
-        self.sources[i] = self.aC.createBufferSource()
-        // self.sources[i].loop = true
-        self.sources[i].connect(self.sourceGain[i])
-        self.sourceGain[i].connect(self.convolver)
-        self.sourceGain[i].connect(self.dry)
-      }
-      self.convolver.connect(self.wet);
-
-      self.dry.connect(self.preGain)
-      self.wet.connect(self.preGain)
-
-      self.dry.gain.value = 1.0
-      self.wet.gain.value = 0.0
-
-      self.preGain.connect(self.filter)
-      self.filter.connect(self.delay)
-      self.delay.connect(self.feedbackGain)
-      self.feedbackGain.connect(self.delay)
-
-      // Spotify source I suppose
-      self.fetchGain.connect(self.masterGain)
-
-      // self.filter.connect(self.compressor)
-      self.vibrato = self.createVibrato()
-      self.delay.connect(self.vibrato)
-
-      self.vibrato.connect(self.compressor)
-      // self.compressor.connect(self.wetGain)
-      // self.wetGain.connect(self.wetGain)
-      self.compressor.connect(self.masterGain)
-      self.masterGain.connect(self.analyser)
-      self.analyser.connect(self.aC.destination)
-
-      // for (var i = 0; i < self.sourceGain.length; i++) {
-      //   self.sourceGain[i].gain.value = 6
-      // }
-
-      self.feedbackGain.gain.value = 0
-      self.masterGain.gain.value = 1
-      // self.filter.type = self.filterType[self.browser]
-      self.filter.type = self.filterType[0]
-      self.filter.frequency.value = 440
     },
     frameLooper (ctx) {
       var self = this
