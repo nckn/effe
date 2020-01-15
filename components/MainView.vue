@@ -246,6 +246,11 @@ export default {
       s.filter.type = s.filterType[s.browser]
       s.nodes[3].sliders[0].curFilter = s.filter.type
     },
+    resetFilter () {
+      var s = this
+      s.filter.type = 'allpass'
+      s.browser = 0
+    },
     setReverb () {
       var self = this
       var loadImpulse = function (fileName) {

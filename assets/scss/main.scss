@@ -487,23 +487,6 @@ input[type="submit"] {
 }
 
 
-// Browse filter button
-.iterator-group {
-  position: relative;
-  width: auto;
-  .next-filter-btn {
-    width: 24px;
-    height: 24px;
-    position: absolute;
-    left: 86px;
-    top: 0;
-    margin-top: -1px;
-    // background: red;
-    background: url(/svg/arrow-going-right.svg) no-repeat;
-    background-size: contain;
-    background-position: center;
-  }
-}
 
 @mixin assignTransition($attr, $time, $easing) {
   -webkit-transition: $attr $time $easing;
@@ -519,6 +502,15 @@ input[type="submit"] {
     opacity: 1;
   }
   border-radius: 2px;
+  &.icon-btn {
+    width: 24px;
+    height: 24px;
+    position: absolute;    
+    // // background: red;
+    // background: url(/svg/icon-reset.svg) no-repeat;
+    // background-size: contain;
+    // background-position: center;
+  }
   &.square {
     // width: 120px;
     width: 24px;
@@ -542,6 +534,27 @@ input[type="submit"] {
   }
 }
 
+// Browse filter button
+.iterator-group {
+  position: relative;
+  width: auto;
+  .next {
+    background: url(/svg/arrow-going-right.svg) no-repeat;
+    background-size: contain;
+    background-position: center;
+    left: 86px;
+    top: 0;
+    margin-top: -1px;
+  }
+  .reset {    
+    background: url(/svg/icon-reset.svg) no-repeat;
+    background-size: contain;
+    background-position: center;
+    left: 120px;
+    top: 0;
+    margin-top: -1px;
+  }
+}
 
 .on-two { background: #03623F; }
 

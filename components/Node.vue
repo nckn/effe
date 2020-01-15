@@ -4,7 +4,8 @@
       h2 {{ node.name }}
       .iterator-group(v-if="node.class_name === 'filter'")
         h4 {{ node.sliders[0].curFilter }}
-        .button.next-filter-btn(@click="iterateFilterParent")
+        .button.icon-btn.next(@click="iterateFilterParent")
+        .button.icon-btn.reset(@click="resetFilter")
     canvas#analyser(v-if="node.class_name === 'graph'")
     .gui-wrapper.sliders(v-for="(s, index) in node.sliders" v-if="node.sliders")
       .slider-text
@@ -70,6 +71,9 @@ export default {
     },
     iterateFilterParent () {
       this.$parent.iterateFilter()
+    },
+    resetFilter () {
+      this.$parent.resetFilter()
     }
   }
 }
