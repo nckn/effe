@@ -173,20 +173,7 @@ export default {
       self.delay.connect(self.tNode.depthIn)
       self.tNode.depthIn.connect(self.tNode.sum)
       self.tNode.sum.connect(self.compressor)
-      // console.log('check this out')
-      // console.log(self.tNode)
-      // self.depthIn = self.createVibrato().depthIn
-      // self.depthOut = self.createVibrato().depthOut
       
-      // self.delay.connect(self.tremolo)
-      // self.tremolo.connect(self.depthOut)
-      // self.depthOut.connect(self.sum)
-      // self.delay.connect(self.depthIn)
-
-      // self.depthOut.connect(self.compressor)
-      // self.depthIn.connect(self.compressor)
-      // self.compressor.connect(self.wetGain)
-      // self.wetGain.connect(self.wetGain)
       self.compressor.connect(self.masterGain)
       self.masterGain.connect(self.analyser)
       self.analyser.connect(self.aC.destination)
@@ -289,30 +276,6 @@ export default {
           self.mix(value)
           break
       }
-    },
-    // changeTremolo (value) {
-    //   var self = this
-    //   self.tFrequency = value
-    //   // self.runTremoloEffect()
-    //   console.log('in here')
-    //   // self.tremolo.filterVal = value
-    // },
-    createInputSwitch (input, output, active = false) {
-      var self = this
-      const dry = self.aC.ctx.createGain();
-      const wet = self.aC.ctx.createGain();
-      const out = self.aC.ctx.createGain();
-
-      const toggle = toggleOnOff(dry, wet);
-      toggle(active);
-
-      input.connect(dry);
-      output.connect(wet);
-
-      dry.connect(out);
-      wet.connect(out);
-
-      return [out, toggle];
     },
     createVibrato() {
       var self = this
@@ -430,6 +393,10 @@ export default {
       var self = this
       self.players[1].isOn = self.players[1].isOn ? false : true
       // console.log('id is: ' + id)
+    },
+    progressOfSources () {
+      var self = this
+      var progress = ((self.aC.currentTime - self.startedAt) / self.source.buffer.duration) * (self.slider.offsetWidth - marginSubtract) + 'px'
     },
     playAudio (data, num) {
       var self = this
@@ -595,7 +562,7 @@ export default {
     },
     trackWindowResize () {
       window.addEventListener('resize', () => {
-        console.log('yeah hello')
+        // console.log('yeah hello')
         this.assignRightSize('node')
       })
       this.window.addEventListener('resize', this.assignRightSize('node'))
