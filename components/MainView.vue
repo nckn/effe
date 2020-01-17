@@ -63,7 +63,8 @@ export default {
       sources: new Array(2),
       sourceGain: new Array(2),
       sourcesValues: [
-        {startedAt: 0}, {startedAt: 0}
+        {startedAt: 0, childNo: 0, progress: 0},
+        {startedAt: 0, childNo: 7, progress: 0}
       ],
       feedbackGain: null,
       fetchGain: null,
@@ -400,10 +401,14 @@ export default {
     progressOfSources () {
       var self = this
       // * (self.slider.offsetWidth - marginSubtract) + 'px'
-      var progress = ((self.aC.currentTime - self.sourcesValues[0].startedAt) / self.sources[0].buffer.duration)
-      // self.sliderProgress.style.width = self.progress
-      // this.$children[7].updateProgress(progress)
-      this.$children[0].updateProgress(progress)
+      self.sourcesValues.forEach((element, index) => {
+        console.log(element)
+        var childNo = element.childNo
+        element.progress = ((self.aC.currentTime - element.startedAt) / self.sources[index].buffer.duration)
+        // self.sliderProgress.style.width = self.progress
+        // this.$children[7].updateProgress(progress)
+        this.$children[childNo].updateProgress(element.progress)
+      });
       window.requestAnimationFrame(this.progressOfSources)
     },
     playAudio (data, num) {
