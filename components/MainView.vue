@@ -63,8 +63,8 @@ export default {
       sources: new Array(2),
       sourceGain: new Array(2),
       sourcesValues: [
-        {startTime: 0, startedAt: 0, childNo: 0, progress: 0, offset: 0},
-        {startTime: 0, startedAt: 0, childNo: 7, progress: 0, offset: 0}
+        {startTime: 0, childNo: 0, progress: 0, offset: 0},
+        {startTime: 0, childNo: 7, progress: 0, offset: 0}
       ],
       feedbackGain: null,
       fetchGain: null,
@@ -401,7 +401,7 @@ export default {
       var self = this
       // * (self.slider.offsetWidth - marginSubtract) + 'px'
       self.sourcesValues.forEach((element, index) => {
-        console.log(element)
+        // console.log(element)
         var childNo = element.childNo
         element.progress = ((self.aC.currentTime - self.sourcesValues[index].startTime) / self.sources[index].buffer.duration)
         // self.sliderProgress.style.width = self.progress
