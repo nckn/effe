@@ -443,7 +443,7 @@ export default {
         self.srcs[num].src = self.aC.createBufferSource()
         self.srcs[num].src.buffer = self.sD[num]
         self.sourceGain[num].gain.value = 0.5
-        self.srcs[num].src.connect(self.buffersourceGain[num])
+        self.srcs[num].src.connect(self.sourceGain[num])
         // self.sourceGain[num].connect(self.aC.destination)
         self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
         self.srcs[num].src.loop = true
