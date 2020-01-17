@@ -14,7 +14,7 @@
         @change="dropEvent"
         ref="fileInput"
       )
-      input.progress-slider(type='range' name='color' min='0' max='1' step='0.01')
+      input.progress-slider(type='range' name='color' min='0' max='1' step='0.001' v-model="progress" @input="scrubAndStop" @change="scrubStopPlay")
     button.upload-btn(@click="$refs.fileInput.click()" v-show="!fileIsLoaded") {{ dragText }}
     .gui-wrapper
       input.volume-slider-one(type='range' name='color' min='0' max='1' step='0.01' @input="ctlVol" v-model="node.vol")
@@ -58,7 +58,9 @@ export default {
       fileIsLoaded: false,
       demoLoaded: false,
       id: this.player_id,
-      dragText: 'Drag an mp3 or wav file here or click this node'
+      dragText: 'Drag an mp3 or wav file here or click this node',
+      progress: 0,
+      scrubbing: false
     }
   },
   mounted () {
@@ -74,6 +76,36 @@ export default {
   },
   methods: {
     ...mapMutations({ toggleDemo:  "store/toggleDemo" }),
+    updateProgress (val) {
+      var self = this
+      console.log('hi there: ' + val)
+      self.progress = val
+    },
+    scrubTimeline () {
+      var self = this
+      if (!self.scrubbing) {
+        self.scrubAndStop()
+        self.scrubbing = true
+      }
+      // var target = this.target
+      // console.log('hi there: ' + target.value)
+      console.log('hi there: ' + this)
+      // self.progress = target.value
+    },
+    scrubAndStop () {
+      var self = this
+      self.isSoundPlaying = false
+      self.$parent.pauseTrack(self.zero)
+      self.startBox.classList.remove('on')
+      self.buttonIcon.classList.remove('pause')
+    },
+    scrubStopPlay () {
+      var self = this
+      self.isSoundPlaying = true
+      self.$parent.playAudio(self.songData, self.zero);
+      self.startBox.classList.add('on')
+      self.buttonIcon.classList.add('pause');
+    },
     loadDemo () {
       var self = this
       self.songData = self.$parent.playDemo(this.node.id)

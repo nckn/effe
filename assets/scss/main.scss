@@ -321,9 +321,12 @@ canvas {
       background: lighten(#FFF, 10%);
     }
     .artistinfo {
-      width: 9vw;
-      height: 6vw;
-      margin: 1vw 1vw 0 0;
+      width: auto;
+      height: auto;
+      margin-top: 4px;
+      margin-bottom: 20px;
+      // height: 6vw;
+      // margin: 1vw 1vw 0 0;
       float: right; 
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -622,17 +625,17 @@ input {
   }
 }
 
-.file-upload, .file-upload-two { 
-  position: absolute;
-  width: 6vw;
-  height: 6vw;
-  opacity: 0;
-  margin: 0;
-  z-index: 10;
-  cursor: pointer;
-  line-height: 14px;
-  display: block;
-} 
+// .file-upload, .file-upload-two { 
+//   position: absolute;
+//   width: 6vw;
+//   height: 6vw;
+//   opacity: 0;
+//   margin: 0;
+//   z-index: 10;
+//   cursor: pointer;
+//   line-height: 14px;
+//   display: block;
+// } 
 
 .svg-triangle {
   margin: 0 auto;
