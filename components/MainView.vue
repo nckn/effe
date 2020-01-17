@@ -448,6 +448,16 @@ export default {
         // self.sourcesValues[num].startedAt = self.aC.currentTime - self.sourcesValues[num].offset
       }
     },
+    playTrack (num) {
+      var self = this
+      self.sources[num] = self.aC.createBufferSource()
+      self.sources[num].buffer = self.sD[num]
+      self.sourceGain[num].gain.value = 0.5
+      self.sources[num].connect(self.sourceGain[num])
+      // self.sourceGain[num].connect(self.aC.destination)
+      self.sources[num].start(0, self.sourcesValues[num].offset % self.sources[num].buffer.duration)
+      self.sources[num].loop = true
+    },
     pauseTrack (num) {
       var s = this
       s.sourcesValues[num].offset += s.aC.currentTime - s.sourcesValues[num].startTime

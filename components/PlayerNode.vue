@@ -93,6 +93,7 @@ export default {
       // self.progress = target.value
     },
     scrubAndStop () {
+      console.log('scrub and stop')
       var self = this
       self.isSoundPlaying = false
       self.$parent.pauseTrack(self.zero)
@@ -102,7 +103,8 @@ export default {
     scrubStopPlay () {
       var self = this
       self.isSoundPlaying = true
-      self.$parent.playAudio(self.songData, self.zero);
+      // self.$parent.playTrack(self.zero, progress);
+      self.$parent.playTrack(self.zero);
       self.startBox.classList.add('on')
       self.buttonIcon.classList.add('pause');
     },
