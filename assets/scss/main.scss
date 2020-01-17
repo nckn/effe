@@ -712,6 +712,25 @@ input[type=range]:focus::-moz-range-track {
     background: #ccc;
 }
 
+// .progress
+input[name=progress] {
+  // @include transThis(opacity, 0.25s, ease-out);
+  // &::-webkit-slider-thumb {
+  //   opacity: 0;
+  // }
+  // &::-moz-range-thumb {
+  //   opacity: 0;
+  // }
+  // &:hover {
+  //   &::-webkit-slider-thumb {
+  //     opacity: 1;
+  //   }
+  //   &::-moz-range-thumb {
+  //     opacity: 1;
+  //   }
+  // }
+}
+
 @mixin makeGUINodeColor($color) {
   input[type=range] {
     background-color: $color;

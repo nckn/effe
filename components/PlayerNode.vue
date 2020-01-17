@@ -14,7 +14,7 @@
         @change="dropEvent"
         ref="fileInput"
       )
-      input.progress-slider(type='range' name='color' min='0' max='1' step='0.001' v-model="progress" @input="scrubAndStop" @change="scrubStopPlay")
+      input.progress-slider(type='range' name='progress' min='0' max='1' step='0.001' v-model="progress" @input="scrubAndStop" @change="scrubStopPlay")
     button.upload-btn(@click="$refs.fileInput.click()" v-show="!fileIsLoaded") {{ dragText }}
     .gui-wrapper
       input.volume-slider-one(type='range' name='color' min='0' max='1' step='0.01' @input="ctlVol" v-model="node.vol")
