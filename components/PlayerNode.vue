@@ -93,12 +93,28 @@ export default {
       // self.progress = target.value
     },
     scrubAndStop () {
-      console.log('scrub and stop')
+      // console.log('scrub and stop')
       var self = this
-      self.isSoundPlaying = false
+      if (!self.isSoundPlaying) {
+        return
+      }
       self.$parent.pauseTrack(self.zero)
       self.startBox.classList.remove('on')
       self.buttonIcon.classList.remove('pause')
+      self.isSoundPlaying = false
+      // if (!self.scrubbing) {
+      //   self.scrubAndStop()
+      //   self.scrubbing = true
+      // } else {
+      //   if (self.isSoundPlaying) {
+      //     self.isSoundPlaying = false
+      //     self.$parent.pauseTrack(self.zero)
+      //     self.startBox.classList.remove('on')
+      //     self.buttonIcon.classList.remove('pause')
+      //   } else {
+      //     console.log('heyahhh')
+      //   }
+      // }
     },
     scrubStopPlay () {
       var self = this
@@ -107,6 +123,7 @@ export default {
       self.$parent.playTrack(self.zero);
       self.startBox.classList.add('on')
       self.buttonIcon.classList.add('pause');
+      console.log('stopped: ' + self.zero)
     },
     loadDemo () {
       var self = this

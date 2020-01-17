@@ -62,9 +62,9 @@ export default {
       aC: null,
       sources: new Array(2),
       sourceGain: new Array(2),
-      sourcesValues: [
-        {startTime: 0, childNo: 0, progress: 0, offset: 0},
-        {startTime: 0, childNo: 7, progress: 0, offset: 0}
+      srcs: [
+        {src: null, startTime: 0, childNo: 0, progress: 0, offset: 0},
+        {src: null, startTime: 0, childNo: 7, progress: 0, offset: 0}
       ],
       feedbackGain: null,
       fetchGain: null,
@@ -144,10 +144,10 @@ export default {
     },
     routeAudioNodes () {
       var self = this
-      for (var i = 0; i < self.sources.length; i++) {
-        self.sources[i] = self.aC.createBufferSource()
-        // self.sources[i].loop = true
-        self.sources[i].connect(self.sourceGain[i])
+      for (var i = 0; i < self.srcs.length; i++) {
+        self.srcs[i].src = self.aC.createBufferSource()
+        // self.srcs[i].loop = true
+        self.srcs[i].src.connect(self.sourceGain[i])
         self.sourceGain[i].connect(self.convolver)
         self.sourceGain[i].connect(self.dry)
       }
@@ -400,71 +400,76 @@ export default {
     progressOfSources () {
       var self = this
       // * (self.slider.offsetWidth - marginSubtract) + 'px'
-      self.sourcesValues.forEach((element, index) => {
+      self.srcs.forEach((element, index) => {
         // console.log(element)
         var childNo = element.childNo
-        element.progress = ((self.aC.currentTime - self.sourcesValues[index].startTime) / self.sources[index].buffer.duration)
+        if (element.src.buffer != null) {
+          element.progress = ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)
+          this.$children[childNo].updateProgress(element.progress)
+        }
         // self.sliderProgress.style.width = self.progress
         // this.$children[7].updateProgress(progress)
-        this.$children[childNo].updateProgress(element.progress)
       });
       window.requestAnimationFrame(this.progressOfSources)
     },
     playAudio (data, num) {
       var self = this
-      self.sourcesValues[num].startTime = self.aC.currentTime
+      console.log('play audio: ' + num)
+      self.srcs[num].startTime = self.aC.currentTime
       if (self.sD[num] === null) {
         // Has not been decoded or played yet
         self.aC.decodeAudioData(data, function (buffer) {
-          self.sources[num] = self.aC.createBufferSource()
-          self.sources[num].connect(self.sourceGain[num])
+          self.srcs[num].src = self.aC.createBufferSource()
+          self.srcs[num].src.connect(self.sourceGain[num])
           // Reverse buffer
           // Array.prototype.reverse.call( buffer.getChannelData(0) )
           // Array.prototype.reverse.call( buffer.getChannelData(1) )
           // self.filter.connect(self.sourceGain[num])
           // self.sourceGain[num].connect(self.aC.destination)
-          self.sources[num].buffer = buffer
+          self.srcs[num].src.buffer = buffer
           self.sD[num] = buffer
           self.sourceGain[num].gain.value = 0.5
-          // self.sources[num].connect(self.sourceGain[num])
-          self.sources[num].start(self.aC.currentTime, self.sourcesValues[num].offset, self.sources[num].buffer.duration)
-          self.sources[num].loop = true
+          // self.srcs[num].src.connect(self.sourceGain[num])
+          self.srcs[num].src.start(self.aC.currentTime, self.srcs[num].offset, self.srcs[num].src.buffer.duration)
+          self.srcs[num].src.loop = true
           // Set started at
-          // self.sourcesValues[num].startedAt = self.aC.currentTime - self.sourcesValues[num].offset
+          // self.srcs[num].startedAt = self.aC.currentTime - self.srcs[num].offset
           self.progressOfSources()
         }, function (e) {
           // console.log(e);
         })
       } else {
         // Has already been decoded and played once
-        self.sources[num] = self.aC.createBufferSource()
-        self.sources[num].buffer = self.sD[num]
+        self.srcs[num].src = self.aC.createBufferSource()
+        self.srcs[num].src.buffer = self.sD[num]
         self.sourceGain[num].gain.value = 0.5
-        self.sources[num].connect(self.sourceGain[num])
+        self.srcs[num].src.connect(self.buffersourceGain[num])
         // self.sourceGain[num].connect(self.aC.destination)
-        self.sources[num].start(0, self.sourcesValues[num].offset % self.sources[num].buffer.duration)
-        self.sources[num].loop = true
+        self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
+        self.srcs[num].src.loop = true
         // Set started at
-        // self.sourcesValues[num].startedAt = self.aC.currentTime - self.sourcesValues[num].offset
+        // self.srcs[num].startedAt = self.aC.currentTime - self.srcs[num].offset
       }
     },
     playTrack (num) {
       var self = this
-      self.sources[num] = self.aC.createBufferSource()
-      self.sources[num].buffer = self.sD[num]
+      // console.log('in here: ' + num)
+      self.srcs[num].src = self.aC.createBufferSource()
+      self.srcs[num].src.buffer = self.sD[num]
       self.sourceGain[num].gain.value = 0.5
-      self.sources[num].connect(self.sourceGain[num])
+      self.srcs[num].src.connect(self.sourceGain[num])
       // self.sourceGain[num].connect(self.aC.destination)
-      self.sources[num].start(0, self.sourcesValues[num].offset % self.sources[num].buffer.duration)
-      self.sources[num].loop = true
+      self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
+      self.srcs[num].src.loop = true
     },
     pauseTrack (num) {
       var s = this
-      s.sourcesValues[num].offset += s.aC.currentTime - s.sourcesValues[num].startTime
-      if (s.sources[num]) {
-        s.sources[num].disconnect()
-        s.sources[num].stop(0)
-        s.sources[num] = null
+      s.srcs[num].offset += s.aC.currentTime - s.srcs[num].startTime
+      console.log('pause track')
+      if (s.srcs[num].src) {
+        s.srcs[num].src.disconnect()
+        s.srcs[num].src.stop(0)
+        s.srcs[num].src = null
       }
     },
     changeVal (target, value) {
@@ -473,11 +478,11 @@ export default {
       // console.log('val is: ' + val)
       switch (target.name) {
         case 'speed':
-          if (s.sources[0]) {
-            s.sources[0].playbackRate.value = val
+          if (s.srcs[0].src) {
+            s.srcs[0].src.playbackRate.value = val
           }
-          if (s.sources[1]) {
-            s.sources[1].playbackRate.value = val
+          if (s.srcs[1].src) {
+            s.srcs[1].src.playbackRate.value = val
           }
           break
         case 'delay':
