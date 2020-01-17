@@ -439,6 +439,9 @@ export default {
         self.aC.decodeAudioData(data, function (buffer) {
           self.sources[num] = self.aC.createBufferSource()
           self.sources[num].connect(self.sourceGain[num])
+          // Reverse buffer
+          // Array.prototype.reverse.call( buffer.getChannelData(0) )
+          // Array.prototype.reverse.call( buffer.getChannelData(1) )
           // self.filter.connect(self.sourceGain[num])
           // self.sourceGain[num].connect(self.aC.destination)
           self.sources[num].buffer = buffer
