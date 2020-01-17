@@ -78,7 +78,7 @@ export default {
     ...mapMutations({ toggleDemo:  "store/toggleDemo" }),
     updateProgress (val) {
       var self = this
-      console.log('hi there: ' + val)
+      console.log('play progress is: ' + val)
       self.progress = val
     },
     scrubTimeline () {
@@ -89,12 +89,14 @@ export default {
       }
       // var target = this.target
       // console.log('hi there: ' + target.value)
-      console.log('hi there: ' + this)
+      // console.log('hi there: ' + this)
       // self.progress = target.value
     },
     scrubAndStop () {
       // console.log('scrub and stop')
       var self = this
+      // var target = this.target
+      // console.log('val is: ' + self.progress)
       if (!self.isSoundPlaying) {
         return
       }
@@ -120,10 +122,10 @@ export default {
       var self = this
       self.isSoundPlaying = true
       // self.$parent.playTrack(self.zero, progress);
-      self.$parent.playTrack(self.zero);
+      self.$parent.playTrack(self.zero, self.progress);
       self.startBox.classList.add('on')
       self.buttonIcon.classList.add('pause');
-      console.log('stopped: ' + self.zero)
+      // console.log('stopped: ' + self.zero)
     },
     loadDemo () {
       var self = this

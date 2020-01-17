@@ -446,20 +446,27 @@ export default {
         self.srcs[num].src.connect(self.sourceGain[num])
         // self.sourceGain[num].connect(self.aC.destination)
         self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
+        console.log('what is offset: ' + self.srcs[num].offset)
+        // console.log('what is remainder: ' + self.srcs[num].offset % self.srcs[num].src.buffer.duration)
         self.srcs[num].src.loop = true
         // Set started at
         // self.srcs[num].startedAt = self.aC.currentTime - self.srcs[num].offset
       }
     },
-    playTrack (num) {
+    playTrack (num, progress) {
       var self = this
-      // console.log('in here: ' + num)
+      console.log('progress is: ' + progress)
       self.srcs[num].src = self.aC.createBufferSource()
       self.srcs[num].src.buffer = self.sD[num]
       self.sourceGain[num].gain.value = 0.5
       self.srcs[num].src.connect(self.sourceGain[num])
       // self.sourceGain[num].connect(self.aC.destination)
-      self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
+      // var songFraction = self.srcs[num].src.buffer.duration * ratio
+      // self.srcs[num].src.start(0, newOffset)
+      // var newOffset = self.aC.currentTime * progress
+      var newOffset = self.srcs[num].src.buffer.duration * progress
+      self.srcs[num].src.start(self.aC.currentTime, newOffset, self.srcs[num].src.buffer.duration)
+      // self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
       self.srcs[num].src.loop = true
     },
     pauseTrack (num) {
