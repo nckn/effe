@@ -62,9 +62,10 @@ export default {
       aC: null,
       sources: new Array(2),
       sourceGain: new Array(2),
+      // Player attributal objects
       sourcesValues: [
-        {startedAt: 0, childNo: 0, progress: 0},
-        {startedAt: 0, childNo: 7, progress: 0}
+        {startTime: 0, childNo: 0, progress: 0, offset: 0},
+        {startTime: 0, childNo: 7, progress: 0, offset: 0}
       ],
       feedbackGain: null,
       fetchGain: null,
@@ -99,9 +100,6 @@ export default {
       //   period: 0,
       //   filterVal: 0
       // },
-      // PlayerNodes
-      startTime: [0, 0],
-      startOffset: [0, 0],
       curBuffer: [null, null],
       sD: [null, null],
       arrayBuffersDone: 0
@@ -404,7 +402,7 @@ export default {
       self.sourcesValues.forEach((element, index) => {
         console.log(element)
         var childNo = element.childNo
-        element.progress = ((self.aC.currentTime - element.startedAt) / self.sources[index].buffer.duration)
+        element.progress = ((self.aC.currentTime - element.startTime) / self.sources[index].buffer.duration)
         // self.sliderProgress.style.width = self.progress
         // this.$children[7].updateProgress(progress)
         this.$children[childNo].updateProgress(element.progress)
@@ -413,7 +411,7 @@ export default {
     },
     playAudio (data, num) {
       var self = this
-      self.startTime[num] = self.aC.currentTime
+      self.sourcesValues[num].startTime = self.aC.currentTime
       if (self.sD[num] === null) {
         // Has not been decoded or played yet
         self.aC.decodeAudioData(data, function (buffer) {
@@ -428,10 +426,10 @@ export default {
           self.sD[num] = buffer
           self.sourceGain[num].gain.value = 0.5
           // self.sources[num].connect(self.sourceGain[num])
-          self.sources[num].start(self.aC.currentTime, self.startOffset[num], self.sources[num].buffer.duration)
+          self.sources[num].start(self.aC.currentTime, self.sourcesValues[num].offset, self.sources[num].buffer.duration)
           self.sources[num].loop = true
           // Set started at
-          self.sourcesValues[num].startedAt = self.aC.currentTime - self.startOffset[num]
+          self.sourcesValues[num].startTime = self.aC.currentTime - self.sourcesValues[num].offset
           self.progressOfSources()
         }, function (e) {
           // console.log(e);
@@ -443,15 +441,15 @@ export default {
         self.sourceGain[num].gain.value = 0.5
         self.sources[num].connect(self.sourceGain[num])
         // self.sourceGain[num].connect(self.aC.destination)
-        self.sources[num].start(0, self.startOffset[num] % self.sources[num].buffer.duration)
+        self.sources[num].start(0, self.sourcesValues[num].offset % self.sources[num].buffer.duration)
         self.sources[num].loop = true
         // Set started at
-        self.sourcesValues[num].startedAt = self.aC.currentTime - self.startOffset[num]
+        self.sourcesValues[num].startTime = self.aC.currentTime - self.sourcesValues[num].offset
       }
     },
     pauseTrack (num) {
       var s = this
-      s.startOffset[num] += s.aC.currentTime - s.startTime[num];
+      s.sourcesValues[num].offset += s.aC.currentTime - s.sourcesValues[num].startTime;
       if (s.sources[num]) {
         s.sources[num].disconnect()
         s.sources[num].stop(0)
