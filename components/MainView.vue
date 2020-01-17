@@ -332,11 +332,11 @@ export default {
       // console.log('im here')
       if (target.id === 'sli-1') {
         self.tNode.lfo.frequency.value = parseFloat( target.value )
-        console.log('slider 1')
+        // console.log('slider 1')
       } else if (target.id === 'sli-2') {
         self.tNode.depthIn.gain.value = 1 - Number(target.value)
         self.tNode.depthOut.gain.value = Number(target.value)
-        console.log('slider 2')
+        // console.log('slider 2')
       } else if (target.id === 'sli-3') {
         // self.cspeed.frequency.value = parseFloat( target.value )
       }
@@ -403,7 +403,7 @@ export default {
       self.srcs.forEach((element, index) => {
         // console.log(element)
         var childNo = element.childNo
-        if (element.src.buffer != null) {
+        if (element.src.buffer) {
           element.progress = ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)
           this.$children[childNo].updateProgress(element.progress)
         }
@@ -465,7 +465,8 @@ export default {
     pauseTrack (num) {
       var s = this
       s.srcs[num].offset += s.aC.currentTime - s.srcs[num].startTime
-      console.log('pause track')
+      // console.log('pause track')
+      // console.log('off set is: ' + s.srcs[num].offset)
       if (s.srcs[num].src) {
         s.srcs[num].src.disconnect()
         s.srcs[num].src.stop(0)
@@ -522,7 +523,7 @@ export default {
       // var gainTwo = val
       var gainOne = self.convertRange( val, [ 0.1, 1.9 ], [ 1, 0 ] )
       var gainTwo = self.convertRange( val, [ 0.1, 1.9 ], [ 0, 1 ] )
-      console.log('gainOne: ' + gainOne + ', ' + 'gainTwo: ' + gainTwo)
+      // console.log('gainOne: ' + gainOne + ', ' + 'gainTwo: ' + gainTwo)
       // Snapping effect. Snaps to zero
       // this.sourceGain[0].gain.value = (gainOne > 0.2) ? gainOne : 0
       // this.sourceGain[1].gain.value = (gainTwo > 0.2) ? gainTwo : 0
@@ -538,8 +539,8 @@ export default {
     setupFlanger () {
       var self = this
       var obj = self.logObject(this.$children)
-      console.log('finding other player: ')
-      console.log(this.$children)
+      // console.log('finding other player: ')
+      // console.log(this.$children)
       // console.log(this.$children[0])
       // flanger.logThis()
       // makeDistortionCurve(Number(event.target.value))
@@ -553,8 +554,8 @@ export default {
       // const distortion = new this.myInjectedFunction.distortion()
       // self.overdrive = new Flanger.Overdrive()
       // console.log(self.overdrive)
-      console.log('obj is: ' + self.distortion.obj)
-      console.log('compressor is: ' + self.compressor)
+      // console.log('obj is: ' + self.distortion.obj)
+      // console.log('compressor is: ' + self.compressor)
       // distortion.connect(s.aC)
       // Prepare flanger node
       // flanger = new Flanger(s.aC)
