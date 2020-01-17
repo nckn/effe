@@ -37,7 +37,7 @@ export default {
     assignRightSize (elemString) {
       // Make sure always square
       // TODO: Make sure they are from beginning
-      console.log('should resize')
+      // console.log('should resize')
       if (!elemString) {
         return
       }

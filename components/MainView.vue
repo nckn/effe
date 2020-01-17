@@ -594,9 +594,14 @@ export default {
       window.requestAnimationFrame(this.frameLooper.bind(this))
     },
     trackWindowResize () {
-      if (typeof this.window !== undefined) {
-        this.window.addEventListener('resize', this.assignRightSize('node'))
-      }
+      window.addEventListener('resize', () => {
+        console.log('yeah hello')
+        this.assignRightSize('node')
+      })
+      this.window.addEventListener('resize', this.assignRightSize('node'))
+      // if (typeof this.window !== undefined) {
+      //   this.window.addEventListener('resize', this.assignRightSize('node'))
+      // }
     },
   }
 }
