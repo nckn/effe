@@ -365,18 +365,27 @@ export default {
     },
     progressOfSources () {
       var self = this
-      // * (self.slider.offsetWidth - marginSubtract) + 'px'
       self.srcs.forEach((element, index) => {
         // console.log(element)
-        var childNo = element.childNo
+        if (element.src.buffer) {
+          var childNo = element.childNo
           element.progress = ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)
           this.$children[childNo].updateProgress(element.progress)
           console.log('the log is: ' + null);
-        if (element.src.buffer) {
         }
         // self.sliderProgress.style.width = self.progress
         // this.$children[7].updateProgress(progress)
       });
+      // * (self.slider.offsetWidth - marginSubtract) + 'px'
+      // for (var s = 0; s < self.srcs.length; s++) {
+      //   console.log('self.srcs.length: ' + self.srcs.length);
+      //   if (self.srcs[s].buffer) {
+      //     var childNo = self.srcs[s].childNo
+      //     self.srcs[s].progress = ((self.aC.currentTime - self.srcs[s].startTime) / self.srcs[s].src.buffer.duration)
+      //     this.$children[childNo].updateProgress(self.srcs[s].progress)
+      //     console.log('the log is: ' + null);
+      //   }
+      // }
       window.requestAnimationFrame(this.progressOfSources)
     },
     playAudio (data, num) {
