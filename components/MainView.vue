@@ -403,9 +403,10 @@ export default {
       self.srcs.forEach((element, index) => {
         // console.log(element)
         var childNo = element.childNo
-        if (element.src.buffer) {
           element.progress = ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)
           this.$children[childNo].updateProgress(element.progress)
+          console.log('the log is: ' + null);
+        if (element.src.buffer) {
         }
         // self.sliderProgress.style.width = self.progress
         // this.$children[7].updateProgress(progress)
@@ -414,10 +415,16 @@ export default {
     },
     playAudio (data, num) {
       var self = this
-      console.log('play audio: ' + num)
+      // console.log('play audio: ' + num)
       self.srcs[num].startTime = self.aC.currentTime
       if (self.sD[num] === null) {
+        // var request = new XMLHttpRequest()
+        // request.open('GET', url, true)
+        // request.responseType = 'arraybuffer'
+        // request.onload = function () {
         // Has not been decoded or played yet
+        var trackData = new ArrayBuffer(data)
+        console.log('the log is: ' + typeof trackData);
         self.aC.decodeAudioData(data, function (buffer) {
           self.srcs[num].src = self.aC.createBufferSource()
           self.srcs[num].src.connect(self.sourceGain[num])
@@ -435,9 +442,12 @@ export default {
           // Set started at
           // self.srcs[num].startedAt = self.aC.currentTime - self.srcs[num].offset
           self.progressOfSources()
+          console.log('success!');
         }, function (e) {
-          // console.log(e);
+          console.log('it fails: ' + e);
         })
+        // }
+        // request.send()
       } else {
         // Has already been decoded and played once
         self.srcs[num].src = self.aC.createBufferSource()

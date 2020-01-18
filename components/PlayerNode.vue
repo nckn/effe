@@ -78,15 +78,15 @@ export default {
     ...mapMutations({ toggleDemo:  "store/toggleDemo" }),
     updateProgress (val) {
       var self = this
-      console.log('play progress is: ' + val)
+      // console.log('play progress is: ' + val)
       self.progress = val
     },
     scrubTimeline () {
-      var self = this
-      if (!self.scrubbing) {
-        self.scrubAndStop()
-        self.scrubbing = true
-      }
+      // var self = this
+      // if (!self.scrubbing) {
+      //   self.scrubAndStop()
+      //   self.scrubbing = true
+      // }
       // var target = this.target
       // console.log('hi there: ' + target.value)
       // console.log('hi there: ' + this)
