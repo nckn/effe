@@ -116,8 +116,7 @@ export default {
       self.trackWindowResize(),
       self.prepareAnalyser(),
       self.setReverb(),
-      self.setupFlanger(),
-      // self.runTremoloEffect()
+      self.setupFlanger()
     )
   },
   methods: {
@@ -341,39 +340,6 @@ export default {
         // self.cspeed.frequency.value = parseFloat( target.value )
       }
     },
-    runTremoloEffect (value) {
-      var self = this
-      // Split the time into valueCount discrete steps.
-      var valueCount = 4096
-      self.tFrequency = value ? value : self.tFrequency
-      // Create a random value curve.
-      var values = new Float32Array(valueCount)
-      for (var i = 0; i < valueCount; i++) {
-        var percent = (i / valueCount) * self.tDuration * self.tFrequency
-        values[i] = 1 + (Math.sin(percent * 2*Math.PI) * self.tScale);
-        // Set the last value to one, to restore playbackRate to normal at the end.
-        if (i == valueCount - 1) {
-          values[i] = 1;
-        }
-      }
-      // Apply it to the gain node immediately, and make it last for 2 seconds.
-      this.masterGain.gain.setValueCurveAtTime(values, self.aC.currentTime, self.tDuration);
-      // var now = self.getMillis()
-      // var dT = now - self.ms
-      // self.step++;
-      // if (self.step > self.round) { 
-      //   self.step = 0
-      // }
-      // var r = (self.step / self.round) * 2.0 * Math.PI
-      // self.ms = now
-      // self.period = 300 - 150 * Math.sin(r)
-      // var remappedPeriod = self.convertRange(self.period, [150, 450], [0, self.tremolo.filterVal])
-      // // self.filter.frequency.value = self.tremolo.filterVal + remappedPeriod
-      // console.log('tremolo value: ' + remappedPeriod)
-      // if (self.tremolo.isOn) {
-      //   window.requestAnimationFrame(self.runTremoloEffect())
-      // }
-    },
     changeDrive (value) {
       var self = this
       self.distortion.overdrive.curve = self.distortion.obj(Number(value))
@@ -517,7 +483,6 @@ export default {
           if (target.id === 'sli-0') {
             s.filter.frequency.value = val
           } else if (target.id === 'sli-1' || target.id === 'sli-2' || target.id === 'sli-3') {
-            // s.runTremoloEffect(val)
             s.changeVibrato(target)
           }
           break
