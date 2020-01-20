@@ -259,23 +259,17 @@ export default {
     },
     loadAudio (data, num) {
       var self = this
-      var trackData = new ArrayBuffer(data)
-      console.log('we are loading: ' + trackData);
+      // var trackData = new ArrayBuffer(data)
+      console.log('data type: ' + typeof data);
+      // console.log('we are loading: ' + trackData);
       // console.log('the log is: ' + typeof trackData);
       self.aC.decodeAudioData(data, function (buffer) {
-        self.srcs[num].src = self.aC.createBufferSource()
-        self.srcs[num].src.connect(self.sourceGain[num])
-        self.srcs[num].src.loop = true
-        // Flag source as hasOne
         self.srcs[num].isVirgin = false
         // Reverse buffer
         // Array.prototype.reverse.call( buffer.getChannelData(0) )
         // Array.prototype.reverse.call( buffer.getChannelData(1) )
-        // self.filter.connect(self.sourceGain[num])
         self.srcs[num].src.buffer = buffer
         self.songData[num] = buffer
-        self.sourceGain[num].gain.value = 0.5
-        // console.log('success.')
         // Change appearance of players now that everything is loaded
         if (num === 0) {
           self.$children[0].allowPlayer()
