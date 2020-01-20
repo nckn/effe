@@ -103,7 +103,9 @@ export default {
       // startTime: [0, 0],
       curBuffer: [null, null],
       songData: [null, null],
-      arrayBuffersDone: 0
+      arrayBuffersDone: 0,
+      progressListens: true,
+      newOffset: 0
     }
   },
   mounted () {
@@ -267,6 +269,7 @@ export default {
       // console.log('what is remainder: ' + self.srcs[num].offset % self.srcs[num].src.buffer.duration)
       self.srcs[num].src.loop = true
       // Animate progress
+      // self.progressListens = true
       self.progressOfSources()
     },
     playTrack (num, progress) {
@@ -278,14 +281,18 @@ export default {
       self.srcs[num].src.connect(self.sourceGain[num])
       // self.sourceGain[num].connect(self.aC.destination)
       // var songFraction = self.srcs[num].src.buffer.duration * ratio
-      // self.srcs[num].src.start(0, newOffset)
-      // var newOffset = self.aC.currentTime * progress
-      var newOffset = self.srcs[num].src.buffer.duration * progress
-      self.srcs[num].src.start(self.aC.currentTime, newOffset, self.srcs[num].src.buffer.duration)
+      // self.srcs[num].src.start(0, self.newOffset)
+      // var self.newOffset = self.aC.currentTime * progress
+      self.newOffset = self.srcs[num].src.buffer.duration * progress
+      self.srcs[num].src.start(self.aC.currentTime, self.newOffset, self.srcs[num].src.buffer.duration)
       // self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
       self.srcs[num].src.loop = true
+      // Animate progress
+      self.progressListens = false /* Because scrub happened */
+      self.progressOfSources()
     },
     pauseTrack (num) {
+      // Called when play buttons are called and when scrub starts
       var s = this
       s.srcs[num].offset += s.aC.currentTime - s.srcs[num].startTime
       // console.log('pause track')
@@ -298,28 +305,30 @@ export default {
     },
     progressOfSources () {
       var self = this
-      console.log('in loop');
+      // console.log('in loop');
       self.srcs.forEach((element, index) => {
         // console.log(element)
         if (!element.isVirgin) {
-          var childNo = element.childNo
-          element.progress = ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)
+          var childNo = element.childNo /* Which element */
+          // console.log(element.src.buffer)
+          // return
+          if (!element.src) {
+            return
+          }
+          if (self.progressListens) {
+            console.log('progressListens is true')
+            if (element.src.buffer.duration) {
+              element.progress = ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)
+            }
+          } else {
+            console.log('progressListens is false')
+            element.progress = self.newOffset
+            self.progressListens = true
+          }
           this.$children[childNo].updateProgress(element.progress)
-          console.log('the log is: ' + null);
+          // console.log('the log is: ' + null);
         }
-        // self.sliderProgress.style.width = self.progress
-        // this.$children[7].updateProgress(progress)
-      });
-      // * (self.slider.offsetWidth - marginSubtract) + 'px'
-      // for (var s = 0; s < self.srcs.length; s++) {
-      //   console.log('self.srcs.length: ' + self.srcs.length);
-      //   if (self.srcs[s].buffer) {
-      //     var childNo = self.srcs[s].childNo
-      //     self.srcs[s].progress = ((self.aC.currentTime - self.srcs[s].startTime) / self.srcs[s].src.buffer.duration)
-      //     this.$children[childNo].updateProgress(self.srcs[s].progress)
-      //     console.log('the log is: ' + null);
-      //   }
-      // }
+      })
       window.requestAnimationFrame(self.progressOfSources)
     },
     iterateFilter () {
