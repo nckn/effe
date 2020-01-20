@@ -391,6 +391,7 @@ export default {
     playAudio (data, num) {
       var self = this
       // console.log('play audio: ' + num)
+      // self.progressOfSources()
       self.srcs[num].startTime = self.aC.currentTime
       if (self.sD[num] === null) {
         self.srcs[num].src.start(self.aC.currentTime, self.srcs[num].offset, self.srcs[num].src.buffer.duration)
@@ -439,7 +440,7 @@ export default {
       //     console.log('the log is: ' + null);
       //   }
       // }
-      window.requestAnimationFrame(this.progressOfSources)
+      window.requestAnimationFrame(self.progressOfSources)
     },
     playTrack (num, progress) {
       var self = this
