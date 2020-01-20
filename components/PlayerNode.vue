@@ -130,17 +130,15 @@ export default {
     },
     loadDemo () {
       var self = this
-      self.songData = self.$parent.playDemo(this.node.id)
-      // Not very dry
-      // var str = self.droppedFile.name
-      // self.artistInfo.innerHTML = 'Song:<br />' + str
-      // self.artistInfo.innerHTML = str
-      // Succesful load, allow window for playing
-      // self.isSoundPlaying = true
-      self.togglePlay()
-      self.$parent.frameLooper()
-      self.toggleDemo()
-      self.changeAppearance()
+      self.$parent.fetchDemo(self.playerID)
+      // self.passSongToParent(self.songData, self.playerID)
+      // Pass audio buffer to parent
+      // self.$parent.loadAudio(self.songData, self.playerID)
+      // self.togglePlay()
+      // self.$parent.frameLooper()
+      // // Send to global bool
+      // self.toggleDemo()
+      // self.changeAppearance()
       // var playButton = 'start-' + num
       // document.getElementById(playButton).removeChild(document.getElementById('drag-instr'));
       // Not very dry - end
@@ -201,6 +199,15 @@ export default {
       console.log('leaving')
       this.isHovering = false
     },
+    passSongToParent (data, id) {
+      var self = this
+      self.windowIsOpen = true
+      self.fileIsLoading = true
+      self.toggleHoverState()
+      // self.$parent.frameLooper()
+      // Pass audio buffer to parent
+      self.$parent.loadAudio(data, id)
+    },
     dropEvent (e) {
       var self = this
       e.stopPropagation()
@@ -222,20 +229,10 @@ export default {
       // File reader
       var reader = new FileReader()
       reader.onload = function (fileEvent) {
-        self.songData = fileEvent.target.result
-        // console.log('songData: ' + self.songData)
-        console.log(self.songData)
         var str = self.droppedFile.name
-        // self.artistInfo.innerHTML = 'Song:<br />' + str
         self.artistInfo.innerHTML = str
-        // Succesful load, allow window for playing
-        self.windowIsOpen = true
-        self.fileIsLoading = true
-        self.toggleHoverState()
-        self.$parent.frameLooper()
-        // A file has been loaded. Hide the upload button
-        self.$parent.loadAudio(self.songData, self.playerID);
-        // document.querySelector('.button-reg.invisible.drop').style.border = 'none'
+        self.songData = fileEvent.target.result
+        self.passSongToParent(self.songData, self.playerID)
       }
       reader.readAsArrayBuffer(self.droppedFile)
       // var playButton = 'start-' + num

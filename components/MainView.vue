@@ -190,7 +190,7 @@ export default {
       self.filter.type = self.filterType[0]
       self.filter.frequency.value = 440
     },
-    playDemo (id) {
+    fetchDemo (id) {
       var self = this
       // console.log(id)
       // const URL = 'https://freesound.org/data/previews/244/244337_4469980-lq.mp3'
@@ -409,6 +409,8 @@ export default {
         } else if (num === 1) {
           self.$children[7].allowPlayer()
         }
+        // Show visualizer
+        self.frameLooper()
       }, function (e) {
         console.log('it fails: ' + e)
       })
