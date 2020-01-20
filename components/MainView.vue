@@ -285,7 +285,6 @@ export default {
       self.srcs[obj.id].src.buffer = self.songData[obj.id]
       self.sourceGain[obj.id].gain.value = 0.5
       self.srcs[obj.id].src.connect(self.sourceGain[obj.id])
-      self.srcs[obj.id].src.loop = true
       // self.sourceGain[obj.id].connect(self.aC.destination)
       // console.log('what is offset: ' + self.srcs[obj.id].offset)
       // console.log('what is remainder: ' + self.srcs[obj.id].offset % self.srcs[obj.id].src.buffer.duration)
@@ -304,6 +303,7 @@ export default {
         self.srcs[obj.id].src.start(0, self.srcs[obj.id].offset % self.srcs[obj.id].src.buffer.duration)
         self.sliderOffset[obj.id] = parseFloat(self.srcs[obj.id].progress)
       }
+      self.srcs[obj.id].src.loop = true
       // Animate progress
       // self.progressListens = true
       self.progressOfSources()
