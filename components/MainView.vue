@@ -283,12 +283,10 @@ export default {
       // console.log('what is remainder: ' + self.srcs[obj.id].offset % self.srcs[obj.id].src.buffer.duration)
       self.srcs[obj.id].src.loop = true
       if (obj.progress) {
-        console.log('progress is set')
-        console.log(obj.progress)
         // self.sliderOffset[obj.id] = obj.progress
         // self.newOffset = self.srcs[obj.id].src.buffer.duration * obj.progress
         self.newOffset = self.srcs[obj.id].src.buffer.duration * obj.progress
-        self.sliderOffset[obj.id] = obj.progress
+        self.sliderOffset[obj.id] = parseFloat(obj.progress)
         self.progressListens = false /* Because scrub happened */
         self.srcs[obj.id].src.start(self.aC.currentTime, self.newOffset, self.srcs[obj.id].src.buffer.duration)
       } else {
@@ -298,6 +296,8 @@ export default {
       // self.progressListens = true
       self.progressOfSources()
       console.log('src startTime: ' + self.srcs[obj.id].startTime)
+      console.log('self.newOffset: ' + self.newOffset)
+      console.log('self.sliderOffset[obj.id]: ' + self.sliderOffset[obj.id])
     },
     pauseTrack (num) {
       // Called when play buttons are called and when scrub starts
@@ -325,15 +325,20 @@ export default {
             return
           }
           if (self.progressListens) {
-            if (index === 0) {
-              return
-            }
+            // if (index === 0) {
+            //   return
+            // }
             // console.log('progressListens is true')
             if (element.src.buffer.duration) {
               var newTime = (self.aC.currentTime) - (element.startTime)
-              console.log('currentTime - startTime: ' + newTime.toFixed(2))
+              // console.log('currentTime - startTime: ' + newTime.toFixed(2))
               // element.progress = self.sliderOffset[index] + ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)
-              element.progress = (newTime / element.src.buffer.duration) // org
+              element.progress = (newTime / element.src.buffer.duration) + self.sliderOffset[index] // org
+              console.log('progress: ' + parseFloat(element.progress).toFixed(3))
+              if (element.progress >= 1) {
+                self.sliderOffset[index] = 0
+                self.srcs[index].startTime = self.aC.currentTime
+              } 
               // element.progress = ((self.aC.currentTime - (element.offset)) / element.src.buffer.duration) // closer to ideal
               // element.progress = parseFloat(self.sliderOffset[index] + ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)) // closer to ideal
             }
