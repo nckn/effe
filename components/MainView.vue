@@ -34,11 +34,11 @@ export default {
   data () {
     return {
       players: [
-        {name: 'Player 1', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 0, demoUrl: '/snd/effe-beat-1.wav'},
-        {name: 'Player 2', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 1, demoUrl: '/snd/effe-bass-1.wav'}
+        {name: 'Player 1', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 0, demoUrl: '/snd/effe-beat-1.wav', arrayBuffer: null},
+        {name: 'Player 2', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 1, demoUrl: '/snd/effe-bass-1.wav', arrayBuffer: null}
       ],
       nodes: [
-        {name: 'Graph', class_name: 'graph', isOn: true},
+        {name: 'Visualizer', class_name: 'graph', isOn: true},
         {name: 'Speed', class_name: 'speed', isOn: true, sliders: [
           {name: 'Speed', min: 0.1, max: 1.9, step: 0.02, value: 1, default: 1}
         ]},
@@ -63,8 +63,8 @@ export default {
       sources: new Array(2),
       sourceGain: new Array(2),
       srcs: [
-        {src: null, startTime: 0, childNo: 0, progress: 0, offset: 0},
-        {src: null, startTime: 0, childNo: 7, progress: 0, offset: 0}
+        {src: null, startTime: 0, childNo: 0, progress: 0, offset: 0, isVirgin: true},
+        {src: null, startTime: 0, childNo: 7, progress: 0, offset: 0, isVirgin: true}
       ],
       feedbackGain: null,
       fetchGain: null,
@@ -190,6 +190,36 @@ export default {
       self.filter.type = self.filterType[0]
       self.filter.frequency.value = 440
     },
+    loadAudio (data, num) {
+      var self = this
+      var trackData = new ArrayBuffer(data)
+      console.log('we arer loading: ' + trackData);
+      // console.log('the log is: ' + typeof trackData);
+      self.aC.decodeAudioData(data, function (buffer) {
+        self.srcs[num].src = self.aC.createBufferSource()
+        self.srcs[num].src.connect(self.sourceGain[num])
+        // Flag source as hasOne
+        self.srcs[num].isVirgin = false
+        // Reverse buffer
+        // Array.prototype.reverse.call( buffer.getChannelData(0) )
+        // Array.prototype.reverse.call( buffer.getChannelData(1) )
+        // self.filter.connect(self.sourceGain[num])
+        self.srcs[num].src.buffer = buffer
+        self.sD[num] = buffer
+        self.sourceGain[num].gain.value = 0.5
+        // console.log('success.')
+        // Change appearance of players now that everything is loaded
+        if (num === 0) {
+          self.$children[0].allowPlayer()
+        } else if (num === 1) {
+          self.$children[7].allowPlayer()
+        }
+        // Show visualizer
+        self.frameLooper()
+      }, function (e) {
+        console.log('it fails: ' + e)
+      })
+    },
     fetchDemo (id) {
       var self = this
       // console.log(id)
@@ -208,8 +238,15 @@ export default {
             self.arrayBuffersDone++
             if (self.arrayBuffersDone >= 2) {
               // alert('arrayBuffersDone: ' + self.arrayBuffersDone)
-              self.loadAudio(self.players[0].arrayBuffer, 0)
-              self.loadAudio(self.players[1].arrayBuffer, 1)
+              if (self.srcs[0].isVirgin) {
+                console.log('is null')
+                self.loadAudio(self.players[0].arrayBuffer, 0)
+              } else {
+                console.log('is not null. ' + self.srcs[0].src)
+              }
+              if (self.srcs[1].isVirgin) {
+                self.loadAudio(self.players[1].arrayBuffer, 1)
+              }
               // if (id === 0) {
               //   // console.log('id is: ' + id)
               //   this.$children[7].togglePlay()
@@ -387,33 +424,6 @@ export default {
       //   }
       // }
       window.requestAnimationFrame(this.progressOfSources)
-    },
-    loadAudio (data, num) {
-      var self = this
-      var trackData = new ArrayBuffer(data)
-      console.log('we arer loading: ' + trackData);
-      // console.log('the log is: ' + typeof trackData);
-      self.aC.decodeAudioData(data, function (buffer) {
-        self.srcs[num].src = self.aC.createBufferSource()
-        self.srcs[num].src.connect(self.sourceGain[num])
-        // Reverse buffer
-        // Array.prototype.reverse.call( buffer.getChannelData(0) )
-        // Array.prototype.reverse.call( buffer.getChannelData(1) )
-        // self.filter.connect(self.sourceGain[num])
-        self.srcs[num].src.buffer = buffer
-        self.sD[num] = buffer
-        self.sourceGain[num].gain.value = 0.5
-        console.log('success.')
-        if (num === 0) {
-          self.$children[0].allowPlayer()
-        } else if (num === 1) {
-          self.$children[7].allowPlayer()
-        }
-        // Show visualizer
-        self.frameLooper()
-      }, function (e) {
-        console.log('it fails: ' + e)
-      })
     },
     playAudio (data, num) {
       var self = this

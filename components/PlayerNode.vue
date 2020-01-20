@@ -131,28 +131,17 @@ export default {
     loadDemo () {
       var self = this
       self.$parent.fetchDemo(self.playerID)
+      // Send to global bool
+      self.toggleDemo()
       // self.passSongToParent(self.songData, self.playerID)
       // Pass audio buffer to parent
       // self.$parent.loadAudio(self.songData, self.playerID)
       // self.togglePlay()
       // self.$parent.frameLooper()
-      // // Send to global bool
-      // self.toggleDemo()
       // self.changeAppearance()
       // var playButton = 'start-' + num
       // document.getElementById(playButton).removeChild(document.getElementById('drag-instr'));
       // Not very dry - end
-    },
-    changeAppearance () {
-      var self = this
-      self.startBox.classList.remove('invisible')
-      self.startBox.classList.add('visible')
-      self.uploadBtn.style.zIndex = -10
-      // Hide demo load button
-      self.demoLoaded = true
-      // Hide the click load gui
-      self.windowIsOpen = true
-      self.fileIsLoaded = true
     },
     onFileSelected (e) {
       var self = this
@@ -245,6 +234,8 @@ export default {
       self.uploadBtn.style.zIndex = -10
       // Load the audio
       self.fileIsLoaded = true
+      // Hide the click load gui
+      self.demoLoaded = true
     }
   }
 }
