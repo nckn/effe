@@ -102,7 +102,7 @@ export default {
       // PlayerNodes
       // startTime: [0, 0],
       curBuffer: [null, null],
-      sD: [null, null],
+      songData: [null, null],
       arrayBuffersDone: 0
     }
   },
@@ -190,36 +190,6 @@ export default {
       self.filter.type = self.filterType[0]
       self.filter.frequency.value = 440
     },
-    loadAudio (data, num) {
-      var self = this
-      var trackData = new ArrayBuffer(data)
-      console.log('we arer loading: ' + trackData);
-      // console.log('the log is: ' + typeof trackData);
-      self.aC.decodeAudioData(data, function (buffer) {
-        self.srcs[num].src = self.aC.createBufferSource()
-        self.srcs[num].src.connect(self.sourceGain[num])
-        // Flag source as hasOne
-        self.srcs[num].isVirgin = false
-        // Reverse buffer
-        // Array.prototype.reverse.call( buffer.getChannelData(0) )
-        // Array.prototype.reverse.call( buffer.getChannelData(1) )
-        // self.filter.connect(self.sourceGain[num])
-        self.srcs[num].src.buffer = buffer
-        self.sD[num] = buffer
-        self.sourceGain[num].gain.value = 0.5
-        // console.log('success.')
-        // Change appearance of players now that everything is loaded
-        if (num === 0) {
-          self.$children[0].allowPlayer()
-        } else if (num === 1) {
-          self.$children[7].allowPlayer()
-        }
-        // Show visualizer
-        self.frameLooper()
-      }, function (e) {
-        console.log('it fails: ' + e)
-      })
-    },
     fetchDemo (id) {
       var self = this
       // console.log(id)
@@ -250,6 +220,94 @@ export default {
       })
       // Hide demo load button
       self.demoLoaded = true
+    },
+    loadAudio (data, num) {
+      var self = this
+      var trackData = new ArrayBuffer(data)
+      console.log('we are loading: ' + trackData);
+      // console.log('the log is: ' + typeof trackData);
+      self.aC.decodeAudioData(data, function (buffer) {
+        self.srcs[num].src = self.aC.createBufferSource()
+        self.srcs[num].src.connect(self.sourceGain[num])
+        self.srcs[num].src.loop = true
+        // Flag source as hasOne
+        self.srcs[num].isVirgin = false
+        // Reverse buffer
+        // Array.prototype.reverse.call( buffer.getChannelData(0) )
+        // Array.prototype.reverse.call( buffer.getChannelData(1) )
+        // self.filter.connect(self.sourceGain[num])
+        self.srcs[num].src.buffer = buffer
+        self.songData[num] = buffer
+        self.sourceGain[num].gain.value = 0.5
+        // console.log('success.')
+        // Change appearance of players now that everything is loaded
+        if (num === 0) {
+          self.$children[0].allowPlayer()
+        } else if (num === 1) {
+          self.$children[7].allowPlayer()
+        }
+        // Show visualizer
+        self.frameLooper()
+      }, function (e) {
+        console.log('it fails: ' + e)
+      })
+    },
+    playAudio (data, num) {
+      var self = this
+      // console.log('play audio: ' + num)
+      // self.progressOfSources()
+      self.srcs[num].startTime = self.aC.currentTime
+      if (self.songData[num] === null) {
+        console.log('case 1')
+        self.srcs[num].src.start(self.aC.currentTime, self.srcs[num].offset, self.srcs[num].src.buffer.duration)
+        self.srcs[num].src.loop = true
+        // Set started at
+        // self.srcs[num].startedAt = self.aC.currentTime - self.srcs[num].offset
+        self.progressOfSources()
+        // }
+        // request.send()
+      } else {
+        console.log('case 2')
+        // Has already been decoded and played once
+        self.srcs[num].src = self.aC.createBufferSource()
+        self.srcs[num].src.buffer = self.songData[num]
+        self.sourceGain[num].gain.value = 0.5
+        self.srcs[num].src.connect(self.sourceGain[num])
+        // self.sourceGain[num].connect(self.aC.destination)
+        self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
+        console.log('what is offset: ' + self.srcs[num].offset)
+        // console.log('what is remainder: ' + self.srcs[num].offset % self.srcs[num].src.buffer.duration)
+        self.srcs[num].src.loop = true
+        // Set started at
+        // self.srcs[num].startedAt = self.aC.currentTime - self.srcs[num].offset
+      }
+    },
+    playTrack (num, progress) {
+      var self = this
+      console.log('progress is: ' + progress)
+      self.srcs[num].src = self.aC.createBufferSource()
+      self.srcs[num].src.buffer = self.songData[num]
+      self.sourceGain[num].gain.value = 0.5
+      self.srcs[num].src.connect(self.sourceGain[num])
+      // self.sourceGain[num].connect(self.aC.destination)
+      // var songFraction = self.srcs[num].src.buffer.duration * ratio
+      // self.srcs[num].src.start(0, newOffset)
+      // var newOffset = self.aC.currentTime * progress
+      var newOffset = self.srcs[num].src.buffer.duration * progress
+      self.srcs[num].src.start(self.aC.currentTime, newOffset, self.srcs[num].src.buffer.duration)
+      // self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
+      self.srcs[num].src.loop = true
+    },
+    pauseTrack (num) {
+      var s = this
+      s.srcs[num].offset += s.aC.currentTime - s.srcs[num].startTime
+      // console.log('pause track')
+      // console.log('off set is: ' + s.srcs[num].offset)
+      if (s.srcs[num].src) {
+        s.srcs[num].src.disconnect()
+        s.srcs[num].src.stop(0)
+        s.srcs[num].src = null
+      }
     },
     iterateFilter () {
       var s = this
@@ -388,34 +446,6 @@ export default {
       self.players[1].isOn = self.players[1].isOn ? false : true
       // console.log('id is: ' + id)
     },
-    playAudio (data, num) {
-      var self = this
-      // console.log('play audio: ' + num)
-      // self.progressOfSources()
-      self.srcs[num].startTime = self.aC.currentTime
-      if (self.sD[num] === null) {
-        self.srcs[num].src.start(self.aC.currentTime, self.srcs[num].offset, self.srcs[num].src.buffer.duration)
-        self.srcs[num].src.loop = true
-        // Set started at
-        // self.srcs[num].startedAt = self.aC.currentTime - self.srcs[num].offset
-        self.progressOfSources()
-        // }
-        // request.send()
-      } else {
-        // Has already been decoded and played once
-        self.srcs[num].src = self.aC.createBufferSource()
-        self.srcs[num].src.buffer = self.sD[num]
-        self.sourceGain[num].gain.value = 0.5
-        self.srcs[num].src.connect(self.sourceGain[num])
-        // self.sourceGain[num].connect(self.aC.destination)
-        self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
-        console.log('what is offset: ' + self.srcs[num].offset)
-        // console.log('what is remainder: ' + self.srcs[num].offset % self.srcs[num].src.buffer.duration)
-        self.srcs[num].src.loop = true
-        // Set started at
-        // self.srcs[num].startedAt = self.aC.currentTime - self.srcs[num].offset
-      }
-    },
     progressOfSources () {
       var self = this
       console.log('in loop');
@@ -441,33 +471,6 @@ export default {
       //   }
       // }
       window.requestAnimationFrame(self.progressOfSources)
-    },
-    playTrack (num, progress) {
-      var self = this
-      console.log('progress is: ' + progress)
-      self.srcs[num].src = self.aC.createBufferSource()
-      self.srcs[num].src.buffer = self.sD[num]
-      self.sourceGain[num].gain.value = 0.5
-      self.srcs[num].src.connect(self.sourceGain[num])
-      // self.sourceGain[num].connect(self.aC.destination)
-      // var songFraction = self.srcs[num].src.buffer.duration * ratio
-      // self.srcs[num].src.start(0, newOffset)
-      // var newOffset = self.aC.currentTime * progress
-      var newOffset = self.srcs[num].src.buffer.duration * progress
-      self.srcs[num].src.start(self.aC.currentTime, newOffset, self.srcs[num].src.buffer.duration)
-      // self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
-      self.srcs[num].src.loop = true
-    },
-    pauseTrack (num) {
-      var s = this
-      s.srcs[num].offset += s.aC.currentTime - s.srcs[num].startTime
-      // console.log('pause track')
-      // console.log('off set is: ' + s.srcs[num].offset)
-      if (s.srcs[num].src) {
-        s.srcs[num].src.disconnect()
-        s.srcs[num].src.stop(0)
-        s.srcs[num].src = null
-      }
     },
     changeVal (target, value) {
       var s = this
