@@ -213,44 +213,26 @@ export default {
     fetchDemo (id) {
       var self = this
       self.players.forEach(elem => {
-        var url = elem.demoUrl
+        // var url = elem.demoUrl
+        // var request = new XMLHttpRequest()
+        // request.open('GET', url, true)
+        // request.responseType = 'arraybuffer'
+        // console.log('load Impulse')
+        var url = '/snd/effe-bass-1.wav'
         var request = new XMLHttpRequest()
         request.open('GET', url, true)
         request.responseType = 'arraybuffer'
         request.onload = function () {
-          // alert(request.response)
-          // elem.arrayBuffer = request.response
-          // self.arrayBuffersDone++
-          // if (self.arrayBuffersDone >= 2) {
-          //   // alert('arrayBuffersDone: ' + self.arrayBuffersDone)
-          //   if (self.srcs[0].isVirgin) {
-          //     console.log('is null')
-          //     self.loadAudio(self.players[0].arrayBuffer, 0)
-          //   } else {
-          //     console.log('is not null. ' + self.srcs[0].src)
-          //   }
-          //   if (self.srcs[1].isVirgin) {
-          //     self.loadAudio(self.players[1].arrayBuffer, 1)
-          //   }
-          // }
-          self.aC.decodeAudioData(request.response, function (arrayBuffer) {
-            elem.arrayBuffer = arrayBuffer
-            self.arrayBuffersDone++
-            if (self.arrayBuffersDone >= 2) {
-              // alert('arrayBuffersDone: ' + self.arrayBuffersDone)
-              if (self.srcs[0].isVirgin) {
-                console.log('is null')
-                self.loadDecodedAudio(self.players[0].arrayBuffer, 0)
-              } else {
-                console.log('is not null. ' + self.srcs[0].src)
-              }
-              if (self.srcs[1].isVirgin) {
-                self.loadDecodedAudio(self.players[1].arrayBuffer, 1)
-              }
-            }
-          }, function (e) {
-            console.log('error: ' + e)
+          self.aC.decodeAudioData(request.response, function (buffer) {
+            self.loadAudio(buffer, id)
+          }, function (e) { 
+            console.log(e)
+            console.log('it worked')
           })
+        }
+        request.onerror = function (e) {
+          console.log(e)
+          console.log('didnt work')
         }
         request.send()
       })
