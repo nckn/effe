@@ -218,24 +218,39 @@ export default {
         request.open('GET', url, true)
         request.responseType = 'arraybuffer'
         request.onload = function () {
-          self.aC.decodeAudioData(request.response, function (arrayBuffer) {
-            elem.arrayBuffer = request.response
-            self.arrayBuffersDone++
-            if (self.arrayBuffersDone >= 2) {
-              // alert('arrayBuffersDone: ' + self.arrayBuffersDone)
-              if (self.srcs[0].isVirgin) {
-                console.log('is null')
-                self.loadAudio(self.players[0].arrayBuffer, 0)
-              } else {
-                console.log('is not null. ' + self.srcs[0].src)
-              }
-              if (self.srcs[1].isVirgin) {
-                self.loadAudio(self.players[1].arrayBuffer, 1)
-              }
+          // alert(request.response)
+          elem.arrayBuffer = request.response
+          self.arrayBuffersDone++
+          if (self.arrayBuffersDone >= 2) {
+            // alert('arrayBuffersDone: ' + self.arrayBuffersDone)
+            if (self.srcs[0].isVirgin) {
+              console.log('is null')
+              self.loadAudio(self.players[0].arrayBuffer, 0)
+            } else {
+              console.log('is not null. ' + self.srcs[0].src)
             }
-          }, function (e) {
-            console.log('error: ' + e)
-          })
+            if (self.srcs[1].isVirgin) {
+              self.loadAudio(self.players[1].arrayBuffer, 1)
+            }
+          }
+          // self.aC.decodeAudioData(request.response, function (arrayBuffer) {
+          //   elem.arrayBuffer = arrayBuffer
+          //   self.arrayBuffersDone++
+          //   if (self.arrayBuffersDone >= 2) {
+          //     // alert('arrayBuffersDone: ' + self.arrayBuffersDone)
+          //     if (self.srcs[0].isVirgin) {
+          //       console.log('is null')
+          //       self.loadAudio(self.players[0].arrayBuffer, 0)
+          //     } else {
+          //       console.log('is not null. ' + self.srcs[0].src)
+          //     }
+          //     if (self.srcs[1].isVirgin) {
+          //       self.loadAudio(self.players[1].arrayBuffer, 1)
+          //     }
+          //   }
+          // }, function (e) {
+          //   console.log('error: ' + e)
+          // })
         }
         request.send()
       })
