@@ -11,8 +11,15 @@ $header-height: 0;
 $footer-height: 76px;
 $padding-node-sm: 12px;
 $padding-node-lg: 24px;
-$gap: 20px;
 $fx-bg: #BBB;
+
+$gap: 18px;
+// @media screen and (max-width: $breakp-md) {
+//   $gap: 12px;
+// }
+// @media screen and (min-width: $breakp-md) {
+//   $gap: 20px;
+// }
 
 // Colors. Minor change from new MacBook
 
@@ -841,7 +848,16 @@ input[name=progress] {
 
 
 
-/* ===============  Mobile First Method  ============================= */
+/* ===============  Mobile  ============================= */
+
+// 768px
+@media screen and (max-width: $breakp-md) {
+  .gui-wrapper {
+    h2 {
+      font-size: 1em;
+    }
+  }
+}
 
 /*
 
