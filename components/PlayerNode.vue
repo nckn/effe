@@ -86,7 +86,7 @@ export default {
       // console.log('scrub and stop')
       var self = this
       // var target = this.target
-      // console.log('val is: ' + self.progress)
+      console.log('val is: ' + self.progress)
       if (!self.isSoundPlaying) {
         return
       }

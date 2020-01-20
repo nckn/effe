@@ -103,6 +103,7 @@ export default {
       // startTime: [0, 0],
       curBuffer: [null, null],
       songData: [null, null],
+      sliderOffset: [null, null],
       arrayBuffersDone: 0,
       progressListens: true,
       newOffset: 0
@@ -282,6 +283,9 @@ export default {
       // console.log('what is remainder: ' + self.srcs[obj.id].offset % self.srcs[obj.id].src.buffer.duration)
       self.srcs[obj.id].src.loop = true
       if (obj.progress) {
+        console.log('progress is set')
+        console.log(obj.progress)
+        // self.sliderOffset[obj.id] = obj.progress
         self.newOffset = self.srcs[obj.id].src.buffer.duration * obj.progress
         self.progressListens = false /* Because scrub happened */
         self.srcs[obj.id].src.start(self.aC.currentTime, self.newOffset, self.srcs[obj.id].src.buffer.duration)
@@ -292,26 +296,6 @@ export default {
       // self.progressListens = true
       self.progressOfSources()
     },
-    // resumeTrack (num, progress) {
-    //   var self = this
-    //   self.srcs[num].startTime = self.aC.currentTime
-    //   // console.log('progress is: ' + progress)
-    //   self.srcs[num].src = self.aC.createBufferSource()
-    //   self.srcs[num].src.buffer = self.songData[num]
-    //   self.sourceGain[num].gain.value = 0.5
-    //   self.srcs[num].src.connect(self.sourceGain[num])
-    //   // self.sourceGain[num].connect(self.aC.destination)
-    //   // var songFraction = self.srcs[num].src.buffer.duration * ratio
-    //   // self.srcs[num].src.start(0, self.newOffset)
-    //   // var self.newOffset = self.aC.currentTime * progress
-    //   self.newOffset = self.srcs[num].src.buffer.duration * progress
-    //   self.srcs[num].src.start(self.aC.currentTime, self.newOffset, self.srcs[num].src.buffer.duration)
-    //   // self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
-    //   self.srcs[num].src.loop = true
-    //   // Animate progress
-    //   self.progressListens = false /* Because scrub happened */
-    //   self.progressOfSources()
-    // },
     pauseTrack (num) {
       // Called when play buttons are called and when scrub starts
       var s = this
@@ -343,8 +327,10 @@ export default {
             }
           } else {
             // console.log('progressListens is false')
+            // element.progress = self.sliderOffset[index]
             element.progress = self.newOffset
             self.progressListens = true
+            element.startTime = self.aC.currentTime
           }
           // console.log('self.aC.currentTime: ' + self.aC.currentTime)
           // console.log('self.srcs[0].startTime: ' + self.srcs[0].startTime)
