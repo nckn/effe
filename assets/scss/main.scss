@@ -731,6 +731,12 @@ input[name=progress] {
   // }
 }
 
+// sub classes
+.issleeping {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
 @mixin makeGUINodeColor($color) {
   input[type=range] {
     background-color: $color;

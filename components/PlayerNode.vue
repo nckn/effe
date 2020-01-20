@@ -1,5 +1,5 @@
 <template lang="pug">
-  .node.player(@drop="dropEvent" @dragover="dragOver" v-show="node.isOn" v-bind:id="player_id" v-bind:class="{ ishovering: isHovering && !fileIsLoaded }" @dragleave="turnOffHoverState")
+  .node.player(@drop="dropEvent" @dragover="dragOver" v-show="node.isOn" v-bind:id="player_id" v-bind:class="{ ishovering: isHovering && !fileIsLoading }" @dragleave="turnOffHoverState")
     .gui-wrapper
       h2 {{ node.name }}
       .button.square.top-right(@click="loadDemo" v-if="!isDemoPlaying")
@@ -14,9 +14,9 @@
         @change="dropEvent"
         ref="fileInput"
       )
-      input.progress-slider(type='range' name='progress' min='0' max='1' step='0.001' v-model="progress" @input="scrubAndStop" @change="scrubStopPlay")
+      input.progress-slider(type='range' name='progress' min='0' max='1' step='0.001' v-model="progress" @input="scrubAndStop" @change="scrubStopPlay" v-bind:class="{ issleeping: !fileIsLoaded }")
     button.upload-btn(@click="$refs.fileInput.click()" v-show="!fileIsLoaded") {{ dragText }}
-    .gui-wrapper
+    .gui-wrapper(v-bind:class="{ issleeping: !fileIsLoaded }")
       input.volume-slider-one(type='range' name='color' min='0' max='1' step='0.01' @input="ctlVol" v-model="node.vol")
     //- .songsearch
     //-   form
@@ -56,6 +56,7 @@ export default {
       isHovering: false,
       droppedFile: null,
       fileIsLoaded: false,
+      fileIsLoading: false,
       demoLoaded: false,
       id: this.player_id,
       dragText: 'Drag an mp3 or wav file here or click this node',
@@ -229,6 +230,7 @@ export default {
         self.artistInfo.innerHTML = str
         // Succesful load, allow window for playing
         self.windowIsOpen = true
+        self.fileIsLoading = true
         self.toggleHoverState()
         self.$parent.frameLooper()
         // A file has been loaded. Hide the upload button
