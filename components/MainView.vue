@@ -208,17 +208,17 @@ export default {
             self.arrayBuffersDone++
             if (self.arrayBuffersDone >= 2) {
               // alert('arrayBuffersDone: ' + self.arrayBuffersDone)
-              self.playAudio(self.players[0].arrayBuffer, 0)
-              self.playAudio(self.players[1].arrayBuffer, 1)
-              if (id === 0) {
-                // console.log('id is: ' + id)
-                this.$children[7].togglePlay()
-                this.$children[7].changeAppearance()
-              } else if (id === 1) {
-                // console.log('id is: ' + id)
-                this.$children[0].togglePlay()
-                this.$children[0].changeAppearance()
-              }
+              self.loadAudio(self.players[0].arrayBuffer, 0)
+              self.loadAudio(self.players[1].arrayBuffer, 1)
+              // if (id === 0) {
+              //   // console.log('id is: ' + id)
+              //   this.$children[7].togglePlay()
+              //   this.$children[7].changeAppearance()
+              // } else if (id === 1) {
+              //   // console.log('id is: ' + id)
+              //   this.$children[0].togglePlay()
+              //   this.$children[0].changeAppearance()
+              // }
             }
             // return arrayBuffer
           })
@@ -388,39 +388,41 @@ export default {
       // }
       window.requestAnimationFrame(this.progressOfSources)
     },
+    loadAudio (data, num) {
+      var self = this
+      var trackData = new ArrayBuffer(data)
+      console.log('we arer loading: ' + trackData);
+      // console.log('the log is: ' + typeof trackData);
+      self.aC.decodeAudioData(data, function (buffer) {
+        self.srcs[num].src = self.aC.createBufferSource()
+        self.srcs[num].src.connect(self.sourceGain[num])
+        // Reverse buffer
+        // Array.prototype.reverse.call( buffer.getChannelData(0) )
+        // Array.prototype.reverse.call( buffer.getChannelData(1) )
+        // self.filter.connect(self.sourceGain[num])
+        self.srcs[num].src.buffer = buffer
+        self.sD[num] = buffer
+        self.sourceGain[num].gain.value = 0.5
+        console.log('success.')
+        if (num === 0) {
+          self.$children[0].allowPlayer()
+        } else if (num === 1) {
+          self.$children[7].allowPlayer()
+        }
+      }, function (e) {
+        console.log('it fails: ' + e)
+      })
+    },
     playAudio (data, num) {
       var self = this
       // console.log('play audio: ' + num)
       self.srcs[num].startTime = self.aC.currentTime
       if (self.sD[num] === null) {
-        // var request = new XMLHttpRequest()
-        // request.open('GET', url, true)
-        // request.responseType = 'arraybuffer'
-        // request.onload = function () {
-        // Has not been decoded or played yet
-        var trackData = new ArrayBuffer(data)
-        console.log('the log is: ' + typeof trackData);
-        self.aC.decodeAudioData(data, function (buffer) {
-          self.srcs[num].src = self.aC.createBufferSource()
-          self.srcs[num].src.connect(self.sourceGain[num])
-          // Reverse buffer
-          // Array.prototype.reverse.call( buffer.getChannelData(0) )
-          // Array.prototype.reverse.call( buffer.getChannelData(1) )
-          // self.filter.connect(self.sourceGain[num])
-          // self.sourceGain[num].connect(self.aC.destination)
-          self.srcs[num].src.buffer = buffer
-          self.sD[num] = buffer
-          self.sourceGain[num].gain.value = 0.5
-          // self.srcs[num].src.connect(self.sourceGain[num])
-          self.srcs[num].src.start(self.aC.currentTime, self.srcs[num].offset, self.srcs[num].src.buffer.duration)
-          self.srcs[num].src.loop = true
-          // Set started at
-          // self.srcs[num].startedAt = self.aC.currentTime - self.srcs[num].offset
-          self.progressOfSources()
-          console.log('success!');
-        }, function (e) {
-          console.log('it fails: ' + e);
-        })
+        self.srcs[num].src.start(self.aC.currentTime, self.srcs[num].offset, self.srcs[num].src.buffer.duration)
+        self.srcs[num].src.loop = true
+        // Set started at
+        // self.srcs[num].startedAt = self.aC.currentTime - self.srcs[num].offset
+        self.progressOfSources()
         // }
         // request.send()
       } else {

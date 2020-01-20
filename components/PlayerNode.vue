@@ -52,7 +52,7 @@ export default {
       isSoundPlaying: false,
       songData: null,
       windowIsOpen: false,
-      zero: this.player_id,
+      playerID: this.player_id,
       isHovering: false,
       droppedFile: null,
       fileIsLoaded: false,
@@ -100,7 +100,7 @@ export default {
       if (!self.isSoundPlaying) {
         return
       }
-      self.$parent.pauseTrack(self.zero)
+      self.$parent.pauseTrack(self.playerID)
       self.startBox.classList.remove('on')
       self.buttonIcon.classList.remove('pause')
       self.isSoundPlaying = false
@@ -110,7 +110,7 @@ export default {
       // } else {
       //   if (self.isSoundPlaying) {
       //     self.isSoundPlaying = false
-      //     self.$parent.pauseTrack(self.zero)
+      //     self.$parent.pauseTrack(self.playerID)
       //     self.startBox.classList.remove('on')
       //     self.buttonIcon.classList.remove('pause')
       //   } else {
@@ -121,11 +121,11 @@ export default {
     scrubStopPlay () {
       var self = this
       self.isSoundPlaying = true
-      // self.$parent.playTrack(self.zero, progress);
-      self.$parent.playTrack(self.zero, self.progress);
+      // self.$parent.playTrack(self.playerID, progress);
+      self.$parent.playTrack(self.playerID, self.progress);
       self.startBox.classList.add('on')
       self.buttonIcon.classList.add('pause');
-      // console.log('stopped: ' + self.zero)
+      // console.log('stopped: ' + self.playerID)
     },
     loadDemo () {
       var self = this
@@ -162,7 +162,7 @@ export default {
     },
     ctlVol (e) {
       var target = e.target || e.srcElement
-      this.$parent.controlVolume(target.value, this.zero)
+      this.$parent.controlVolume(target.value, this.playerID)
     },
     togglePlay () {
       var self = this
@@ -174,12 +174,12 @@ export default {
       // }
       if (self.isSoundPlaying) {
         self.isSoundPlaying = false
-        self.$parent.pauseTrack(self.zero)
+        self.$parent.pauseTrack(self.playerID)
         self.startBox.classList.remove('on')
         self.buttonIcon.classList.remove('pause')
       } else {
         self.isSoundPlaying = true
-        self.$parent.playAudio(self.songData, self.zero);
+        self.$parent.playAudio(self.songData, self.playerID);
         self.startBox.classList.add('on')
         self.buttonIcon.classList.add('pause');
       }
@@ -211,11 +211,6 @@ export default {
         self.dragText = 'You need a good old mp3 or wav file. Try again!'
         return
       }
-      // console.log('file: ' + typeof e.dataTransfer.files[0].type)
-      // if (e.dataTransfer.files[0].type !== 'audio/mp3' || e.dataTransfer.files[0].type !== 'audio/wav') {
-      //   console.log('no can do!')
-      //   return
-      // }
       self.isHovering = false
       if (e.dataTransfer) {
         console.log(e.dataTransfer.files)
@@ -223,14 +218,8 @@ export default {
       } else {
         self.droppedFile = e.target.files[0]
       }
-      // alert(e.target.files)
-      // var num = this.className.substring(11, 14)
-      // var cur = num == 'one' ? 0 : 1
+      // File reader
       var reader = new FileReader()
-      // console.log('this is it: ' + this);
-      // console.log(typeof this);
-      e.stopPropagation()
-      e.preventDefault()
       reader.onload = function (fileEvent) {
         self.songData = fileEvent.target.result
         // console.log('songData: ' + self.songData)
@@ -243,15 +232,20 @@ export default {
         self.toggleHoverState()
         self.$parent.frameLooper()
         // A file has been loaded. Hide the upload button
-        self.fileIsLoaded = true
+        self.$parent.loadAudio(self.songData, self.playerID);
         // document.querySelector('.button-reg.invisible.drop').style.border = 'none'
       }
       reader.readAsArrayBuffer(self.droppedFile)
-      self.startBox.classList.remove('invisible')
-      self.startBox.classList.add('visible')
       // var playButton = 'start-' + num
       // document.getElementById(playButton).removeChild(document.getElementById('drag-instr'));
+    },
+    allowPlayer () {
+      var self = this
+      self.startBox.classList.remove('invisible')
+      self.startBox.classList.add('visible')
       self.uploadBtn.style.zIndex = -10
+      // Load the audio
+      self.fileIsLoaded = true
     }
   }
 }
