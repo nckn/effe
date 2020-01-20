@@ -94,17 +94,6 @@ export default {
       // console.log('play progress is: ' + val)
       self.progress = val
     },
-    scrubTimeline () {
-      // var self = this
-      // if (!self.scrubbing) {
-      //   self.scrubAndStop()
-      //   self.scrubbing = true
-      // }
-      // var target = this.target
-      // console.log('hi there: ' + target.value)
-      // console.log('hi there: ' + this)
-      // self.progress = target.value
-    },
     scrubAndStop () {
       // console.log('scrub and stop')
       var self = this
@@ -134,8 +123,8 @@ export default {
     scrubStopPlay () {
       var self = this
       self.isSoundPlaying = true
-      // self.$parent.playTrack(self.playerID, progress);
-      self.$parent.playTrack(self.playerID, self.progress);
+      // self.$parent.resumeTrack(self.playerID, progress);
+      self.$parent.playAudio({id: self.playerID, progress: self.progress});
       self.startBox.classList.add('on')
       self.buttonIcon.classList.add('pause');
       // console.log('stopped: ' + self.playerID)
@@ -145,15 +134,6 @@ export default {
       self.$parent.fetchDemo(self.playerID)
       // Send to global bool
       self.toggleDemo()
-      // self.passSongToParent(self.songData, self.playerID)
-      // Pass audio buffer to parent
-      // self.$parent.loadAudio(self.songData, self.playerID)
-      // self.togglePlay()
-      // self.$parent.frameLooper()
-      // self.changeAppearance()
-      // var playButton = 'start-' + num
-      // document.getElementById(playButton).removeChild(document.getElementById('drag-instr'));
-      // Not very dry - end
     },
     onFileSelected (e) {
       var self = this
@@ -181,7 +161,7 @@ export default {
       } else {
         // console.log('play from player')
         self.isSoundPlaying = true
-        self.$parent.playAudio(self.songData, self.playerID)
+        self.$parent.playAudio({id: self.playerID})
         self.startBox.classList.add('on')
         self.buttonIcon.classList.add('pause')
       }

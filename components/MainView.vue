@@ -254,43 +254,50 @@ export default {
         console.log('it fails: ' + e)
       })
     },
-    playAudio (data, num) {
+    playAudio (obj) {
       var self = this
       // console.log('play audio: ' + num)
       // self.progressOfSources()
-      self.srcs[num].startTime = self.aC.currentTime
-      self.srcs[num].src = self.aC.createBufferSource()
-      self.srcs[num].src.buffer = self.songData[num]
-      self.sourceGain[num].gain.value = 0.5
-      self.srcs[num].src.connect(self.sourceGain[num])
-      // self.sourceGain[num].connect(self.aC.destination)
-      self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
-      console.log('what is offset: ' + self.srcs[num].offset)
-      // console.log('what is remainder: ' + self.srcs[num].offset % self.srcs[num].src.buffer.duration)
-      self.srcs[num].src.loop = true
+      self.srcs[obj.id].startTime = self.aC.currentTime
+      self.srcs[obj.id].src = self.aC.createBufferSource()
+      self.srcs[obj.id].src.buffer = self.songData[obj.id]
+      self.sourceGain[obj.id].gain.value = 0.5
+      self.srcs[obj.id].src.connect(self.sourceGain[obj.id])
+      // self.sourceGain[obj.id].connect(self.aC.destination)
+      // console.log('what is offset: ' + self.srcs[obj.id].offset)
+      // console.log('what is remainder: ' + self.srcs[obj.id].offset % self.srcs[obj.id].src.buffer.duration)
+      self.srcs[obj.id].src.loop = true
+      if (obj.progress) {
+        self.newOffset = self.srcs[obj.id].src.buffer.duration * obj.progress
+        self.progressListens = false /* Because scrub happened */
+        self.srcs[obj.id].src.start(self.aC.currentTime, self.newOffset, self.srcs[obj.id].src.buffer.duration)
+      } else {
+        self.srcs[obj.id].src.start(0, self.srcs[obj.id].offset % self.srcs[obj.id].src.buffer.duration)
+      }
       // Animate progress
       // self.progressListens = true
       self.progressOfSources()
     },
-    playTrack (num, progress) {
-      var self = this
-      console.log('progress is: ' + progress)
-      self.srcs[num].src = self.aC.createBufferSource()
-      self.srcs[num].src.buffer = self.songData[num]
-      self.sourceGain[num].gain.value = 0.5
-      self.srcs[num].src.connect(self.sourceGain[num])
-      // self.sourceGain[num].connect(self.aC.destination)
-      // var songFraction = self.srcs[num].src.buffer.duration * ratio
-      // self.srcs[num].src.start(0, self.newOffset)
-      // var self.newOffset = self.aC.currentTime * progress
-      self.newOffset = self.srcs[num].src.buffer.duration * progress
-      self.srcs[num].src.start(self.aC.currentTime, self.newOffset, self.srcs[num].src.buffer.duration)
-      // self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
-      self.srcs[num].src.loop = true
-      // Animate progress
-      self.progressListens = false /* Because scrub happened */
-      self.progressOfSources()
-    },
+    // resumeTrack (num, progress) {
+    //   var self = this
+    //   self.srcs[num].startTime = self.aC.currentTime
+    //   // console.log('progress is: ' + progress)
+    //   self.srcs[num].src = self.aC.createBufferSource()
+    //   self.srcs[num].src.buffer = self.songData[num]
+    //   self.sourceGain[num].gain.value = 0.5
+    //   self.srcs[num].src.connect(self.sourceGain[num])
+    //   // self.sourceGain[num].connect(self.aC.destination)
+    //   // var songFraction = self.srcs[num].src.buffer.duration * ratio
+    //   // self.srcs[num].src.start(0, self.newOffset)
+    //   // var self.newOffset = self.aC.currentTime * progress
+    //   self.newOffset = self.srcs[num].src.buffer.duration * progress
+    //   self.srcs[num].src.start(self.aC.currentTime, self.newOffset, self.srcs[num].src.buffer.duration)
+    //   // self.srcs[num].src.start(0, self.srcs[num].offset % self.srcs[num].src.buffer.duration)
+    //   self.srcs[num].src.loop = true
+    //   // Animate progress
+    //   self.progressListens = false /* Because scrub happened */
+    //   self.progressOfSources()
+    // },
     pauseTrack (num) {
       // Called when play buttons are called and when scrub starts
       var s = this
@@ -316,15 +323,19 @@ export default {
             return
           }
           if (self.progressListens) {
-            console.log('progressListens is true')
+            // console.log('progressListens is true')
             if (element.src.buffer.duration) {
               element.progress = ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)
             }
           } else {
-            console.log('progressListens is false')
+            // console.log('progressListens is false')
             element.progress = self.newOffset
             self.progressListens = true
           }
+          // console.log('self.aC.currentTime: ' + self.aC.currentTime)
+          // console.log('self.srcs[0].startTime: ' + self.srcs[0].startTime)
+          // console.log('newOffset: ' + self.newOffset)
+          console.log('element.progress: ' + element.progress)
           this.$children[childNo].updateProgress(element.progress)
           // console.log('the log is: ' + null);
         }
