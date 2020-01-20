@@ -219,43 +219,67 @@ export default {
         request.responseType = 'arraybuffer'
         request.onload = function () {
           // alert(request.response)
-          elem.arrayBuffer = request.response
-          self.arrayBuffersDone++
-          if (self.arrayBuffersDone >= 2) {
-            // alert('arrayBuffersDone: ' + self.arrayBuffersDone)
-            if (self.srcs[0].isVirgin) {
-              console.log('is null')
-              self.loadAudio(self.players[0].arrayBuffer, 0)
-            } else {
-              console.log('is not null. ' + self.srcs[0].src)
-            }
-            if (self.srcs[1].isVirgin) {
-              self.loadAudio(self.players[1].arrayBuffer, 1)
-            }
-          }
-          // self.aC.decodeAudioData(request.response, function (arrayBuffer) {
-          //   elem.arrayBuffer = arrayBuffer
-          //   self.arrayBuffersDone++
-          //   if (self.arrayBuffersDone >= 2) {
-          //     // alert('arrayBuffersDone: ' + self.arrayBuffersDone)
-          //     if (self.srcs[0].isVirgin) {
-          //       console.log('is null')
-          //       self.loadAudio(self.players[0].arrayBuffer, 0)
-          //     } else {
-          //       console.log('is not null. ' + self.srcs[0].src)
-          //     }
-          //     if (self.srcs[1].isVirgin) {
-          //       self.loadAudio(self.players[1].arrayBuffer, 1)
-          //     }
+          // elem.arrayBuffer = request.response
+          // self.arrayBuffersDone++
+          // if (self.arrayBuffersDone >= 2) {
+          //   // alert('arrayBuffersDone: ' + self.arrayBuffersDone)
+          //   if (self.srcs[0].isVirgin) {
+          //     console.log('is null')
+          //     self.loadAudio(self.players[0].arrayBuffer, 0)
+          //   } else {
+          //     console.log('is not null. ' + self.srcs[0].src)
           //   }
-          // }, function (e) {
-          //   console.log('error: ' + e)
-          // })
+          //   if (self.srcs[1].isVirgin) {
+          //     self.loadAudio(self.players[1].arrayBuffer, 1)
+          //   }
+          // }
+          self.aC.decodeAudioData(request.response, function (arrayBuffer) {
+            elem.arrayBuffer = arrayBuffer
+            self.arrayBuffersDone++
+            if (self.arrayBuffersDone >= 2) {
+              // alert('arrayBuffersDone: ' + self.arrayBuffersDone)
+              if (self.srcs[0].isVirgin) {
+                console.log('is null')
+                self.loadDecodedAudio(self.players[0].arrayBuffer, 0)
+              } else {
+                console.log('is not null. ' + self.srcs[0].src)
+              }
+              if (self.srcs[1].isVirgin) {
+                self.loadDecodedAudio(self.players[1].arrayBuffer, 1)
+              }
+            }
+          }, function (e) {
+            console.log('error: ' + e)
+          })
         }
         request.send()
       })
       // Hide demo load button
       self.demoLoaded = true
+    },
+    loadDecodedAudio (data, num) {
+      var self = this 
+      console.log('data type: ' + typeof data);
+      // console.log('we are loading: ' + trackData);
+      // console.log('the log is: ' + typeof trackData);
+      // self.aC.decodeAudioData(data, function (buffer) {
+      self.srcs[num].isVirgin = false
+      // Reverse buffer
+      // Array.prototype.reverse.call( buffer.getChannelData(0) )
+      // Array.prototype.reverse.call( buffer.getChannelData(1) )
+      self.srcs[num].src.buffer = data
+      self.songData[num] = data
+      // Change appearance of players now that everything is loaded
+      if (num === 0) {
+        self.$children[0].allowPlayer()
+      } else if (num === 1) {
+        self.$children[7].allowPlayer()
+      }
+      // Show visualizer
+      self.frameLooper()
+      // }, function (e) {
+      //   console.log('it fails: ' + e)
+      // })
     },
     loadAudio (data, num) {
       var self = this
