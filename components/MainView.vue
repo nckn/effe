@@ -212,16 +212,14 @@ export default {
     },
     fetchDemo (id) {
       var self = this
-      // console.log(id)
       self.players.forEach(elem => {
-        window
-          .fetch(elem.demoUrl)
-          .then(response => response.arrayBuffer())
-          .then(arrayBuffer => {
-            // playButton.disabled = false
-            // yodelBuffer = audioBuffer
-            // console.log('arrayBuffersDone: ' + self.arrayBuffersDone)
-            elem.arrayBuffer = arrayBuffer
+        var url = elem.demoUrl
+        var request = new XMLHttpRequest()
+        request.open('GET', url, true)
+        request.responseType = 'arraybuffer'
+        request.onload = function () {
+          self.aC.decodeAudioData(request.response, function (arrayBuffer) {
+            elem.arrayBuffer = request.response
             self.arrayBuffersDone++
             if (self.arrayBuffersDone >= 2) {
               // alert('arrayBuffersDone: ' + self.arrayBuffersDone)
@@ -235,8 +233,11 @@ export default {
                 self.loadAudio(self.players[1].arrayBuffer, 1)
               }
             }
-            // return arrayBuffer
+          }, function (e) {
+            console.log('error: ' + e)
           })
+        }
+        request.send()
       })
       // Hide demo load button
       self.demoLoaded = true
