@@ -218,23 +218,27 @@ export default {
         // request.open('GET', url, true)
         // request.responseType = 'arraybuffer'
         // console.log('load Impulse')
-        var url = '/snd/effe-bass-1.wav'
-        var request = new XMLHttpRequest()
-        request.open('GET', url, true)
-        request.responseType = 'arraybuffer'
-        request.onload = function () {
-          self.aC.decodeAudioData(request.response, function (buffer) {
-            self.loadAudio(buffer, id)
-          }, function (e) { 
+        var loadImpulse = function (fileName) {
+          // console.log('load Impulse')
+          var url = '/snd/effe-bass-1.wav'
+          var request = new XMLHttpRequest()
+          request.open('GET', url, true)
+          request.responseType = 'arraybuffer'
+          request.onload = function () {
+            self.aC.decodeAudioData(request.response, function (buffer) {
+              // self.convolver.buffer = buffer;
+            }, function (e) { 
+              console.log(e)
+              console.log('it worked: ' + e)
+            })
+          }
+          request.onerror = function (e) {
             console.log(e)
-            console.log('it worked')
-          })
+            console.log('didnt work')
+          }
+          request.send()
         }
-        request.onerror = function (e) {
-          console.log(e)
-          console.log('didnt work')
-        }
-        request.send()
+        loadImpulse(0)
       })
       // Hide demo load button
       self.demoLoaded = true
