@@ -120,6 +120,20 @@ export default {
       self.setReverb(),
       self.setupFlanger()
     )
+    // Here we are listening for the Space key, for toggling play
+    document.body.onkeyup = function (e) {
+      e.stopPropagation()
+      e.preventDefault()
+      // if (!self.fileIsLoaded) {
+      //   return
+      // }
+      if (e.keyCode === 32) {
+        // self.$store.dispatch('updatePlaybackState', self.playing ? false : true)
+        self.$children[0].togglePlay()
+        self.$children[7].togglePlay()
+        // self.togglePlay()
+      }
+    }
   },
   methods: {
     setupAudioNodes () {

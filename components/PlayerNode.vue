@@ -70,18 +70,6 @@ export default {
     self.buttonIcon = self.$refs.buttonicon
     self.artistInfo = self.$refs.artist_info
     self.uploadBtn = self.$refs.upload_btn
-    // Here we are listening for the Space key, for toggling play
-    document.body.onkeyup = function (e) {
-      e.stopPropagation()
-      e.preventDefault()
-      if (!self.fileIsLoaded) {
-        return
-      }
-      if (e.keyCode === 32) {
-        // self.$store.dispatch('updatePlaybackState', self.playing ? false : true)
-        self.togglePlay()
-      }
-    }
     // console.log('here we go: ' + this.$store.isDemoPlaying)
   },
   computed: {
@@ -128,6 +116,9 @@ export default {
       self.startBox.classList.add('on')
       self.buttonIcon.classList.add('pause');
       // console.log('stopped: ' + self.playerID)
+    },
+    isFileLoaded () {
+      return isFileLoaded
     },
     loadDemo () {
       var self = this
