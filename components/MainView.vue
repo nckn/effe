@@ -290,7 +290,6 @@ export default {
         // self.newOffset = self.srcs[obj.id].src.buffer.duration * obj.progress
         self.newOffset = self.srcs[obj.id].src.buffer.duration * obj.progress
         self.sliderOffset[obj.id] = parseFloat(obj.progress)
-        self.progressListens = false /* Because scrub happened */
         self.srcs[obj.id].src.start(self.aC.currentTime, self.newOffset, self.srcs[obj.id].src.buffer.duration)
       }
       // PLAY BUTTON: It came from the play button and must rely on ongoing progress
@@ -301,7 +300,6 @@ export default {
       }
       self.srcs[obj.id].src.loop = true
       // Animate progress
-      // self.progressListens = true
       self.progressOfSources()
       console.log('src startTime: ' + self.srcs[obj.id].startTime)
       console.log('self.newOffset: ' + self.newOffset)
@@ -332,31 +330,18 @@ export default {
           if (!element.src) {
             return
           }
-          if (self.progressListens) {
-            // if (index === 0) {
-            //   return
-            // }
-            // console.log('progressListens is true')
-            if (element.src.buffer.duration) {
-              var newTime = (self.aC.currentTime) - (element.startTime)
-              // console.log('currentTime - startTime: ' + newTime.toFixed(2))
-              // element.progress = self.sliderOffset[index] + ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)
-              element.progress = (newTime / element.src.buffer.duration) + self.sliderOffset[index] // org
-              console.log('progress: ' + parseFloat(element.progress).toFixed(3))
-              if (element.progress >= 1) {
-                self.sliderOffset[index] = 0
-                self.srcs[index].startTime = self.aC.currentTime
-              } 
-              // element.progress = ((self.aC.currentTime - (element.offset)) / element.src.buffer.duration) // closer to ideal
-              // element.progress = parseFloat(self.sliderOffset[index] + ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)) // closer to ideal
-            }
-          } else {
-            // console.log('progressListens is false')
-            // element.progress = self.sliderOffset[index]
-            element.progress = self.newOffset
-            self.progressListens = true
-            // element.startTime = self.aC.currentTime
-          }
+          // console.log('progressListens is true')
+          var newTime = (self.aC.currentTime) - (element.startTime)
+          // console.log('currentTime - startTime: ' + newTime.toFixed(2))
+          // element.progress = self.sliderOffset[index] + ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)
+          element.progress = (newTime / element.src.buffer.duration) + self.sliderOffset[index] // org
+          console.log('progress: ' + parseFloat(element.progress).toFixed(3))
+          if (element.progress >= 1) {
+            self.sliderOffset[index] = 0
+            self.srcs[index].startTime = self.aC.currentTime
+          } 
+          // element.progress = ((self.aC.currentTime - (element.offset)) / element.src.buffer.duration) // closer to ideal
+          // element.progress = parseFloat(self.sliderOffset[index] + ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)) // closer to ideal
           if (this.$children[childNo].checkIfPlaying()) {
             this.$children[childNo].updateProgress(element.progress)
           }
