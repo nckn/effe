@@ -220,7 +220,8 @@ export default {
         // console.log('load Impulse')
         var loadImpulse = function (fileName) {
           // console.log('load Impulse')
-          var url = '/snd/effe-bass-1.wav'
+          var url = 'http://soundescapes.io/static/audio/hiking-towards-jesus.mp3'
+          // var url = '/snd/effe-bass-1.wav'
           var request = new XMLHttpRequest()
           request.open('GET', url, true)
           request.responseType = 'arraybuffer'
@@ -398,7 +399,8 @@ export default {
       var self = this
       var loadImpulse = function (fileName) {
         // console.log('load Impulse')
-        var url = '/snd/GraffitiHallway.wav'
+        // var url = '/snd/GraffitiHallway.wav'
+        var url = '/snd/tst.wav'
         var request = new XMLHttpRequest()
         request.open('GET', url, true)
         request.responseType = 'arraybuffer'
