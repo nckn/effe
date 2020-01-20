@@ -223,9 +223,6 @@ export default {
     fetchDemo (id) {
       var self = this
       // console.log(id)
-      // const URL = 'https://freesound.org/data/previews/244/244337_4469980-lq.mp3'
-      // const URL = id === 0 ? '/snd/effe-beat-1.wav' : '/snd/effe-bass-1.wav'
-      // let yodelBuffer
       self.players.forEach(elem => {
         window
           .fetch(elem.demoUrl)
@@ -247,15 +244,6 @@ export default {
               if (self.srcs[1].isVirgin) {
                 self.loadAudio(self.players[1].arrayBuffer, 1)
               }
-              // if (id === 0) {
-              //   // console.log('id is: ' + id)
-              //   this.$children[7].togglePlay()
-              //   this.$children[7].changeAppearance()
-              // } else if (id === 1) {
-              //   // console.log('id is: ' + id)
-              //   this.$children[0].togglePlay()
-              //   this.$children[0].changeAppearance()
-              // }
             }
             // return arrayBuffer
           })
@@ -400,31 +388,6 @@ export default {
       self.players[1].isOn = self.players[1].isOn ? false : true
       // console.log('id is: ' + id)
     },
-    progressOfSources () {
-      var self = this
-      self.srcs.forEach((element, index) => {
-        // console.log(element)
-        if (element.src.buffer) {
-          var childNo = element.childNo
-          element.progress = ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)
-          this.$children[childNo].updateProgress(element.progress)
-          console.log('the log is: ' + null);
-        }
-        // self.sliderProgress.style.width = self.progress
-        // this.$children[7].updateProgress(progress)
-      });
-      // * (self.slider.offsetWidth - marginSubtract) + 'px'
-      // for (var s = 0; s < self.srcs.length; s++) {
-      //   console.log('self.srcs.length: ' + self.srcs.length);
-      //   if (self.srcs[s].buffer) {
-      //     var childNo = self.srcs[s].childNo
-      //     self.srcs[s].progress = ((self.aC.currentTime - self.srcs[s].startTime) / self.srcs[s].src.buffer.duration)
-      //     this.$children[childNo].updateProgress(self.srcs[s].progress)
-      //     console.log('the log is: ' + null);
-      //   }
-      // }
-      window.requestAnimationFrame(this.progressOfSources)
-    },
     playAudio (data, num) {
       var self = this
       // console.log('play audio: ' + num)
@@ -451,6 +414,32 @@ export default {
         // Set started at
         // self.srcs[num].startedAt = self.aC.currentTime - self.srcs[num].offset
       }
+    },
+    progressOfSources () {
+      var self = this
+      console.log('in loop');
+      self.srcs.forEach((element, index) => {
+        // console.log(element)
+        if (!element.isVirgin) {
+          var childNo = element.childNo
+          element.progress = ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)
+          this.$children[childNo].updateProgress(element.progress)
+          console.log('the log is: ' + null);
+        }
+        // self.sliderProgress.style.width = self.progress
+        // this.$children[7].updateProgress(progress)
+      });
+      // * (self.slider.offsetWidth - marginSubtract) + 'px'
+      // for (var s = 0; s < self.srcs.length; s++) {
+      //   console.log('self.srcs.length: ' + self.srcs.length);
+      //   if (self.srcs[s].buffer) {
+      //     var childNo = self.srcs[s].childNo
+      //     self.srcs[s].progress = ((self.aC.currentTime - self.srcs[s].startTime) / self.srcs[s].src.buffer.duration)
+      //     this.$children[childNo].updateProgress(self.srcs[s].progress)
+      //     console.log('the log is: ' + null);
+      //   }
+      // }
+      window.requestAnimationFrame(this.progressOfSources)
     },
     playTrack (num, progress) {
       var self = this

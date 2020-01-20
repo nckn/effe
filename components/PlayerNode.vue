@@ -161,11 +161,13 @@ export default {
       //   return
       // }
       if (self.isSoundPlaying) {
+        console.log('pause from player');
         self.isSoundPlaying = false
         self.$parent.pauseTrack(self.playerID)
         self.startBox.classList.remove('on')
         self.buttonIcon.classList.remove('pause')
       } else {
+        console.log('play from player');
         self.isSoundPlaying = true
         self.$parent.playAudio(self.songData, self.playerID);
         self.startBox.classList.add('on')
