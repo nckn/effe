@@ -48,8 +48,8 @@ export default {
         {name: 'Filter', class_name: 'filter', isOn: true, sliders: [
           {name: 'Value', min: 0, max: 22050, step: 1, value: 0, default: 0, curFilter: 'allpass'},
           // {name: 'Tremolo', min: 1, max: 20, step: 1, value: 0, default: 10}
-          {name: 'vSpeed', min: 0, max: 20, step: 0.1, value: 3, default: 3},
-          {name: 'vDepth', min: 0, max: 1, step: 0.01, value: 0.3, default: 0.002}
+          {name: 'vSpeed', min: 0, max: 20, step: 0.1, value: 0, default: 3},
+          {name: 'vDepth', min: 0, max: 1, step: 0.01, value: 0, default: 0.002}
         ]},
         {name: 'Delay', class_name: 'delay', isOn: true, sliders: [
           {name: 'Delay time', min: 0, max: 1.5, step: 0.05, value: 0, default: 10},
@@ -85,11 +85,7 @@ export default {
       filterType: ['allpass', 'lowpass', 'highpass', 'bandpass', 'lowshelf', 'highshelf', 'peaking', 'notch'],
       filterValue: 0,
       // Tremolo
-      tDuration: 12, // T for Tremolo
-      tFrequency: 50,
-      tScale: 0.4,
-      cspeed: 3.5,
-      cdelay: 0.03,
+      cspeed: 0,
       cdepth: 3,
       // tremolo: {
       //   isOn: true,
@@ -288,7 +284,7 @@ export default {
       // self.sourceGain[obj.id].connect(self.aC.destination)
       // console.log('what is offset: ' + self.srcs[obj.id].offset)
       // console.log('what is remainder: ' + self.srcs[obj.id].offset % self.srcs[obj.id].src.buffer.duration)
-      // Play command came from slider and it brought a value
+      // SLIDER: Play command came from slider and it brought a value
       if (obj.progress) {
         // self.sliderOffset[obj.id] = obj.progress
         // self.newOffset = self.srcs[obj.id].src.buffer.duration * obj.progress
@@ -297,7 +293,7 @@ export default {
         self.progressListens = false /* Because scrub happened */
         self.srcs[obj.id].src.start(self.aC.currentTime, self.newOffset, self.srcs[obj.id].src.buffer.duration)
       }
-      // It came from the play button and must rely on ongoing progress
+      // PLAY BUTTON: It came from the play button and must rely on ongoing progress
       else
       {
         self.srcs[obj.id].src.start(0, self.srcs[obj.id].offset % self.srcs[obj.id].src.buffer.duration)
@@ -454,8 +450,8 @@ export default {
       filter.Q.value = parseFloat(1)
       // lplfofilter = filter
 
-      filter.frequency.value = 2500;  // center frequency - this is kinda arbitrary.
-      depthOut.gain.value = 2500 * parseFloat( 1 )
+      // filter.frequency.value = 2500;  // center frequency - this is kinda arbitrary.
+      // depthOut.gain.value = 2500 * parseFloat( 1 )
       
       // const [output, toggle] = self.createInputSwitch(input, sum, defaults.active)
 
