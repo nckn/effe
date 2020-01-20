@@ -59,7 +59,7 @@ export default {
       fileIsLoading: false,
       demoLoaded: false,
       id: this.player_id,
-      dragText: 'Drag an mp3 or wav file here or click this node',
+      dragText: 'Click or drag an mp3 or wav file here',
       progress: 0,
       scrubbing: false
     }
@@ -201,20 +201,26 @@ export default {
     },
     dropEvent (e) {
       var self = this
+      // var target = e.target || e.srcElement
       e.stopPropagation()
       e.preventDefault()
-      var isSoundOkay = self.isFileSound(e.dataTransfer.files[0])
-      // console.log('file: ' + isSoundOkay)
-      if (!isSoundOkay) {
-        self.toggleHoverState()
-        self.dragText = 'You need a good old mp3 or wav file. Try again!'
-        return
-      }
+      // console.log('event is: ')
+      // console.log(e.target.files)
+      // // console.log(self.logObject(e))
+      // return
       self.isHovering = false
       if (e.dataTransfer) {
         console.log(e.dataTransfer.files)
         self.droppedFile = e.dataTransfer.files[0]
-      } else {
+        // Check if file is sound
+        var isSoundOkay = self.isFileSound(e.dataTransfer.files[0] || e.target.files[0])
+        // console.log('file: ' + isSoundOkay)
+        if (!isSoundOkay) {
+          self.toggleHoverState()
+          self.dragText = 'You need a good old mp3 or wav file. Try again!'
+          return
+        }
+      } else if (e.target.files) {
         self.droppedFile = e.target.files[0]
       }
       // File reader
