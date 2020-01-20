@@ -121,10 +121,17 @@ export default {
       self.setReverb(),
       self.setupFlanger()
     )
+    // Avoid scroll down when hitting space
+    document.body.onkeydown = function (e) {
+      if (e.keyCode === 32) {
+        e.stopPropagation()
+        e.preventDefault()
+      }
+    }
     // Here we are listening for the Space key, for toggling play
     document.body.onkeyup = function (e) {
-      e.stopPropagation()
-      e.preventDefault()
+      // e.stopPropagation()
+      // e.preventDefault()
       // if (!self.fileIsLoaded) {
       //   return
       // }
@@ -278,10 +285,11 @@ export default {
       self.srcs[obj.id].src.buffer = self.songData[obj.id]
       self.sourceGain[obj.id].gain.value = 0.5
       self.srcs[obj.id].src.connect(self.sourceGain[obj.id])
+      self.srcs[obj.id].src.loop = true
       // self.sourceGain[obj.id].connect(self.aC.destination)
       // console.log('what is offset: ' + self.srcs[obj.id].offset)
       // console.log('what is remainder: ' + self.srcs[obj.id].offset % self.srcs[obj.id].src.buffer.duration)
-      self.srcs[obj.id].src.loop = true
+      // Play command came from slider and it brought a value
       if (obj.progress) {
         // self.sliderOffset[obj.id] = obj.progress
         // self.newOffset = self.srcs[obj.id].src.buffer.duration * obj.progress
@@ -289,8 +297,12 @@ export default {
         self.sliderOffset[obj.id] = parseFloat(obj.progress)
         self.progressListens = false /* Because scrub happened */
         self.srcs[obj.id].src.start(self.aC.currentTime, self.newOffset, self.srcs[obj.id].src.buffer.duration)
-      } else {
+      }
+      // It came from the play button and must rely on ongoing progress
+      else
+      {
         self.srcs[obj.id].src.start(0, self.srcs[obj.id].offset % self.srcs[obj.id].src.buffer.duration)
+        // self.sliderOffset[obj.id] = parseFloat(self.srcs[obj.id].progress)
       }
       // Animate progress
       // self.progressListens = true
@@ -349,7 +361,9 @@ export default {
             self.progressListens = true
             // element.startTime = self.aC.currentTime
           }
-          this.$children[childNo].updateProgress(element.progress)
+          if (this.$children[childNo].checkIfPlaying()) {
+            this.$children[childNo].updateProgress(element.progress)
+          }
           // console.log('self.aC.currentTime: ' + self.aC.currentTime)
           // console.log('self.srcs[0].startTime: ' + self.srcs[0].startTime)
           // console.log('newOffset: ' + self.newOffset)

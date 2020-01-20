@@ -182,6 +182,9 @@ export default {
       // Pass audio buffer to parent
       self.$parent.loadAudio(data, id)
     },
+    checkIfPlaying () {
+      return this.isSoundPlaying
+    },
     dropEvent (e) {
       var self = this
       // var target = e.target || e.srcElement
