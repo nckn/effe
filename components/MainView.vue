@@ -103,7 +103,7 @@ export default {
       // startTime: [0, 0],
       curBuffer: [null, null],
       songData: [null, null],
-      sliderOffset: [null, null],
+      sliderOffset: [0, 0],
       arrayBuffersDone: 0,
       progressListens: true,
       newOffset: 0
@@ -302,7 +302,7 @@ export default {
       else
       {
         self.srcs[obj.id].src.start(0, self.srcs[obj.id].offset % self.srcs[obj.id].src.buffer.duration)
-        // self.sliderOffset[obj.id] = parseFloat(self.srcs[obj.id].progress)
+        self.sliderOffset[obj.id] = parseFloat(self.srcs[obj.id].progress)
       }
       // Animate progress
       // self.progressListens = true
