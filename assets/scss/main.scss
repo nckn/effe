@@ -549,7 +549,8 @@ input[type="submit"] {
   position: relative;
   width: auto;
   .next {
-    background: url(/svg/arrow-going-right.svg) no-repeat;
+    // background: url(/svg/arrow-going-right.svg) no-repeat;
+    background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAyMiAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE1LjUgMS41TDIwLjUgNi41TTIwLjUgNi41TDE1LjUgMTEuNU0yMC41IDYuNUgxLjUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNMTUuNSAxLjVMMjAuNSA2LjVNMjAuNSA2LjVMMTUuNSAxMS41TTIwLjUgNi41SDEuNSIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=') no-repeat;
     background-size: contain;
     background-position: center;
     left: 86px;
@@ -557,7 +558,8 @@ input[type="submit"] {
     margin-top: -1px;
   }
   .reset {    
-    background: url(/svg/icon-reset.svg) no-repeat;
+    // background: url(/svg/icon-reset.svg) no-repeat;
+    background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDIwLjVDMTYuNjk0NCAyMC41IDIwLjUgMTYuNjk0NCAyMC41IDEyQzIwLjUgNy4zMDU1OCAxNi42OTQ0IDMuNSAxMiAzLjVDOS41ODY3IDMuNSA3LjQwODMyIDQuNTA1NzEgNS44NjEwOCA2LjEyMDg2IiBzdHJva2U9InVybCgjcGFpbnQwX2xpbmVhcikiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNNS41IDMuNVY2LjNDNS41IDYuNDEwNDYgNS41ODk1NCA2LjUgNS43IDYuNUg4LjUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8cGF0aCBkPSJNNS41IDMuNVY2LjNDNS41IDYuNDEwNDYgNS41ODk1NCA2LjUgNS43IDYuNUg4LjUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyIiB4MT0iNiIgeTE9IjYiIHgyPSIxNCIgeTI9IjI1LjUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3AvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3Atb3BhY2l0eT0iMCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo=') no-repeat;
     background-size: contain;
     background-position: center;
     left: 120px;
