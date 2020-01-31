@@ -3,7 +3,8 @@
     .gui-wrapper
       h2 {{ node.name }}
       .iterator-group(v-if="node.class_name === 'filter'")
-        h4 {{ node.sliders[0].curFilter }}
+        .button.icon-btn.prev(@click="iterateFilterParent")
+        p.filter-name {{ node.sliders[0].curFilter }}
         .button.icon-btn.next(@click="iterateFilterParent")
         .button.icon-btn.reset(@click="resetFilter")
     canvas#analyser(v-if="node.class_name === 'graph'")
@@ -34,6 +35,9 @@ export default {
   watch: {
     sliderVal () {
       // console.log('its changing ' + this.sliderVal)
+    },
+    node () {
+      console.log('hep hey')
     }
   },
   mounted () {

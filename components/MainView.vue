@@ -407,6 +407,7 @@ export default {
     resetFilter () {
       var s = this
       s.filter.type = 'allpass'
+      s.nodes[3].sliders[0].curFilter = 'allpass'
       s.browser = 0
     },
     setReverb () {
