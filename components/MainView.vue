@@ -35,8 +35,10 @@ export default {
     return {
       // https://www.konradstudio.com/snd/effe-beat-1.wav
       players: [
-        {name: 'Player 1', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 0, demoUrl: '/snd/effe-beat-1.wav', arrayBuffer: null},
-        {name: 'Player 2', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 1, demoUrl: '/snd/effe-bass-1.wav', arrayBuffer: null}
+        {name: 'Player 1', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 0, demoUrl: '/snd/effe-beat-1.mp3', arrayBuffer: null},
+        {name: 'Player 2', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 1, demoUrl: '/snd/effe-bass-1.mp3', arrayBuffer: null}
+        // {name: 'Player 1', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 0, demoUrl: '/snd/effe-beat-1.wav', arrayBuffer: null},
+        // {name: 'Player 2', type: 'player', isPlaying: false, isOn: true, vol: 0.8, id: 1, demoUrl: '/snd/effe-bass-1.wav', arrayBuffer: null}
       ],
       nodes: [
         {name: 'Visualizer', class_name: 'graph', isOn: true},
