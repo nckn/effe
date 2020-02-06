@@ -23,6 +23,8 @@ import globalFunctions from '~/mixins/globalFunctions'
 // import {Flanger} from 'audio-effects'
 // const flanger = null
 
+// Symbolic test change
+
 export default {
   name: 'MainView',
   mixins: [globalFunctions],
