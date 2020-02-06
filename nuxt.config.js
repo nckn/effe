@@ -2,7 +2,7 @@ const base = 'gh-pages' === process.env.NODE_ENV ? '/effe/' : '/';
 
 module.exports = {
   // mode: 'spa',
-  mode: 'universal',
+  mode: 'spa',
   /*
   ** Headers of the page
   */
