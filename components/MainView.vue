@@ -360,6 +360,7 @@ export default {
     progressOfSources () {
       var self = this
       // console.log('in loop');
+      // TODO: Make progress depend on playbackRate
       self.srcs.forEach((element, index) => {
         // console.log(element)
         if (!element.isVirgin) {
