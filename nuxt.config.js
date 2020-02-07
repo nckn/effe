@@ -47,7 +47,8 @@ module.exports = {
   */
   plugins: [
     {src: '~/plugins/flanger.js', ssr: false},
-    {src: '@/plugins/window-fix', ssr: false}
+    {src: '@/plugins/window-fix', ssr: false},
+    {src: '@/plugins/googleanalytics.js', mode: 'client' }, // Google Analytics
     // {src: '@/plugins/main', ssr: false},
     // {src: '@/plugins/fetchsong', ssr: false}
   ],
