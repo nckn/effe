@@ -371,7 +371,9 @@ export default {
             return
           }
           // console.log('progressListens is true')
-          var newTime = (self.aC.currentTime) - (element.startTime)
+          var speedCalc = 1
+          // var speedCalc = element.src.playbackRate.value
+          var newTime = ((self.aC.currentTime) - (element.startTime)) * speedCalc
           // console.log('currentTime - startTime: ' + newTime.toFixed(2))
           // element.progress = self.sliderOffset[index] + ((self.aC.currentTime - element.startTime) / element.src.buffer.duration)
           element.progress = (newTime / element.src.buffer.duration) + self.sliderOffset[index] // org
